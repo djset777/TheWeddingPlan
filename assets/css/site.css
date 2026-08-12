@@ -67,7 +67,7 @@
   border: none;
   padding: 0;
 }
-.sidebar__nav h3:first-child { margin-top: 3; }
+.sidebar__nav h3:first-child { margin-top: 2.7; }
 
 .sidebar__nav ul {
   list-style: none;
