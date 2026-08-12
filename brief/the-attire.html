@@ -3,301 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Attire — The Brief</title>
+  <title>The Attire — The Wedding Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --teal:   #01605F;
-      --forest: #014421;
-      --navy:   #003153;
-      --gold:   #D4AF37;
-      --abyss:  #0C343D;
-      --linen:  #F2EDE6;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--linen);
-      color: var(--abyss);
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 500;
-      font-size: 17px;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: var(--teal);
-      text-decoration: underline;
-      text-decoration-color: var(--gold);
-      text-underline-offset: 3px;
-    }
-    a:hover { color: var(--forest); }
-
-    .tbc {
-      color: var(--gold);
-    }
-
-    /* ---------- Wrap ---------- */
-    .wrap {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-    .wrap--narrow { max-width: 760px; }
-
-    /* ---------- Preview banner ---------- */
-      background: var(--abyss);
-      color: var(--linen);
-      padding: 0.5rem 2rem;
-      text-align: center;
-      font-family: 'Cormorant SC', serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    /* ---------- Nav ---------- */
-    .site-nav {
-      background: var(--linen);
-      border-bottom: 1px solid rgba(12, 52, 61, 0.12);
-      padding: 1.25rem 0;
-    }
-    .site-nav__inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .site-nav__brand {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 500;
-      color: var(--teal);
-      text-decoration: none;
-      font-size: 1rem;
-      letter-spacing: 0.15em;
-    }
-
-    /* ---------- Page head ---------- */
-    .page-head {
-      padding: 4rem 0 1rem;
-      text-align: center;
-    }
-    .page-head__title {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 400;
-      color: var(--teal);
-      font-size: 4.5rem;
-      line-height: 1.1;
-      margin: 0 0 0.5rem;
-      letter-spacing: 0.02em;
-    }
-    .page-head__subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 500;
-      color: var(--gold);
-      font-size: 1.15rem;
-      margin: 0;
-    }
-
-    .intro {
-      color: var(--abyss);
-      text-align: center;
-      margin: 1.5rem auto 3rem;
-      max-width: 600px;
-      font-size: 1.05rem;
-      font-style: italic;
-    }
-
-    /* ================================================== */
-    /* VERTICAL LINE ANCHORED SECTIONS                     */
-    /* ================================================== */
-    .thread {
-      position: relative;
-      padding-left: 3rem;
-      padding-top: 1rem;
-      padding-bottom: 3rem;
-    }
-    .thread::before {
-      content: "";
-      position: absolute;
-      left: 7px;
-      top: 0;
-      bottom: 0;
-      width: 1.5px;
-      background: var(--gold);
-    }
-
-    .thread__section {
-      position: relative;
-      margin-bottom: 3.5rem;
-      padding-top: 0.5rem;
-    }
-    .thread__section:last-child { margin-bottom: 0; }
-
-    .thread__section::before {
-      content: "";
-      position: absolute;
-      left: -3rem;
-      top: 1rem;
-      margin-left: 1px;
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 0 4px var(--linen), 0 0 0 5px var(--gold);
-    }
-
-    .thread__title {
-      font-family: 'Cormorant SC', serif;
-      color: var(--gold);
-      font-weight: 500;
-      font-size: 1.5rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      margin: 0 0 0.6rem;
-      line-height: 1.2;
-    }
-
-    .thread__significance {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      color: var(--abyss);
-      margin: 0 0 1.25rem;
-      font-size: 1.05rem;
-    }
-
-    /* ---------- Sub-section ---------- */
-    .thread__sub {
-      margin: 1.75rem 0;
-    }
-    .thread__sub-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 500;
-      color: var(--forest);
-      font-size: 1.2rem;
-      margin: 0 0 0.5rem;
-    }
-
-    /* ---------- Anchored bullet list ---------- */
-    .thread__list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .thread__list li {
-      position: relative;
-      padding-left: 1.5rem;
-      margin-bottom: 0.55rem;
-      line-height: 1.5;
-    }
-    .thread__list li::before {
-      content: "";
-      position: absolute;
-      left: 0.25rem;
-      top: 0.75rem;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-    }
-    .thread__list strong {
-      color: var(--forest);
-      font-weight: 500;
-    }
-
-    /* ---------- Footer ---------- */
-    .site-foot {
-      margin-top: 5rem;
-      padding: 2rem 0;
-      text-align: center;
-      font-family: 'Cormorant SC', serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      border-top: 1px solid rgba(12, 52, 61, 0.12);
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 680px) {
-      .page-head__title { font-size: 3rem; }
-      .wrap { padding: 0 1.25rem; }
-      .thread { padding-left: 2.25rem; }
-      .thread__section::before { left: -2.25rem; }
-      .thread__title { font-size: 1.2rem; letter-spacing: 0.13em; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
 </head>
 <body>
 
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
 
-  <header class="site-nav">
-    <div class="wrap site-nav__inner">
-      <a class="site-nav__brand" href="#">7 · 7 · 27</a>
-    </div>
-  </header>
+    <main class="content">
 
-  <main>
-    <section class="wrap page-head">
-      <h1 class="page-head__title">The Attire</h1>
-      <p class="page-head__subtitle">Every detail is deliberate. Down to the hem.</p>
-    </section>
+      <header class="content__head">
+        <span class="eyebrow content__eyebrow">The Brief</span>
+        <h1 class="content__title">The Attire</h1>
+        <p class="subtitle content__subtitle">Every detail is deliberate. Down to the hem.</p>
+      </header>
 
-    <section class="wrap wrap--narrow">
+      <div class="wrap--narrow">
+        <div class="thread">
 
-      <div class="thread">
+          <!-- THE GUESTS -->
+          <section class="thread__section">
+            <h2 class="thread__title">The Guests</h2>
+            <p class="thread__significance">One palette. Guests wear the landscape.</p>
 
-        <!-- ============================================================ -->
-        <!-- THE GUESTS                                                   -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">The Guests</h2>
-          <p class="thread__significance">One palette. Guests wear the landscape.</p>
-
-          <ul class="thread__list">
-            <li><strong>Palette</strong> · teal, forest green, deep navy</li>
-            <li><strong>Inspiration</strong> · <a href="https://www.pinterest.com/djweddingset/dressed-for-the-occasion/" target="_blank" rel="noopener">Pinterest board · Dressed for the Occasion</a></li>
-            <li><strong>Ceremony</strong> · lace chapel veils provided for women attending Iglesia San Rafael</li>
-          </ul>
-        </section>
-
-        <!-- ============================================================ -->
-        <!-- THE WEDDING PARTY                                            -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">The Wedding Party</h2>
-          <p class="thread__significance">One palette, many silhouettes. Each person dressed as themselves.</p>
-
-          <ul class="thread__list">
-            <li><strong>Colors</strong> · mix within the palette, different shades across the party</li>
-            <li><strong>Silhouette</strong> · each person chooses their own</li>
-            <li><strong>Yellow accent</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Jewelry</strong> · gold only. Fine, warm, organic</li>
-          </ul>
-
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Madrina · Sileni</h3>
-            <ul class="thread__list">
-              <li><strong>Dress</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Shoes</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Earrings</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Necklace</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Bracelet</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Hair</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Hair accessories</strong> · <span class="tbc">To be confirmed</span></li>
+            <ul class="bullets">
+              <li><strong>Palette</strong> · teal, forest green, deep navy</li>
+              <li><strong>Inspiration</strong> · <a href="https://www.pinterest.com/djweddingset/dressed-for-the-occasion/" target="_blank" rel="noopener">Pinterest board · Dressed for the Occasion</a></li>
+              <li><strong>Ceremony</strong> · lace chapel veils provided for women attending Iglesia San Rafael</li>
             </ul>
-          </div>
+          </section>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Padrino · Mane</h3>
-            <ul class="thread__list">
-              <li><strong>Tuxedo</strong> · <span class="tbc">To be confirmed</span></li>
+          <!-- THE WEDDING PARTY -->
+          <section class="thread__section">
+            <h2 class="thread__title">The Wedding Party</h2>
+            <p class="thread__significance">One palette, many silhouettes. Each person dressed as themselves.</p>
+
+            <ul class="bullets">
+              <li><strong>Colors</strong> · mix within the palette, different shades across the party</li>
+              <li><strong>Silhouette</strong> · each person chooses their own</li>
+              <li><strong>Yellow accent</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Jewelry</strong> · gold only. Fine, warm, organic</li>
+            </ul>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Madrina · Sileni</h3>
+              <ul class="bullets">
+                <li><strong>Dress</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Shoes</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Earrings</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Necklace</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Bracelet</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Hair</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Hair accessories</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Padrino · Mane</h3>
+              <ul class="bullets">
+                <li><strong>Tuxedo</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Footwear</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Boutonniere</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Cufflinks</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Tie/Bowtie</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Pocket square</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Watch</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Belt</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Suspenders</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Miss of Honor · Kailey</h3>
+              <ul class="bullets">
+                <li><strong>Dress</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Shoes</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Earrings</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Necklace</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Bracelet</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Hair</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Hair accessories</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Maid of Honor · Melonie</h3>
+              <ul class="bullets">
+                <li><strong>Dress</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Shoes</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Earrings</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Necklace</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Bracelet</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Hair</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Hair accessories</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- THE PARENTS -->
+          <section class="thread__section">
+            <h2 class="thread__title">The Parents</h2>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Mother of the Bride · Carmen</h3>
+              <ul class="bullets">
+                <li><strong>Dress</strong> · teal sequin mermaid gown</li>
+                <li><strong>Shoes</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Earrings</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Necklace</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Bracelet</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Hair</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Hair accessories</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Father of the Bride · José Miguel</h3>
+              <ul class="bullets">
+                <li><strong>Tuxedo</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Footwear</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Boutonniere</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Cufflinks</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Tie/Bowtie</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Pocket square</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Watch</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Belt</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Suspenders</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Father of the Groom · Richard</h3>
+              <ul class="bullets">
+                <li><strong>Tuxedo</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Footwear</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Boutonniere</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Cufflinks</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Tie/Bowtie</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Pocket square</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Watch</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Belt</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Suspenders</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- THE GROOM -->
+          <section class="thread__section">
+            <h2 class="thread__title">The Groom · Julian</h2>
+            <p class="thread__significance">Linen for the heat, the land, and the ease of the day.</p>
+
+            <ul class="bullets">
+              <li><strong>Tuxedo</strong> · linen, cream</li>
               <li><strong>Footwear</strong> · <span class="tbc">To be confirmed</span></li>
               <li><strong>Boutonniere</strong> · <span class="tbc">To be confirmed</span></li>
               <li><strong>Cufflinks</strong> · <span class="tbc">To be confirmed</span></li>
@@ -307,134 +169,35 @@
               <li><strong>Belt</strong> · <span class="tbc">To be confirmed</span></li>
               <li><strong>Suspenders</strong> · <span class="tbc">To be confirmed</span></li>
             </ul>
-          </div>
+          </section>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Miss of Honor · Kailey</h3>
-            <ul class="thread__list">
-              <li><strong>Dress</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Shoes</strong> · <span class="tbc">To be confirmed</span></li>
+          <!-- THE BRIDE -->
+          <section class="thread__section">
+            <h2 class="thread__title">The Bride · Danisa</h2>
+            <p class="thread__significance">Each thing was chosen. Each thing means something.</p>
+
+            <ul class="bullets">
+              <li><strong>Dress</strong> · rental</li>
+              <li><strong>Veil</strong> · on hand, <span class="tbc">To be confirmed</span></li>
+              <li><strong>Bouquet</strong> · <span class="tbc">To be confirmed</span></li>
               <li><strong>Earrings</strong> · <span class="tbc">To be confirmed</span></li>
               <li><strong>Necklace</strong> · <span class="tbc">To be confirmed</span></li>
               <li><strong>Bracelet</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Hair</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Hair accessories</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Ring</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Something old</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Something new</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Something borrowed</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Something blue</strong> · <span class="tbc">To be confirmed</span></li>
             </ul>
-          </div>
+          </section>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Maid of Honor · Melonie</h3>
-            <ul class="thread__list">
-              <li><strong>Dress</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Shoes</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Earrings</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Necklace</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Bracelet</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Hair</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Hair accessories</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
-        </section>
-
-        <!-- ============================================================ -->
-        <!-- THE PARENTS                                                  -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">The Parents</h2>
-
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Mother of the Bride · Carmen</h3>
-            <ul class="thread__list">
-              <li><strong>Dress</strong> · teal sequin mermaid gown</li>
-              <li><strong>Shoes</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Earrings</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Necklace</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Bracelet</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Hair</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Hair accessories</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
-
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Father of the Bride · José Miguel</h3>
-            <ul class="thread__list">
-              <li><strong>Tuxedo</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Footwear</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Boutonniere</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Cufflinks</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Tie/Bowtie</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Pocket square</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Watch</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Belt</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Suspenders</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
-
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Father of the Groom · Richard</h3>
-            <ul class="thread__list">
-              <li><strong>Tuxedo</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Footwear</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Boutonniere</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Cufflinks</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Tie/Bowtie</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Pocket square</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Watch</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Belt</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Suspenders</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
-        </section>
-
-        <!-- ============================================================ -->
-        <!-- THE GROOM                                                    -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">The Groom · Julian</h2>
-          <p class="thread__significance">Linen for the heat, the land, and the ease of the day.</p>
-
-          <ul class="thread__list">
-            <li><strong>Tuxedo</strong> · linen, cream</li>
-            <li><strong>Footwear</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Boutonniere</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Cufflinks</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Tie/Bowtie</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Pocket square</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Watch</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Belt</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Suspenders</strong> · <span class="tbc">To be confirmed</span></li>
-          </ul>
-        </section>
-
-        <!-- ============================================================ -->
-        <!-- THE BRIDE                                                    -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">The Bride · Danisa</h2>
-          <p class="thread__significance">Each thing was chosen. Each thing means something.</p>
-
-          <ul class="thread__list">
-            <li><strong>Dress</strong> · rental</li>
-            <li><strong>Veil</strong> · on hand, <span class="tbc">To be confirmed</span></li>
-            <li><strong>Bouquet</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Earrings</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Necklace</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Bracelet</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Ring</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Something old</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Something new</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Something borrowed</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Something blue</strong> · <span class="tbc">To be confirmed</span></li>
-          </ul>
-        </section>
-
+        </div>
       </div>
-    </section>
-  </main>
+    </main>
+  </div>
 
-  <footer class="site-foot">
-    <div class="wrap">Built for two</div>
-  </footer>
-
+  <script src="../assets/js/sidebar.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/main.js"></script>
 </body>
 </html>

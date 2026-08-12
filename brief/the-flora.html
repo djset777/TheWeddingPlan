@@ -3,271 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Flora — The Brief</title>
+  <title>The Flora — The Wedding Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --teal:   #01605F;
-      --forest: #014421;
-      --navy:   #003153;
-      --gold:   #D4AF37;
-      --abyss:  #0C343D;
-      --linen:  #F2EDE6;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--linen);
-      color: var(--abyss);
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 500;
-      font-size: 17px;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a { color: var(--teal); }
-
-    /* ---------- Wrap ---------- */
-    .wrap {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-
-    /* ---------- Preview banner ---------- */
-      background: var(--abyss);
-      color: var(--linen);
-      padding: 0.5rem 2rem;
-      text-align: center;
-      font-family: 'Cormorant SC', serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    /* ---------- Nav ---------- */
-    .site-nav {
-      background: var(--linen);
-      border-bottom: 1px solid rgba(12, 52, 61, 0.12);
-      padding: 1.25rem 0;
-    }
-    .site-nav__inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .site-nav__brand {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 500;
-      color: var(--teal);
-      text-decoration: none;
-      font-size: 1rem;
-      letter-spacing: 0.15em;
-    }
-
-    /* ---------- Page head ---------- */
-    .page-head {
-      padding: 4rem 0 1.5rem;
-      text-align: center;
-    }
-    .page-head__title {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 400;
-      color: var(--teal);
-      font-size: 4.5rem;
-      line-height: 1.1;
-      margin: 0 0 0.5rem;
-      letter-spacing: 0.02em;
-    }
-    .page-head__subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 500;
-      color: var(--gold);
-      font-size: 1.15rem;
-      margin: 0;
-    }
-
-    /* ---------- Intro ---------- */
-    .intro {
-      color: var(--abyss);
-      text-align: center;
-      margin: 1.5rem auto 3rem;
-      max-width: 600px;
-      font-size: 1.05rem;
-      font-style: italic;
-    }
-    .intro__note {
-      font-style: normal;
-      display: block;
-      margin-top: 0.5rem;
-      font-size: 0.95rem;
-      color: rgba(12, 52, 61, 0.7);
-    }
-
-    /* ---------- Tier bar (progressive color) ---------- */
-    .tier-bar {
-      padding: 1rem 2rem;
-      font-family: 'Cormorant SC', serif;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      font-size: 1.15rem;
-      text-transform: uppercase;
-      margin: 3.5rem 0 0;
-    }
-    .tier-bar--gold {
-      background: var(--gold);
-      color: var(--abyss);
-    }
-    .tier-bar--teal {
-      background: var(--teal);
-      color: var(--linen);
-    }
-    .tier-bar--forest {
-      background: var(--forest);
-      color: var(--linen);
-    }
-    .tier-bar__sep {
-      opacity: 0.5;
-      margin: 0 0.75rem;
-    }
-
-    /* ---------- Flora card ---------- */
-    .flora-card {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      gap: 1.75rem;
-      padding: 1.75rem 0;
-      border-bottom: 1px solid rgba(12, 52, 61, 0.08);
-      align-items: center;
-    }
-    .flora-card__photo {
-      aspect-ratio: 1;
-      background: rgba(1, 96, 95, 0.06);
-      border: 1px dashed rgba(212, 175, 55, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Cormorant SC', serif;
-      color: rgba(12, 52, 61, 0.35);
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      text-align: center;
-      padding: 0.5rem;
-    }
-    .flora-card__body {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-    .flora-card__name {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 500;
-      color: var(--forest);
-      font-size: 1.5rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin: 0;
-      line-height: 1.2;
-    }
-    .flora-card__latin {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 500;
-      color: var(--forest);
-      font-size: 1.15rem;
-      margin-left: 0.5rem;
-      text-transform: none;
-      letter-spacing: 0;
-    }
-    .flora-card__ref {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 500;
-      color: var(--gold);
-      font-size: 0.8rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      text-decoration: underline;
-      text-decoration-color: var(--gold);
-      text-underline-offset: 4px;
-      align-self: flex-start;
-      margin-top: 0.2rem;
-    }
-    .flora-card__ref:hover { color: var(--forest); }
-    .flora-card__desc {
-      font-family: 'Cormorant Garamond', serif;
-      color: var(--abyss);
-      margin: 0.4rem 0 0;
-      line-height: 1.55;
-      font-size: 1.05rem;
-    }
-
-    /* ---------- Footer ---------- */
-    .site-foot {
-      margin-top: 5rem;
-      padding: 2rem 0;
-      text-align: center;
-      font-family: 'Cormorant SC', serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      border-top: 1px solid rgba(12, 52, 61, 0.12);
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 680px) {
-      .page-head__title { font-size: 3rem; }
-      .wrap { padding: 0 1.25rem; }
-      .flora-card {
-        grid-template-columns: 110px 1fr;
-        gap: 1.15rem;
-        padding: 1.5rem 0;
-      }
-      .flora-card__name { font-size: 1.15rem; }
-      .flora-card__latin {
-        display: block;
-        margin-left: 0;
-        font-size: 0.95rem;
-      }
-      .tier-bar {
-        padding: 0.85rem 1.25rem;
-        font-size: 0.9rem;
-        letter-spacing: 0.14em;
-      }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
 </head>
 <body>
 
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
 
-  <header class="site-nav">
-    <div class="wrap site-nav__inner">
-      <a class="site-nav__brand" href="#">7 · 7 · 27</a>
-    </div>
-  </header>
+    <main class="content">
 
-  <main>
-    <section class="wrap page-head">
-      <h1 class="page-head__title">The Flora</h1>
-      <p class="page-head__subtitle">Outdoor jungle garden party.</p>
-    </section>
+      <header class="content__head">
+        <span class="eyebrow content__eyebrow">The Brief</span>
+        <h1 class="content__title">The Flora</h1>
+        <p class="subtitle content__subtitle">Outdoor jungle garden party.</p>
+      </header>
 
-    <section class="wrap">
-      <p class="intro">
-        Organized by priority. Final selections confirmed with the florist.
-        <span class="intro__note">Each photo shows the plant. Each reference shows it styled in an approved arrangement.</span>
-      </p>
+      <p style="font-style: italic; color: var(--ink); margin-bottom: var(--space-3);">Organized by priority. Final selections confirmed with the florist.<br><span style="font-size: var(--step--1); color: rgba(12, 52, 61, 0.7); font-style: normal;">Each photo shows the plant. Each reference shows it styled in an approved arrangement.</span></p>
 
-      <!-- ================================================== -->
-      <!-- TIER 1 · NON-NEGOTIABLES                            -->
-      <!-- ================================================== -->
+      <!-- ============================================================ -->
+      <!-- TIER 1 · NON-NEGOTIABLES                                     -->
+      <!-- ============================================================ -->
       <div class="tier-bar tier-bar--gold">Tier 1 <span class="tier-bar__sep">·</span> Non-Negotiables</div>
 
       <div class="flora-card">
@@ -351,9 +111,9 @@
         </div>
       </div>
 
-      <!-- ================================================== -->
-      <!-- TIER 2 · STRONG YES                                 -->
-      <!-- ================================================== -->
+      <!-- ============================================================ -->
+      <!-- TIER 2 · STRONG YES                                          -->
+      <!-- ============================================================ -->
       <div class="tier-bar tier-bar--teal">Tier 2 <span class="tier-bar__sep">·</span> Strong Yes</div>
 
       <div class="flora-card">
@@ -410,9 +170,9 @@
         </div>
       </div>
 
-      <!-- ================================================== -->
-      <!-- TIER 3 · FLORIST'S DISCRETION                       -->
-      <!-- ================================================== -->
+      <!-- ============================================================ -->
+      <!-- TIER 3 · FLORIST'S DISCRETION                                -->
+      <!-- ============================================================ -->
       <div class="tier-bar tier-bar--forest">Tier 3 <span class="tier-bar__sep">·</span> Florist's Discretion</div>
 
       <div class="flora-card">
@@ -451,12 +211,11 @@
         </div>
       </div>
 
-    </section>
-  </main>
+    </main>
+  </div>
 
-  <footer class="site-foot">
-    <div class="wrap">Built for two</div>
-  </footer>
-
+  <script src="../assets/js/sidebar.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/main.js"></script>
 </body>
 </html>
