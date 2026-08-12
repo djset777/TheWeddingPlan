@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Plans — The Wedding Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
+
+    <main class="content">
+
+      <header class="content__head">
+        <span class="eyebrow content__eyebrow">The Plans</span>
+        <h1 class="content__title">Overview</h1>
+        <p class="subtitle content__subtitle">Every parent deliverable, every subtask — the state of the plan.</p>
+      </header>
+
+      <div class="card-grid">
+
+        <div class="card">
+          <span class="card__label">Discover</span>
+          <div class="card__number" data-phase="discover">—</div>
+          <p class="card__caption">Being researched or shaped.</p>
+        </div>
+
+        <div class="card">
+          <span class="card__label">Decide</span>
+          <div class="card__number" data-phase="decide">—</div>
+          <p class="card__caption">Options are on the table.</p>
+        </div>
+
+        <div class="card">
+          <span class="card__label">Execute</span>
+          <div class="card__number" data-phase="execute">—</div>
+          <p class="card__caption">In motion right now.</p>
+        </div>
+
+        <div class="card">
+          <span class="card__label">Done</span>
+          <div class="card__number" data-phase="done">—</div>
+          <p class="card__caption">Behind us.</p>
+        </div>
+
+      </div>
+
+      <div class="wrap--narrow" style="margin-top: var(--space-4);">
+        <div class="state">The full task list view will render here once the API is connected. For now, this page shows the shape.</div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/sidebar.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

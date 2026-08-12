@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Node (in case anything is added later)
+node_modules/
+npm-debug.log*
+
+# Editors
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local

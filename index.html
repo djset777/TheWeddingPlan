@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Wedding Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+
+  <div class="layout">
+
+    <aside class="sidebar" id="sidebar" aria-label="Site navigation"><!-- filled by sidebar.js --></aside>
+
+    <main class="content">
+
+      <header class="content__head">
+        <span class="eyebrow content__eyebrow">Danisa &amp; Julian</span>
+        <h1 class="content__title">The Wedding Plan</h1>
+        <p class="subtitle content__subtitle">El Aguacate · La Vega · Dominican Republic</p>
+      </header>
+
+      <div class="card-grid">
+
+        <!-- RSVP card (donut) -->
+        <div class="card card--chart" data-chart="rsvp">
+          <span class="card__label">RSVP</span>
+          <svg class="donut" viewBox="0 0 42 42" role="img" aria-label="RSVP status donut chart">
+            <circle class="donut__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
+            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                    stroke="#01605F" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="confirmed"></circle>
+            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                    stroke="#0C343D" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="declined"></circle>
+            <text class="donut__center" x="21" y="20">TOTAL</text>
+            <text class="donut__center-num" x="21" y="26" data-total>154</text>
+          </svg>
+          <div class="legend">
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #01605F;"></span>
+              <span class="legend__label">Confirmed</span>
+              <span class="legend__value" data-legend="confirmed">—</span>
+            </div>
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #0C343D;"></span>
+              <span class="legend__label">Declined</span>
+              <span class="legend__value" data-legend="declined">—</span>
+            </div>
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #EAE3D7;"></span>
+              <span class="legend__label">Awaiting</span>
+              <span class="legend__value" data-legend="awaiting">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Progress card (donut) -->
+        <div class="card card--chart" data-chart="tasks">
+          <span class="card__label">Task Progress</span>
+          <svg class="donut" viewBox="0 0 42 42" role="img" aria-label="Task progress donut chart">
+            <circle class="donut__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
+            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                    stroke="#D4AF37" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="discover"></circle>
+            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                    stroke="#01605F" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="decide"></circle>
+            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                    stroke="#014421" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="execute"></circle>
+            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                    stroke="#003153" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="done"></circle>
+            <text class="donut__center" x="21" y="20">TOTAL</text>
+            <text class="donut__center-num" x="21" y="26" data-total>89</text>
+          </svg>
+          <div class="legend">
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #D4AF37;"></span>
+              <span class="legend__label">Discover</span>
+              <span class="legend__value" data-legend="discover">—</span>
+            </div>
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #01605F;"></span>
+              <span class="legend__label">Decide</span>
+              <span class="legend__value" data-legend="decide">—</span>
+            </div>
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #014421;"></span>
+              <span class="legend__label">Execute</span>
+              <span class="legend__value" data-legend="execute">—</span>
+            </div>
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #003153;"></span>
+              <span class="legend__label">Done</span>
+              <span class="legend__value" data-legend="done">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vendor Status card (donut) -->
+        <div class="card card--chart" data-chart="vendors">
+          <span class="card__label">Vendors</span>
+          <svg class="donut" viewBox="0 0 42 42" role="img" aria-label="Vendor status donut chart">
+            <circle class="donut__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
+            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                    stroke="#014421" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="booked"></circle>
+            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                    stroke="#D4AF37" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="pending"></circle>
+            <text class="donut__center" x="21" y="20">TOTAL</text>
+            <text class="donut__center-num" x="21" y="26" data-total>—</text>
+          </svg>
+          <div class="legend">
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #014421;"></span>
+              <span class="legend__label">Booked</span>
+              <span class="legend__value" data-legend="booked">—</span>
+            </div>
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #D4AF37;"></span>
+              <span class="legend__label">Pending</span>
+              <span class="legend__value" data-legend="pending">—</span>
+            </div>
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #EAE3D7;"></span>
+              <span class="legend__label">Needed</span>
+              <span class="legend__value" data-legend="needed">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upcoming card (list) -->
+        <div class="card">
+          <span class="card__label">Upcoming</span>
+          <div class="upcoming" data-upcoming>
+            <div class="state">Loading upcoming tasks…</div>
+          </div>
+        </div>
+
+        <!-- Recent activity card (list) -->
+        <div class="card">
+          <span class="card__label">Recently</span>
+          <div class="feed" data-feed>
+            <div class="state">Loading recent changes…</div>
+          </div>
+        </div>
+
+        <!-- Palette card (visual reference) -->
+        <div class="card">
+          <span class="card__label">The Palette</span>
+          <div class="palette-circles">
+            <div class="palette-circle">
+              <div class="palette-circle__dot" style="background: #01605F;"></div>
+              <div class="palette-circle__name">Teal</div>
+            </div>
+            <div class="palette-circle">
+              <div class="palette-circle__dot" style="background: #D4AF37;"></div>
+              <div class="palette-circle__name">Gold</div>
+            </div>
+            <div class="palette-circle">
+              <div class="palette-circle__dot" style="background: #014421;"></div>
+              <div class="palette-circle__name">Forest</div>
+            </div>
+            <div class="palette-circle">
+              <div class="palette-circle__dot" style="background: #003153;"></div>
+              <div class="palette-circle__name">Navy</div>
+            </div>
+            <div class="palette-circle">
+              <div class="palette-circle__dot" style="background: #0C343D;"></div>
+              <div class="palette-circle__name">Abyss</div>
+            </div>
+            <div class="palette-circle">
+              <div class="palette-circle__dot" style="background: #F2EDE6;"></div>
+              <div class="palette-circle__name">Linen</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="assets/js/sidebar.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
