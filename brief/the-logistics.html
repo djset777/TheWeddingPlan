@@ -3,458 +3,229 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Logistics — The Brief</title>
+  <title>The Logistics — The Wedding Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --teal:   #01605F;
-      --forest: #014421;
-      --navy:   #003153;
-      --gold:   #D4AF37;
-      --abyss:  #0C343D;
-      --linen:  #F2EDE6;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--linen);
-      color: var(--abyss);
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 500;
-      font-size: 17px;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: var(--teal);
-      text-decoration: underline;
-      text-decoration-color: var(--gold);
-      text-underline-offset: 3px;
-    }
-    a:hover { color: var(--forest); }
-
-    .tbc { color: var(--gold); }
-    .confirmed { color: var(--forest); font-weight: 500; }
-
-    /* ---------- Wrap ---------- */
-    .wrap {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-    .wrap--narrow { max-width: 760px; }
-
-    /* ---------- Preview banner ---------- */
-      background: var(--abyss);
-      color: var(--linen);
-      padding: 0.5rem 2rem;
-      text-align: center;
-      font-family: 'Cormorant SC', serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    /* ---------- Nav ---------- */
-    .site-nav {
-      background: var(--linen);
-      border-bottom: 1px solid rgba(12, 52, 61, 0.12);
-      padding: 1.25rem 0;
-    }
-    .site-nav__inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .site-nav__brand {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 500;
-      color: var(--teal);
-      text-decoration: none;
-      font-size: 1rem;
-      letter-spacing: 0.15em;
-    }
-
-    /* ---------- Page head ---------- */
-    .page-head {
-      padding: 4rem 0 2rem;
-      text-align: center;
-    }
-    .page-head__title {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 400;
-      color: var(--teal);
-      font-size: 4.5rem;
-      line-height: 1.1;
-      margin: 0 0 0.5rem;
-      letter-spacing: 0.02em;
-    }
-    .page-head__subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 500;
-      color: var(--gold);
-      font-size: 1.15rem;
-      margin: 0;
-    }
-
-    /* ================================================== */
-    /* VERTICAL LINE ANCHORED SECTIONS                     */
-    /* ================================================== */
-    .thread {
-      position: relative;
-      padding-left: 3rem;
-      padding-top: 1rem;
-      padding-bottom: 3rem;
-    }
-    .thread::before {
-      content: "";
-      position: absolute;
-      left: 7px;
-      top: 0;
-      bottom: 0;
-      width: 1.5px;
-      background: var(--gold);
-    }
-
-    .thread__section {
-      position: relative;
-      margin-bottom: 3.5rem;
-      padding-top: 0.5rem;
-    }
-    .thread__section:last-child { margin-bottom: 0; }
-
-    .thread__section::before {
-      content: "";
-      position: absolute;
-      left: -3rem;
-      top: 1rem;
-      margin-left: 1px;
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 0 4px var(--linen), 0 0 0 5px var(--gold);
-    }
-
-    .thread__title {
-      font-family: 'Cormorant SC', serif;
-      color: var(--gold);
-      font-weight: 500;
-      font-size: 1.5rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      margin: 0 0 0.6rem;
-      line-height: 1.2;
-    }
-
-    .thread__significance {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      color: var(--abyss);
-      margin: 0 0 1.25rem;
-      font-size: 1.05rem;
-    }
-
-    /* ---------- Sub-section ---------- */
-    .thread__sub {
-      margin: 1.75rem 0;
-    }
-    .thread__sub-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 500;
-      color: var(--forest);
-      font-size: 1.2rem;
-      margin: 0 0 0.5rem;
-    }
-
-    /* ---------- Anchored bullet list ---------- */
-    .thread__list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .thread__list li {
-      position: relative;
-      padding-left: 1.5rem;
-      margin-bottom: 0.55rem;
-      line-height: 1.5;
-    }
-    .thread__list li::before {
-      content: "";
-      position: absolute;
-      left: 0.25rem;
-      top: 0.75rem;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-    }
-    .thread__list strong {
-      color: var(--forest);
-      font-weight: 500;
-    }
-
-    /* ---------- Footer ---------- */
-    .site-foot {
-      margin-top: 5rem;
-      padding: 2rem 0;
-      text-align: center;
-      font-family: 'Cormorant SC', serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      border-top: 1px solid rgba(12, 52, 61, 0.12);
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 680px) {
-      .page-head__title { font-size: 3rem; }
-      .wrap { padding: 0 1.25rem; }
-      .thread { padding-left: 2.25rem; }
-      .thread__section::before { left: -2.25rem; }
-      .thread__title { font-size: 1.2rem; letter-spacing: 0.13em; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
 </head>
 <body>
 
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
 
-  <header class="site-nav">
-    <div class="wrap site-nav__inner">
-      <a class="site-nav__brand" href="#">7 · 7 · 27</a>
-    </div>
-  </header>
+    <main class="content">
 
-  <main>
-    <section class="wrap page-head">
-      <h1 class="page-head__title">The Logistics</h1>
-      <p class="page-head__subtitle">The moving parts, from first vendor to last shuttle.</p>
-    </section>
+      <header class="content__head">
+        <span class="eyebrow content__eyebrow">The Brief</span>
+        <h1 class="content__title">The Logistics</h1>
+        <p class="subtitle content__subtitle">The moving parts, from first vendor to last shuttle.</p>
+      </header>
 
-    <section class="wrap wrap--narrow">
+      <div class="wrap--narrow">
+        <div class="thread">
 
-      <div class="thread">
+          <!-- SETUP -->
+          <section class="thread__section">
+            <h2 class="thread__title">Setup</h2>
+            <p class="thread__significance">Before the first guest arrives.</p>
 
-        <!-- ============================================================ -->
-        <!-- SETUP                                                        -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">Setup</h2>
-          <p class="thread__significance">Before the first guest arrives.</p>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Vendor Arrivals</h3>
+              <ul class="bullets">
+                <li><strong>Arrival windows</strong> · <span class="tbc">To be confirmed</span> with each vendor</li>
+                <li><strong>Setup order</strong> · coordinated by Dioris</li>
+                <li><strong>Vendor meals</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Vendor Arrivals</h3>
-            <ul class="thread__list">
-              <li><strong>Arrival windows</strong> · <span class="tbc">To be confirmed</span> with each vendor</li>
-              <li><strong>Setup order</strong> · coordinated by Dioris</li>
-              <li><strong>Vendor meals</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Coordination</h3>
+              <ul class="bullets">
+                <li><strong>Day-of point person</strong> · Dioris</li>
+                <li><strong>Backup coordinator</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Vendor arrival check-in</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+          </section>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Coordination</h3>
-            <ul class="thread__list">
-              <li><strong>Day-of point person</strong> · Dioris</li>
-              <li><strong>Backup coordinator</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Vendor arrival check-in</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
-        </section>
+          <!-- FACILITIES -->
+          <section class="thread__section">
+            <h2 class="thread__title">Facilities</h2>
+            <p class="thread__significance">Physical infrastructure throughout the event.</p>
 
-        <!-- ============================================================ -->
-        <!-- FACILITIES                                                   -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">Facilities</h2>
-          <p class="thread__significance">Physical infrastructure throughout the event.</p>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Power</h3>
+              <ul class="bullets">
+                <li><strong>Power access points</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>DJ and AV equipment</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Food stations</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Backup generator</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Power</h3>
-            <ul class="thread__list">
-              <li><strong>Power access points</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>DJ and AV equipment</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Food stations</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Backup generator</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Lighting</h3>
+              <ul class="bullets">
+                <li>String lights through the trees</li>
+                <li>Bamboo lighting structures</li>
+                <li>Gold candles</li>
+                <li>No cool-tone bulbs, no overhead fluorescents</li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Lighting</h3>
-            <ul class="thread__list">
-              <li>String lights through the trees</li>
-              <li>Bamboo lighting structures</li>
-              <li>Gold candles</li>
-              <li>No cool-tone bulbs, no overhead fluorescents</li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Bathrooms</h3>
+              <ul class="bullets">
+                <li><strong>Existing bathrooms</strong> · capacity <span class="tbc">To be confirmed</span> with Dioris</li>
+                <li><strong>Portable bathrooms</strong> · <span class="tbc">To be confirmed</span> based on guest count</li>
+                <li><strong>Location and signage</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+          </section>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Bathrooms</h3>
-            <ul class="thread__list">
-              <li><strong>Existing bathrooms</strong> · capacity <span class="tbc">To be confirmed</span> with Dioris</li>
-              <li><strong>Portable bathrooms</strong> · <span class="tbc">To be confirmed</span> based on guest count</li>
-              <li><strong>Location and signage</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
-        </section>
+          <!-- GUEST SUPPORT -->
+          <section class="thread__section">
+            <h2 class="thread__title">Guest Support</h2>
+            <p class="thread__significance">On-site services during the event.</p>
 
-        <!-- ============================================================ -->
-        <!-- GUEST SUPPORT                                                -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">Guest Support</h2>
-          <p class="thread__significance">On-site services during the event.</p>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Parking</h3>
+              <ul class="bullets">
+                <li>Limited parking near Casa Valdez</li>
+                <li><strong>Valet service</strong> · <span class="confirmed">Confirmed</span></li>
+                <li><strong>Overflow location</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Signage</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Parking</h3>
-            <ul class="thread__list">
-              <li>Limited parking near Casa Valdez</li>
-              <li><strong>Valet service</strong> · <span class="confirmed">Confirmed</span></li>
-              <li><strong>Overflow location</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Signage</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Golf Carts</h3>
+              <ul class="bullets">
+                <li>Coordinated by Dioris following the ceremony</li>
+                <li><strong>Route</strong> · top of the hill to the bottom</li>
+                <li><strong>Number of carts</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Driver coordination</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Golf Carts</h3>
-            <ul class="thread__list">
-              <li>Coordinated by Dioris following the ceremony</li>
-              <li><strong>Route</strong> · top of the hill to the bottom</li>
-              <li><strong>Number of carts</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Driver coordination</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
+            <p style="margin-top: var(--space-3); font-style: italic; color: var(--ink);">Shuttle logistics live in <em>Accommodations → Out-of-Town Guests → Shuttle</em>.</p>
+          </section>
 
-          <p style="margin-top: 1.5rem; font-style: italic; color: var(--abyss);">Shuttle logistics live in <em>Accommodations → Out-of-Town Guests → Shuttle</em>.</p>
-        </section>
+          <!-- SAFETY -->
+          <section class="thread__section">
+            <h2 class="thread__title">Safety</h2>
+            <p class="thread__significance">Protection and response.</p>
 
-        <!-- ============================================================ -->
-        <!-- SAFETY                                                       -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">Safety</h2>
-          <p class="thread__significance">Protection and response.</p>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Gate &amp; Perimeter</h3>
+              <ul class="bullets">
+                <li><strong>Gate security details and duration</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Entrances and exits</strong> · <span class="tbc">To be confirmed</span> with Dioris ahead of the day</li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Gate &amp; Perimeter</h3>
-            <ul class="thread__list">
-              <li><strong>Gate security details and duration</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Entrances and exits</strong> · <span class="tbc">To be confirmed</span> with Dioris ahead of the day</li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Local Authorities</h3>
+              <ul class="bullets">
+                <li><strong>Notify local police of the event</strong> · <span class="tbc">To be confirmed</span> — date, time, guest count, and address shared ahead</li>
+                <li><strong>Local police contact</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Local Authorities</h3>
-            <ul class="thread__list">
-              <li><strong>Notify local police of the event</strong> · <span class="tbc">To be confirmed</span> — date, time, guest count, and address shared ahead</li>
-              <li><strong>Local police contact</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Nearby Care</h3>
+              <ul class="bullets">
+                <li><strong>Nearest hospital</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Nearest pharmacy</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Wedding day insurance</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Nearby Care</h3>
-            <ul class="thread__list">
-              <li><strong>Nearest hospital</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Nearest pharmacy</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Wedding day insurance</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">On-Site Response</h3>
+              <ul class="bullets">
+                <li><strong>First aid kit</strong> · location and responsible person <span class="tbc">To be confirmed</span></li>
+                <li><strong>Emergency contact</strong> · <span class="tbc">To be confirmed</span> — designated point person, separate from Dioris</li>
+              </ul>
+            </div>
+          </section>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">On-Site Response</h3>
-            <ul class="thread__list">
-              <li><strong>First aid kit</strong> · location and responsible person <span class="tbc">To be confirmed</span></li>
-              <li><strong>Emergency contact</strong> · <span class="tbc">To be confirmed</span> — designated point person, separate from Dioris</li>
-            </ul>
-          </div>
-        </section>
+          <!-- CONTINGENCY -->
+          <section class="thread__section">
+            <h2 class="thread__title">Contingency</h2>
+            <p class="thread__significance">Rain, heat, wind — a fully outdoor July event in the DR.</p>
 
-        <!-- ============================================================ -->
-        <!-- CONTINGENCY                                                  -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">Contingency</h2>
-          <p class="thread__significance">Rain, heat, wind — a fully outdoor July event in the DR.</p>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Rain</h3>
+              <ul class="bullets">
+                <li><strong>Transparent tent</strong> · covers the reception area</li>
+                <li><strong>Ceremony rain contingency</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Cocktail hour rain contingency</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Guest movement between locations during rain</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Rain</h3>
-            <ul class="thread__list">
-              <li><strong>Transparent tent</strong> · covers the reception area</li>
-              <li><strong>Ceremony rain contingency</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Cocktail hour rain contingency</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Guest movement between locations during rain</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Heat</h3>
+              <ul class="bullets">
+                <li><strong>Cooling stations</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Sandal station</strong> · at Casa Valdez for guests coming down from the chapel</li>
+                <li><strong>Parasols</strong> · available for guests</li>
+                <li><strong>Bamboo fans</strong> · handed out at cocktail hour, also serve as favors</li>
+                <li><strong>Water stations</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Heat</h3>
-            <ul class="thread__list">
-              <li><strong>Cooling stations</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Sandal station</strong> · at Casa Valdez for guests coming down from the chapel</li>
-              <li><strong>Parasols</strong> · available for guests</li>
-              <li><strong>Bamboo fans</strong> · handed out at cocktail hour, also serve as favors</li>
-              <li><strong>Water stations</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Wind</h3>
+              <ul class="bullets">
+                <li><strong>Floral installation implications</strong> · <span class="tbc">To be confirmed</span> with florist</li>
+                <li><strong>Loose decor secured</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+          </section>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Wind</h3>
-            <ul class="thread__list">
-              <li><strong>Floral installation implications</strong> · <span class="tbc">To be confirmed</span> with florist</li>
-              <li><strong>Loose decor secured</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
-        </section>
+          <!-- BREAKDOWN -->
+          <section class="thread__section">
+            <h2 class="thread__title">Breakdown</h2>
+            <p class="thread__significance">After the last guest leaves.</p>
 
-        <!-- ============================================================ -->
-        <!-- BREAKDOWN                                                    -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">Breakdown</h2>
-          <p class="thread__significance">After the last guest leaves.</p>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Clean-Up</h3>
+              <ul class="bullets">
+                <li><strong>Clean-up crew</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>End-of-night breakdown</strong> · begins at 12:00 AM</li>
+                <li><strong>Overnight security for equipment</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Clean-Up</h3>
-            <ul class="thread__list">
-              <li><strong>Clean-up crew</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>End-of-night breakdown</strong> · begins at 12:00 AM</li>
-              <li><strong>Overnight security for equipment</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Waste &amp; Recycling</h3>
+              <ul class="bullets">
+                <li><strong>Waste management plan</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Recycling and composting</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Waste &amp; Recycling</h3>
-            <ul class="thread__list">
-              <li><strong>Waste management plan</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Recycling and composting</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Vendor Departures</h3>
+              <ul class="bullets">
+                <li><strong>Rental returns</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Vendor pickup schedule</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Personal belongings collection</strong> · <span class="tbc">To be confirmed</span> — designated point person</li>
+              </ul>
+            </div>
+          </section>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Vendor Departures</h3>
-            <ul class="thread__list">
-              <li><strong>Rental returns</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Vendor pickup schedule</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Personal belongings collection</strong> · <span class="tbc">To be confirmed</span> — designated point person</li>
-            </ul>
-          </div>
-        </section>
-
+        </div>
       </div>
-    </section>
-  </main>
+    </main>
+  </div>
 
-  <footer class="site-foot">
-    <div class="wrap">Built for two</div>
-  </footer>
-
+  <script src="../assets/js/sidebar.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/main.js"></script>
 </body>
 </html>

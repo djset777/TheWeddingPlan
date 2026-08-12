@@ -3,386 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accommodations — The Brief</title>
+  <title>Accommodations — The Wedding Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --teal:   #01605F;
-      --forest: #014421;
-      --navy:   #003153;
-      --gold:   #D4AF37;
-      --abyss:  #0C343D;
-      --linen:  #F2EDE6;
-    }
-
-    * { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      background: var(--linen);
-      color: var(--abyss);
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-weight: 500;
-      font-size: 17px;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: var(--teal);
-      text-decoration: underline;
-      text-decoration-color: var(--gold);
-      text-underline-offset: 3px;
-    }
-    a:hover { color: var(--forest); }
-
-    .tbc { color: var(--gold); }
-
-    /* ---------- Wrap ---------- */
-    .wrap {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-    .wrap--narrow { max-width: 760px; }
-
-    /* ---------- Preview banner ---------- */
-      background: var(--abyss);
-      color: var(--linen);
-      padding: 0.5rem 2rem;
-      text-align: center;
-      font-family: 'Cormorant SC', serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    /* ---------- Nav ---------- */
-    .site-nav {
-      background: var(--linen);
-      border-bottom: 1px solid rgba(12, 52, 61, 0.12);
-      padding: 1.25rem 0;
-    }
-    .site-nav__inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .site-nav__brand {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 500;
-      color: var(--teal);
-      text-decoration: none;
-      font-size: 1rem;
-      letter-spacing: 0.15em;
-    }
-
-    /* ---------- Page head ---------- */
-    .page-head {
-      padding: 4rem 0 2rem;
-      text-align: center;
-    }
-    .page-head__title {
-      font-family: 'Cormorant SC', serif;
-      font-weight: 400;
-      color: var(--teal);
-      font-size: 4.5rem;
-      line-height: 1.1;
-      margin: 0 0 0.5rem;
-      letter-spacing: 0.02em;
-    }
-    .page-head__subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 500;
-      color: var(--gold);
-      font-size: 1.15rem;
-      margin: 0;
-    }
-
-    /* ================================================== */
-    /* VERTICAL LINE ANCHORED SECTIONS                     */
-    /* ================================================== */
-    .thread {
-      position: relative;
-      padding-left: 3rem;
-      padding-top: 1rem;
-      padding-bottom: 3rem;
-    }
-    .thread::before {
-      content: "";
-      position: absolute;
-      left: 7px;
-      top: 0;
-      bottom: 0;
-      width: 1.5px;
-      background: var(--gold);
-    }
-
-    .thread__section {
-      position: relative;
-      margin-bottom: 3.5rem;
-      padding-top: 0.5rem;
-    }
-    .thread__section:last-child { margin-bottom: 0; }
-
-    .thread__section::before {
-      content: "";
-      position: absolute;
-      left: -3rem;
-      top: 1rem;
-      margin-left: 1px;
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 0 4px var(--linen), 0 0 0 5px var(--gold);
-    }
-
-    .thread__title {
-      font-family: 'Cormorant SC', serif;
-      color: var(--gold);
-      font-weight: 500;
-      font-size: 1.5rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      margin: 0 0 0.6rem;
-      line-height: 1.2;
-    }
-
-    .thread__significance {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      color: var(--abyss);
-      margin: 0 0 1.25rem;
-      font-size: 1.05rem;
-    }
-
-    /* ---------- Sub-section ---------- */
-    .thread__sub {
-      margin: 1.75rem 0;
-    }
-    .thread__sub-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      font-weight: 500;
-      color: var(--forest);
-      font-size: 1.2rem;
-      margin: 0 0 0.5rem;
-    }
-
-    /* ---------- Anchored bullet list ---------- */
-    .thread__list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .thread__list li {
-      position: relative;
-      padding-left: 1.5rem;
-      margin-bottom: 0.55rem;
-      line-height: 1.5;
-    }
-    .thread__list li::before {
-      content: "";
-      position: absolute;
-      left: 0.25rem;
-      top: 0.75rem;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-    }
-    .thread__list strong {
-      color: var(--forest);
-      font-weight: 500;
-    }
-
-    /* ---------- Footer ---------- */
-    .site-foot {
-      margin-top: 5rem;
-      padding: 2rem 0;
-      text-align: center;
-      font-family: 'Cormorant SC', serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      border-top: 1px solid rgba(12, 52, 61, 0.12);
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 680px) {
-      .page-head__title { font-size: 3rem; }
-      .wrap { padding: 0 1.25rem; }
-      .thread { padding-left: 2.25rem; }
-      .thread__section::before { left: -2.25rem; }
-      .thread__title { font-size: 1.2rem; letter-spacing: 0.13em; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
 </head>
 <body>
 
+  <div class="layout">
+    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
 
-  <header class="site-nav">
-    <div class="wrap site-nav__inner">
-      <a class="site-nav__brand" href="#">7 · 7 · 27</a>
-    </div>
-  </header>
+    <main class="content">
 
-  <main>
-    <section class="wrap page-head">
-      <h1 class="page-head__title">Accommodations</h1>
-      <p class="page-head__subtitle">Where everyone lays their head.</p>
-    </section>
+      <header class="content__head">
+        <span class="eyebrow content__eyebrow">The Brief</span>
+        <h1 class="content__title">Accommodations</h1>
+        <p class="subtitle content__subtitle">Where everyone lays their head.</p>
+      </header>
 
-    <section class="wrap wrap--narrow">
+      <div class="wrap--narrow">
+        <div class="thread">
 
-      <div class="thread">
+          <!-- LOCAL GUESTS -->
+          <section class="thread__section">
+            <h2 class="thread__title">Local Guests</h2>
+            <p class="thread__significance">Guests already in the DR — arriving under their own steam, sleeping in their own beds.</p>
 
-        <!-- ============================================================ -->
-        <!-- LOCAL GUESTS                                                 -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">Local Guests</h2>
-          <p class="thread__significance">Guests already in the DR — arriving under their own steam, sleeping in their own beds.</p>
-
-          <ul class="thread__list">
-            <li>No accommodations coordination needed</li>
-            <li><strong>Venue address to share</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Parking at Casa Valdez</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Recommended arrival time</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Late-night departure</strong> · own transport</li>
-          </ul>
-        </section>
-
-        <!-- ============================================================ -->
-        <!-- OUT-OF-TOWN GUESTS                                           -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">Out-of-Town Guests</h2>
-          <p class="thread__significance">Everyone flying in, staying in the block, riding the shuttle.</p>
-
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Travel &amp; Entry</h3>
-            <ul class="thread__list">
-              <li><strong>Nearest airports</strong> · <span class="tbc">To be confirmed</span> · Santiago (STI), Puerto Plata (POP), Santo Domingo (SDQ) — recommended primary airport TBC</li>
-              <li><strong>Recommended flight routes</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Approximate flight time from key cities</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Passport validity requirement</strong> · <span class="tbc">To be confirmed</span> (typically six months beyond travel date)</li>
-              <li><strong>Tourist card / entry requirements</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Ground transport from airport</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Currency</strong> · Dominican peso (DOP). USD accepted in some areas.</li>
-              <li><strong>Language notes</strong> · Spanish primary. English common in tourist areas.</li>
+            <ul class="bullets">
+              <li>No accommodations coordination needed</li>
+              <li><strong>Venue address to share</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Parking at Casa Valdez</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Recommended arrival time</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Late-night departure</strong> · own transport</li>
             </ul>
-          </div>
+          </section>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">The Cabana Block</h3>
-            <ul class="thread__list">
-              <li>Private block reserved for wedding guests</li>
-              <li><strong>Location</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Number of units</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Nightly rate</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Booking window</strong> · <span class="tbc">To be confirmed</span> (open date and close date)</li>
-              <li><strong>Payment method</strong> · <span class="tbc">To be confirmed</span> (individual or group billing)</li>
-              <li><strong>What's included</strong> · <span class="tbc">To be confirmed</span> (breakfast, WiFi, cleaning)</li>
-              <li><strong>Cabana amenities</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Check-in / check-out</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Distance to Casa Valdez</strong> · <span class="tbc">To be confirmed</span></li>
+          <!-- OUT-OF-TOWN GUESTS -->
+          <section class="thread__section">
+            <h2 class="thread__title">Out-of-Town Guests</h2>
+            <p class="thread__significance">Everyone flying in, staying in the block, riding the shuttle.</p>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Travel &amp; Entry</h3>
+              <ul class="bullets">
+                <li><strong>Passport requirements</strong> · valid 6+ months past return date</li>
+                <li><strong>DR entry E-ticket</strong> · required within 72 hours of arrival</li>
+                <li><strong>Nearest airport</strong> · Santiago (STI), ~1 hour to La Vega</li>
+                <li><strong>Alternate airport</strong> · Santo Domingo (SDQ), ~2 hours to La Vega</li>
+                <li><strong>Airport transfer coordination</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">The Cabana Block</h3>
+              <ul class="bullets">
+                <li><strong>Property</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Room block details</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Booking deadline</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Rate per night</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Contact for booking</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Alternate Accommodations</h3>
+              <ul class="bullets">
+                <li><strong>Nearby hotels</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Airbnb options</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Recommendations for larger groups</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Shuttle</h3>
+              <ul class="bullets">
+                <li>Wedding-day shuttle included for cabana-block guests</li>
+                <li><strong>Route</strong> · cabana pickup → Iglesia San Rafael → Casa Valdez → return</li>
+                <li><strong>Pickup location</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Departure time</strong> · <span class="tbc">To be confirmed</span> (targeting arrival before 4:00 PM ceremony)</li>
+                <li><strong>Return schedule</strong> · <span class="tbc">To be confirmed</span> (last run at 12:00 AM per timeline)</li>
+                <li><strong>Number of shuttles</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Shuttle operator</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Shuttle contact</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Access for guests outside the block</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Backup transport plan</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Welcome &amp; Cards</h3>
+              <ul class="bullets">
+                <li><strong>Welcome bags</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Welcome cards</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Distribution point</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Contents</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Around Town</h3>
+              <ul class="bullets">
+                <li><strong>Restaurant recommendations</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Coffee &amp; breakfast spots</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Sights &amp; activities</strong> · <span class="tbc">To be confirmed</span></li>
+                <li><strong>Local phrases &amp; tips</strong> · <span class="tbc">To be confirmed</span></li>
+              </ul>
+            </div>
+
+            <div class="thread__sub">
+              <h3 class="thread__sub-title">Practical</h3>
+              <ul class="bullets">
+                <li><strong>Currency</strong> · DR peso, USD widely accepted</li>
+                <li><strong>Language</strong> · Spanish primary, English at tourist spots</li>
+                <li><strong>Weather</strong> · July averages 82°F / 28°C, chance of rain</li>
+                <li><strong>Nearest hospital</strong> · <span class="tbc">To be confirmed</span> — see The Logistics</li>
+                <li><strong>Nearest pharmacy</strong> · <span class="tbc">To be confirmed</span> — see The Logistics</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- INDEPENDENT GUESTS -->
+          <section class="thread__section">
+            <h2 class="thread__title">Independent Guests</h2>
+            <p class="thread__significance">Coming in from abroad but arranging their own stay.</p>
+
+            <ul class="bullets">
+              <li><strong>Address for arrival</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Own transport to and from the venue</strong> · required</li>
+              <li><strong>Recommended nearby areas to stay</strong> · <span class="tbc">To be confirmed</span></li>
+              <li><strong>Late-night transport</strong> · own arrangements</li>
             </ul>
-          </div>
+          </section>
 
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Alternate Accommodations</h3>
-            <ul class="thread__list">
-              <li><strong>Nearby hotels</strong> · <span class="tbc">To be confirmed</span> — curated list with rates and distances</li>
-              <li><strong>Airbnb options</strong> · <span class="tbc">To be confirmed</span> — vetted list</li>
-              <li><strong>Villa rentals</strong> · <span class="tbc">To be confirmed</span> — for families or groups sharing</li>
-              <li><strong>All-inclusive resorts</strong> · <span class="tbc">To be confirmed</span> — nearest options</li>
-            </ul>
-          </div>
-
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Shuttle</h3>
-            <ul class="thread__list">
-              <li>Wedding-day shuttle included for cabana-block guests</li>
-              <li><strong>Route</strong> · cabana pickup → Iglesia San Rafael → Casa Valdez → return</li>
-              <li><strong>Pickup location</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Departure time</strong> · <span class="tbc">To be confirmed</span> (targeting arrival before 4:00 PM ceremony)</li>
-              <li><strong>Return schedule</strong> · <span class="tbc">To be confirmed</span> (last run at 12:00 AM per timeline)</li>
-              <li><strong>Number of shuttles</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Shuttle operator</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Shuttle contact</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Access for guests outside the block</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Backup transport plan</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
-
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Welcome &amp; Cards</h3>
-            <ul class="thread__list">
-              <li>Welcome cards placed in each cabana on arrival</li>
-              <li><strong>Card contents</strong> · <span class="tbc">To be confirmed</span> — day-of schedule, key contacts, local tips</li>
-              <li><strong>Bilingual EN/ES</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Welcome gift</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Gift contents</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
-
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Around Town</h3>
-            <ul class="thread__list">
-              <li><strong>La Vega city guide</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Beach recommendations</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Waterfall hikes</strong> · <span class="tbc">To be confirmed</span> (27 Charcos de Damajagua nearby)</li>
-              <li><strong>Santo Domingo day trip</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Local restaurants</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Cultural sites</strong> · <span class="tbc">To be confirmed</span> (Santo Cerro, La Vega Vieja ruins)</li>
-              <li><strong>Outdoor activities</strong> · <span class="tbc">To be confirmed</span> (hikes, cave tours, river excursions)</li>
-            </ul>
-          </div>
-
-          <div class="thread__sub">
-            <h3 class="thread__sub-title">Practical</h3>
-            <ul class="thread__list">
-              <li><strong>Weather in July</strong> · tropical, warm, chance of afternoon rain — pack accordingly</li>
-              <li><strong>Packing suggestions</strong> · <span class="tbc">To be confirmed</span> — linens, sun protection, walking shoes, dance shoes</li>
-              <li><strong>WiFi and phone service</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Local SIM / roaming</strong> · <span class="tbc">To be confirmed</span></li>
-              <li><strong>Nearest hospital</strong> · <span class="tbc">To be confirmed</span> · <em>View Reference → The Logistics</em></li>
-              <li><strong>Nearest pharmacy</strong> · <span class="tbc">To be confirmed</span> · <em>View Reference → The Logistics</em></li>
-              <li><strong>Emergency contact</strong> · <span class="tbc">To be confirmed</span></li>
-            </ul>
-          </div>
-        </section>
-
-        <!-- ============================================================ -->
-        <!-- INDEPENDENT GUESTS                                           -->
-        <!-- ============================================================ -->
-        <section class="thread__section">
-          <h2 class="thread__title">Independent Guests</h2>
-          <p class="thread__significance">Guests handling their own stay and travel outside the block.</p>
-
-          <ul class="thread__list">
-            <li>Accommodations and transport at their own discretion</li>
-            <li><strong>Recommended accommodations</strong> · <em>View Reference → Alternate Accommodations above</em></li>
-            <li><strong>Wedding-day shuttle access</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Recommended arrival time</strong> · <span class="tbc">To be confirmed</span></li>
-            <li><strong>Late-night departure</strong> · own transport</li>
-            <li><strong>Point of contact for questions</strong> · <span class="tbc">To be confirmed</span></li>
-          </ul>
-        </section>
-
+        </div>
       </div>
-    </section>
-  </main>
+    </main>
+  </div>
 
-  <footer class="site-foot">
-    <div class="wrap">Built for two</div>
-  </footer>
-
+  <script src="../assets/js/sidebar.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/main.js"></script>
 </body>
 </html>
