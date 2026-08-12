@@ -43,7 +43,7 @@
   letter-spacing: 0.05em;
   text-align: center;
   color: var(--accent);
-  padding-top: var(--space-1);
+  padding-top: var(--space-2);
   padding-bottom: var(--space-2);
   border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   margin-bottom: var(--space-2);
@@ -67,7 +67,7 @@
   border: none;
   padding: 0;
 }
-.sidebar__nav h3:first-child { margin-top: 2.7; }
+.sidebar__nav h3:first-child { margin-top: 0; }
 
 .sidebar__nav ul {
   list-style: none;
@@ -112,6 +112,9 @@
   padding: var(--space-4);
   background: var(--bg);
   min-width: 0; /* prevents grid overflow */
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: var(--step--1);
 }
 .content__head {
   padding-bottom: var(--space-3);
