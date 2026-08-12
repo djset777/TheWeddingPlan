@@ -20,8 +20,6 @@
     </div>
 
     <nav class="sidebar__nav" aria-label="Primary">
-      <a class="sidebar__home" href="${prefix}index.html">Home</a>
-
       <h3>The Brief</h3>
       <ul>
         <li><a href="${prefix}brief/the-look.html">The Look</a></li>
