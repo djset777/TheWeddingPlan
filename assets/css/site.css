@@ -3,6 +3,8 @@
    Sidebar layout + main content. Cards. Moment-zone header bars.
    ========================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap');
+
 /* --- Layout: sidebar + content ------------------------------------------ */
 .layout {
   display: grid;
@@ -22,14 +24,16 @@
 }
 
 .sidebar__brand {
-  font-family: 'Cormorant SC', Georgia, serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
   font-size: var(--step-4);
   color: var(--accent);
-  letter-spacing: 0.10em;
+  letter-spacing: 0.05em;
   text-align: center;
   border: none;
   display: block;
-  margin-bottom: var(--space-2);
+  margin: 0 calc(-1 * var(--space-3)) var(--space-2);
+  padding: 0 var(--space-2);
 }
 .sidebar__brand:hover { color: var(--linen); }
 
