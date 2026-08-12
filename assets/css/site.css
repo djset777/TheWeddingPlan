@@ -179,13 +179,13 @@
 }
 .donut__center {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: 0.65rem;
+  font-size: 0.28rem;
   fill: var(--anchor);
   letter-spacing: 0.08em;
   text-anchor: middle;
 }
 .donut__center-num {
-  font-size: 0.55rem;
+  font-size: 0.32rem;
   fill: var(--accent);
   text-anchor: middle;
 }
