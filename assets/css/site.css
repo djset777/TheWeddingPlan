@@ -28,7 +28,7 @@
   font-weight: 300;
   font-size: var(--step-4);
   color: var(--accent);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
   text-align: center;
   border: none;
   display: block;
@@ -43,8 +43,8 @@
   letter-spacing: 0.05em;
   text-align: center;
   color: var(--accent);
-  padding-top: var(--space-3);
-  padding-bottom: var(--space-3);
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-2);
   border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   margin-bottom: var(--space-2);
   white-space: nowrap;
