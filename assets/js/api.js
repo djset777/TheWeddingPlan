@@ -51,7 +51,6 @@ const MOCK = {
     { role: 'Madrina',       name: 'Sileni Milanovic' },
     { role: 'Miss of Honor', name: 'Kailey' },
     { role: 'Maid of Honor', name: 'Melonie' },
-    { role: 'Ring Bearer',   name: 'Guaroa' },
   ],
 };
 

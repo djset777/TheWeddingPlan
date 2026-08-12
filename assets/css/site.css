@@ -23,7 +23,7 @@
 
 .sidebar__brand {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step-3);
+  font-size: var(--step-4);
   color: var(--accent);
   letter-spacing: 0.10em;
   text-align: center;
@@ -110,7 +110,7 @@
 }
 .content__head {
   padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--linen-rule);
+  border-bottom: 1px solid var(--accent);
   margin-bottom: var(--space-4);
 }
 .content__eyebrow { display: block; margin-bottom: var(--space-1); }
@@ -277,7 +277,7 @@
   justify-content: space-between;
   align-items: baseline;
   padding-block: var(--space-1);
-  border-bottom: 1px solid var(--linen-rule);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   font-size: var(--step--1);
 }
 .progress:last-child { border-bottom: none; }
@@ -296,7 +296,7 @@
 .upcoming { margin: 0; }
 .upcoming__row {
   padding-block: var(--space-1);
-  border-bottom: 1px solid var(--linen-rule);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--space-2);
@@ -319,7 +319,7 @@
 .feed { margin: 0; }
 .feed__item {
   padding-block: var(--space-1);
-  border-bottom: 1px solid var(--linen-rule);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   display: grid;
   grid-template-columns: 5rem 1fr;
   gap: var(--space-2);
@@ -357,7 +357,7 @@
 
 .block {
   padding-block: var(--space-3);
-  border-bottom: 1px solid var(--linen-rule);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
 }
 .block:last-child { border-bottom: none; }
 .block__body { max-width: var(--measure); }
@@ -427,7 +427,7 @@
     border-right: none;
     border-bottom: 1px solid rgba(212, 175, 55, 0.15);
   }
-  .sidebar__brand { font-size: var(--step-2); }
+  .sidebar__brand { font-size: var(--step-3); }
   .sidebar__nav h3 { margin-top: var(--space-3); }
   .content { padding: var(--space-3); }
 }
@@ -589,7 +589,7 @@
   grid-template-columns: 180px 1fr;
   gap: var(--space-3);
   padding: var(--space-3) 0;
-  border-bottom: 1px solid var(--linen-rule);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   align-items: center;
 }
 .flora-card__photo {
@@ -690,6 +690,6 @@
   letter-spacing: 0.22em;
   margin: var(--space-4) 0 var(--space-2);
   padding-bottom: var(--space-1);
-  border-bottom: 1px solid rgba(1, 68, 33, 0.25);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
 }
 .zone-moment:first-of-type { margin-top: var(--space-2); }
