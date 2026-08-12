@@ -3,52 +3,370 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Ceremony — The Wedding Plan</title>
+  <title>The Ceremony — The Brief</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../assets/css/site.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:   #01605F;
+      --forest: #014421;
+      --navy:   #003153;
+      --gold:   #D4AF37;
+      --abyss:  #0C343D;
+      --linen:  #F2EDE6;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--linen);
+      color: var(--abyss);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 500;
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration: underline;
+      text-decoration-color: var(--gold);
+      text-underline-offset: 3px;
+    }
+    a:hover { color: var(--forest); }
+
+    .tbc { color: var(--gold); }
+
+    /* ---------- Wrap ---------- */
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .wrap--narrow { max-width: 760px; }
+
+    /* ---------- Preview banner ---------- */
+      background: var(--abyss);
+      color: var(--linen);
+      padding: 0.5rem 2rem;
+      text-align: center;
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    /* ---------- Nav ---------- */
+    .site-nav {
+      background: var(--linen);
+      border-bottom: 1px solid rgba(12, 52, 61, 0.12);
+      padding: 1.25rem 0;
+    }
+    .site-nav__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-nav__brand {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 500;
+      color: var(--teal);
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+    }
+
+    /* ---------- Page head ---------- */
+    .page-head {
+      padding: 4rem 0 2rem;
+      text-align: center;
+    }
+    .page-head__title {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 400;
+      color: var(--teal);
+      font-size: 4.5rem;
+      line-height: 1.1;
+      margin: 0 0 0.5rem;
+      letter-spacing: 0.02em;
+    }
+    .page-head__subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--gold);
+      font-size: 1.15rem;
+      margin: 0;
+    }
+
+    /* ---------- Zone bar ---------- */
+    .zone-bar {
+      padding: 1rem 2rem;
+      font-family: 'Cormorant SC', serif;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      margin: 3.5rem 0 0;
+    }
+    .zone-bar--gold {
+      background: var(--gold);
+      color: var(--abyss);
+    }
+    .zone-bar--teal {
+      background: var(--teal);
+      color: var(--linen);
+    }
+    .zone-bar--forest {
+      background: var(--forest);
+      color: var(--linen);
+    }
+    .zone-significance {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold);
+      margin: 1.25rem 0 1.5rem;
+      font-size: 1.05rem;
+      padding: 0 2rem;
+    }
+
+    /* ---------- Zone content ---------- */
+    .zone-body {
+      padding: 0 2rem;
+    }
+    .zone-sub {
+      margin: 1.75rem 0;
+    }
+    .zone-sub-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--forest);
+      font-size: 1.2rem;
+      margin: 0 0 0.5rem;
+    }
+
+    /* ---------- Anchored bullet list ---------- */
+    .zone-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .zone-list li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.55rem;
+      line-height: 1.5;
+    }
+    .zone-list li::before {
+      content: "";
+      position: absolute;
+      left: 0.25rem;
+      top: 0.75rem;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    .zone-list strong {
+      color: var(--forest);
+      font-weight: 500;
+    }
+
+    /* ---------- Footer ---------- */
+    .site-foot {
+      margin-top: 5rem;
+      padding: 2rem 0;
+      text-align: center;
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      border-top: 1px solid rgba(12, 52, 61, 0.12);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 680px) {
+      .page-head__title { font-size: 3rem; }
+      .wrap { padding: 0 1.25rem; }
+      .zone-bar { padding: 0.85rem 1.25rem; font-size: 0.9rem; letter-spacing: 0.14em; }
+      .zone-body, .zone-significance { padding: 0 0.5rem; }
+    }
+  </style>
 </head>
 <body>
 
-  <div class="layout">
-    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
 
-    <main class="content">
+  <header class="site-nav">
+    <div class="wrap site-nav__inner">
+      <a class="site-nav__brand" href="#">7 · 7 · 27</a>
+    </div>
+  </header>
 
-      <header class="content__head">
-        <span class="eyebrow content__eyebrow">The Brief · Chapter 4</span>
-        <h1 class="content__title">The Ceremony</h1>
-        <p class="subtitle content__subtitle">Iglesia San Rafael at the top of the hill.</p>
-      </header>
+  <main>
+    <section class="wrap page-head">
+      <h1 class="page-head__title">The Ceremony</h1>
+      <p class="page-head__subtitle">Iglesia San Rafael, at the top of the hill.</p>
+    </section>
 
-      <div class="wrap--narrow">
+    <section class="wrap wrap--narrow">
 
-        <div class="zone">
-          <div class="zone__bar zone__bar--gold">Traditions &amp; Meaning</div>
-          <p class="zone__significance">The why beneath this chapter.</p>
-          <div class="block"><p><em>Placeholder — replace with real content when ready.</em></p></div>
+      <!-- ================================================== -->
+      <!-- ZONE 1 · TRADITIONS & MEANING (GOLD)                -->
+      <!-- ================================================== -->
+      <div class="zone-bar zone-bar--gold">Traditions &amp; Meaning</div>
+      <p class="zone-significance">The why beneath every act.</p>
+
+      <div class="zone-body">
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Ride</h3>
+          <ul class="zone-list">
+            <li>The bride arrives on horseback</li>
+            <li>Her father leads the horse the two-minute walk from Casa Valdez to Iglesia San Rafael</li>
+            <li>Guests watch from outside the chapel</li>
+            <li>Drone footage planned</li>
+          </ul>
         </div>
 
-        <div class="zone">
-          <div class="zone__bar zone__bar--teal">The Setting</div>
-          <p class="zone__significance">The built and visual layer.</p>
-          <div class="block"><p><em>Placeholder — replace with real content when ready.</em></p></div>
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Memorial Chair</h3>
+          <ul class="zone-list">
+            <li>A single chair set apart for Monica, Julian's mother</li>
+            <li>Dressed with a sash carrying the dedication</li>
+          </ul>
         </div>
 
-        <div class="zone">
-          <div class="zone__bar zone__bar--forest">The Shape</div>
-          <p class="zone__significance">Sequence, timing, order.</p>
-          <div class="block"><p><em>Placeholder — replace with real content when ready.</em></p></div>
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">Lace Veils</h3>
+          <ul class="zone-list">
+            <li>Provided for women attending the ceremony</li>
+            <li>A return to head covering during worship</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">El Lazo</h3>
+          <ul class="zone-list">
+            <li>A figure-eight loop placed around the couple's shoulders after the vows</li>
+            <li>Placed by the padrinos de lazo</li>
+            <li><strong>Form</strong> · <span class="tbc">To be confirmed</span></li>
+            <li><strong>Padrinos</strong> · <span class="tbc">To be confirmed</span></li>
+          </ul>
         </div>
 
       </div>
-    </main>
-  </div>
 
-  <script src="../assets/js/sidebar.js"></script>
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/main.js"></script>
+      <!-- ================================================== -->
+      <!-- ZONE 2 · THE SETTING (TEAL)                         -->
+      <!-- ================================================== -->
+      <div class="zone-bar zone-bar--teal">The Setting</div>
+      <p class="zone-significance">The built and visual layer.</p>
+
+      <div class="zone-body">
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Chapel</h3>
+          <ul class="zone-list">
+            <li>Iglesia San Rafael, at the top of the hill</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Altar</h3>
+          <ul class="zone-list">
+            <li><strong>Floral treatment</strong> · View Reference → The Flora</li>
+            <li><strong>Full altar spec</strong> · <span class="tbc">To be confirmed</span> with Dioris and the florist</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Welcome Sign</h3>
+          <ul class="zone-list">
+            <li>Wood board on easel with tropical flora at the base and top</li>
+            <li>Bilingual EN/ES in Cormorant SC, palette colors</li>
+            <li><strong>Sign text</strong> · <span class="tbc">To be confirmed</span></li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Aisle</h3>
+          <ul class="zone-list">
+            <li>Chair backs dressed with a single stem tied with natural raffia, one per chair</li>
+            <li><strong>Floral selections</strong> · <span class="tbc">To be confirmed</span></li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Music</h3>
+          <ul class="zone-list">
+            <li>Dominican church band, live throughout</li>
+            <li>Required by the parish</li>
+            <li><strong>Repertoire</strong> · <span class="tbc">To be confirmed</span></li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Rings</h3>
+          <ul class="zone-list">
+            <li>Two yellow gold bands in a wooden box</li>
+            <li><strong>Bearer</strong> · <span class="tbc">To be confirmed</span></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- ================================================== -->
+      <!-- ZONE 3 · THE SHAPE OF THE DAY (FOREST)              -->
+      <!-- ================================================== -->
+      <div class="zone-bar zone-bar--forest">The Shape of the Day</div>
+      <p class="zone-significance">Sequence and timing. All times tentative — <span class="tbc">To be confirmed</span> with Dioris.</p>
+
+      <div class="zone-body">
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">4:00 PM · Processional</h3>
+          <ul class="zone-list">
+            <li>Wedding party walk</li>
+            <li>Opening prayer</li>
+            <li>Liturgy of the Word</li>
+            <li>Homily</li>
+            <li>Rite of Marriage — vows · rings · El Lazo</li>
+            <li>Liturgy of the Eucharist</li>
+            <li>Nuptial blessing</li>
+            <li>Church band live throughout</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">5:00 PM · Recessional</h3>
+          <ul class="zone-list">
+            <li>Ceremony ends</li>
+            <li><strong>Specific readings and music</strong> · <span class="tbc">To be confirmed</span></li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">6:00 PM · Golden Hour</h3>
+          <ul class="zone-list">
+            <li>Danisa and Julian take photos at the hilltop</li>
+            <li>Guests travel to Casa Valdez on foot — uneven terrain, flat footwear recommended</li>
+            <li>Shuttle available for guests who prefer not to walk, coordinated by Dioris</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">Built for two</div>
+  </footer>
+
 </body>
 </html>

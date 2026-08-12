@@ -6,9 +6,199 @@
   <title>The Brief — The Wedding Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../assets/css/site.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:   #01605F;
+      --forest: #014421;
+      --navy:   #003153;
+      --gold:   #D4AF37;
+      --abyss:  #0C343D;
+      --linen:  #F2EDE6;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--linen);
+      color: var(--abyss);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 500;
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+
+    /* ---------- Wrap ---------- */
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .wrap--narrow { max-width: 760px; }
+
+    /* ---------- Nav ---------- */
+    .site-nav {
+      background: var(--linen);
+      border-bottom: 1px solid rgba(12, 52, 61, 0.12);
+      padding: 1.25rem 0;
+    }
+    .site-nav__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+    }
+    .site-nav__brand {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 500;
+      color: var(--teal);
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+    }
+    .site-nav__links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .site-nav__links a {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 400;
+      color: var(--abyss);
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .site-nav__links a:hover {
+      color: var(--teal);
+    }
+    .site-nav__links a.active {
+      color: var(--teal);
+      border-bottom-color: var(--gold);
+    }
+
+    /* ---------- Page head ---------- */
+    .page-head {
+      padding: 4rem 0 2rem;
+      text-align: center;
+    }
+    .page-head__title {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 400;
+      color: var(--teal);
+      font-size: 4.5rem;
+      line-height: 1.1;
+      margin: 0 0 0.5rem;
+      letter-spacing: 0.02em;
+    }
+    .page-head__subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--gold);
+      font-size: 1.15rem;
+      margin: 0;
+    }
+
+    /* ================================================== */
+    /* VERTICAL LINE MENU                                  */
+    /* ================================================== */
+    .thread {
+      position: relative;
+      padding-left: 3rem;
+      padding-top: 1rem;
+      padding-bottom: 3rem;
+    }
+    .thread::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 0;
+      bottom: 0;
+      width: 1.5px;
+      background: var(--gold);
+    }
+
+    .thread__entry {
+      position: relative;
+      margin-bottom: 2.5rem;
+      padding-top: 0.5rem;
+      display: block;
+    }
+    .thread__entry:last-child { margin-bottom: 0; }
+
+    .thread__entry::before {
+      content: "";
+      position: absolute;
+      left: -3rem;
+      top: 1rem;
+      margin-left: 1px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 4px var(--linen), 0 0 0 5px var(--gold);
+      transition: transform 0.2s;
+    }
+    .thread__entry:hover::before {
+      transform: scale(1.15);
+    }
+
+    .thread__entry-title {
+      font-family: 'Cormorant SC', serif;
+      color: var(--gold);
+      font-weight: 500;
+      font-size: 1.5rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin: 0 0 0.4rem;
+      line-height: 1.2;
+      transition: color 0.2s;
+    }
+    .thread__entry:hover .thread__entry-title {
+      color: var(--teal);
+    }
+
+    .thread__entry-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--abyss);
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    /* ---------- Footer ---------- */
+    .site-foot {
+      margin-top: 5rem;
+      padding: 2rem 0;
+      text-align: center;
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      border-top: 1px solid rgba(12, 52, 61, 0.12);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 680px) {
+      .page-head__title { font-size: 3rem; }
+      .wrap { padding: 0 1.25rem; }
+      .thread { padding-left: 2.25rem; }
+      .thread__entry::before { left: -2.25rem; }
+      .thread__entry-title { font-size: 1.2rem; letter-spacing: 0.13em; }
+      .site-nav__links { gap: 0.85rem; }
+      .site-nav__links a { font-size: 0.75rem; letter-spacing: 0.1em; }
+    }
+  </style>
 </head>
 <body>
 
@@ -16,56 +206,54 @@
     <div class="wrap site-nav__inner">
       <a class="site-nav__brand" href="../">7 · 7 · 27</a>
       <nav class="site-nav__links" aria-label="Primary">
-        <a href="./">The Brief</a>
-        <a href="../dashboard/">The Dashboard</a>
+        <a href="./index.html" class="active">The Brief</a>
+        <a href="../dashboard/index.html">The Dashboard</a>
       </nav>
     </div>
   </header>
 
   <main>
     <section class="wrap page-head">
-      <span class="eyebrow page-head__eyebrow">The Vision</span>
       <h1 class="page-head__title">The Brief</h1>
-      <p class="subtitle page-head__subtitle">Everything the day is made of, in six chapters.</p>
+      <p class="page-head__subtitle">Every decision, in one place.</p>
     </section>
 
     <section class="wrap wrap--narrow">
-      <div class="portals">
+      <div class="thread">
 
-        <a class="portal" href="the-look.html">
-          <span class="eyebrow portal__eyebrow">Chapter 1</span>
-          <div class="portal__title">The Look</div>
-          <p class="portal__desc">Palette, typography, materials, textures — the visual language.</p>
+        <a class="thread__entry" href="./the-look.html">
+          <h2 class="thread__entry-title">The Look</h2>
+          <p class="thread__entry-subtitle">Palette, typography, illustration suite, stationery, photography.</p>
         </a>
 
-        <a class="portal" href="the-flora.html">
-          <span class="eyebrow portal__eyebrow">Chapter 2</span>
-          <div class="portal__title">The Flora</div>
-          <p class="portal__desc">Every flower and frond, its use, and what it carries.</p>
+        <a class="thread__entry" href="./the-flora.html">
+          <h2 class="thread__entry-title">The Flora</h2>
+          <p class="thread__entry-subtitle">Every frond, every bloom, and what it carries.</p>
         </a>
 
-        <a class="portal" href="the-attire.html">
-          <span class="eyebrow portal__eyebrow">Chapter 3</span>
-          <div class="portal__title">The Attire</div>
-          <p class="portal__desc">The guests, the wedding party, the parents, the groom, the bride.</p>
+        <a class="thread__entry" href="./the-attire.html">
+          <h2 class="thread__entry-title">The Attire</h2>
+          <p class="thread__entry-subtitle">Every detail is deliberate. Down to the hem.</p>
         </a>
 
-        <a class="portal" href="the-ceremony.html">
-          <span class="eyebrow portal__eyebrow">Chapter 4</span>
-          <div class="portal__title">The Ceremony</div>
-          <p class="portal__desc">Traditions, the setting, the shape of the hour at Iglesia San Rafael.</p>
+        <a class="thread__entry" href="./accommodations.html">
+          <h2 class="thread__entry-title">Accommodations</h2>
+          <p class="thread__entry-subtitle">Where everyone lays their head.</p>
         </a>
 
-        <a class="portal" href="the-evening.html">
-          <span class="eyebrow portal__eyebrow">Chapter 5</span>
-          <div class="portal__title">The Evening</div>
-          <p class="portal__desc">Cocktail hour, dinner, the reception at Casa Valdez.</p>
+        <a class="thread__entry" href="./the-ceremony.html">
+          <h2 class="thread__entry-title">The Ceremony</h2>
+          <p class="thread__entry-subtitle">Iglesia San Rafael, at the top of the hill.</p>
         </a>
 
-        <a class="portal" href="the-experience.html">
-          <span class="eyebrow portal__eyebrow">Chapter 6</span>
-          <div class="portal__title">The Experience</div>
-          <p class="portal__desc">How the day feels from the guest's side — arrival, transitions, farewell.</p>
+        <a class="thread__entry" href="./the-evening.html">
+          <h2 class="thread__entry-title">The Evening</h2>
+          <p class="thread__entry-subtitle">This is what the house was built for.</p>
+        </a>
+
+        <a class="thread__entry" href="./the-logistics.html">
+          <h2 class="thread__entry-title">The Logistics</h2>
+          <p class="thread__entry-subtitle">The moving parts, from first vendor to last shuttle.</p>
         </a>
 
       </div>
@@ -73,10 +261,8 @@
   </main>
 
   <footer class="site-foot">
-    <div class="wrap">Built for two.</div>
+    <div class="wrap">Built for two</div>
   </footer>
 
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/main.js"></script>
 </body>
 </html>

@@ -3,52 +3,468 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Evening — The Wedding Plan</title>
+  <title>The Evening — The Brief</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../assets/css/site.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal:   #01605F;
+      --forest: #014421;
+      --navy:   #003153;
+      --gold:   #D4AF37;
+      --abyss:  #0C343D;
+      --linen:  #F2EDE6;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--linen);
+      color: var(--abyss);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 500;
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--teal);
+      text-decoration: underline;
+      text-decoration-color: var(--gold);
+      text-underline-offset: 3px;
+    }
+    a:hover { color: var(--forest); }
+
+    .tbc { color: var(--gold); }
+
+    /* ---------- Wrap ---------- */
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .wrap--narrow { max-width: 760px; }
+
+    /* ---------- Preview banner ---------- */
+      background: var(--abyss);
+      color: var(--linen);
+      padding: 0.5rem 2rem;
+      text-align: center;
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    /* ---------- Nav ---------- */
+    .site-nav {
+      background: var(--linen);
+      border-bottom: 1px solid rgba(12, 52, 61, 0.12);
+      padding: 1.25rem 0;
+    }
+    .site-nav__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-nav__brand {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 500;
+      color: var(--teal);
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+    }
+
+    /* ---------- Page head ---------- */
+    .page-head {
+      padding: 4rem 0 2rem;
+      text-align: center;
+    }
+    .page-head__title {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 400;
+      color: var(--teal);
+      font-size: 4.5rem;
+      line-height: 1.1;
+      margin: 0 0 0.5rem;
+      letter-spacing: 0.02em;
+    }
+    .page-head__subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--gold);
+      font-size: 1.15rem;
+      margin: 0;
+    }
+
+    /* ---------- Zone bar ---------- */
+    .zone-bar {
+      padding: 1rem 2rem;
+      font-family: 'Cormorant SC', serif;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      margin: 3.5rem 0 0;
+    }
+    .zone-bar--gold {
+      background: var(--gold);
+      color: var(--abyss);
+    }
+    .zone-bar--teal {
+      background: var(--teal);
+      color: var(--linen);
+    }
+    .zone-bar--forest {
+      background: var(--forest);
+      color: var(--linen);
+    }
+    .zone-significance {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold);
+      margin: 1.25rem 0 1.5rem;
+      font-size: 1.05rem;
+      padding: 0 2rem;
+    }
+
+    /* ---------- Moment divider (Cocktail Hour / The Reception) ---------- */
+    .zone-moment {
+      font-family: 'Cormorant SC', serif;
+      font-weight: 500;
+      color: var(--forest);
+      font-size: 1rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin: 2.5rem 2rem 0.5rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(1, 68, 33, 0.25);
+    }
+    .zone-moment:first-of-type { margin-top: 0.5rem; }
+
+    /* ---------- Zone content ---------- */
+    .zone-body {
+      padding: 0 2rem;
+    }
+    .zone-sub {
+      margin: 1.75rem 0;
+    }
+    .zone-sub-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 500;
+      color: var(--forest);
+      font-size: 1.2rem;
+      margin: 0 0 0.5rem;
+    }
+
+    /* ---------- Anchored bullet list ---------- */
+    .zone-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .zone-list li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.55rem;
+      line-height: 1.5;
+    }
+    .zone-list li::before {
+      content: "";
+      position: absolute;
+      left: 0.25rem;
+      top: 0.75rem;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    .zone-list strong {
+      color: var(--forest);
+      font-weight: 500;
+    }
+
+    /* ---------- Footer ---------- */
+    .site-foot {
+      margin-top: 5rem;
+      padding: 2rem 0;
+      text-align: center;
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      border-top: 1px solid rgba(12, 52, 61, 0.12);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 680px) {
+      .page-head__title { font-size: 3rem; }
+      .wrap { padding: 0 1.25rem; }
+      .zone-bar { padding: 0.85rem 1.25rem; font-size: 0.9rem; letter-spacing: 0.14em; }
+      .zone-body, .zone-significance { padding: 0 0.5rem; }
+      .zone-moment { margin-left: 0.5rem; margin-right: 0.5rem; letter-spacing: 0.16em; }
+    }
+  </style>
 </head>
 <body>
 
-  <div class="layout">
-    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
 
-    <main class="content">
+  <header class="site-nav">
+    <div class="wrap site-nav__inner">
+      <a class="site-nav__brand" href="#">7 · 7 · 27</a>
+    </div>
+  </header>
 
-      <header class="content__head">
-        <span class="eyebrow content__eyebrow">The Brief · Chapter 5</span>
-        <h1 class="content__title">The Evening</h1>
-        <p class="subtitle content__subtitle">Casa Valdez at the bottom — cocktail hour, dinner, reception.</p>
-      </header>
+  <main>
+    <section class="wrap page-head">
+      <h1 class="page-head__title">The Evening</h1>
+      <p class="page-head__subtitle">This is what the house was built for.</p>
+    </section>
 
-      <div class="wrap--narrow">
+    <section class="wrap wrap--narrow">
 
-        <div class="zone">
-          <div class="zone__bar zone__bar--gold">Traditions &amp; Meaning</div>
-          <p class="zone__significance">The why beneath this chapter.</p>
-          <div class="block"><p><em>Placeholder — replace with real content when ready.</em></p></div>
+      <!-- ================================================== -->
+      <!-- ZONE 1 · TRADITIONS & MEANING (GOLD)                -->
+      <!-- ================================================== -->
+      <div class="zone-bar zone-bar--gold">Traditions &amp; Meaning</div>
+      <p class="zone-significance">The why beneath every act.</p>
+
+      <div class="zone-body">
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Altar Table</h3>
+          <ul class="zone-list">
+            <li>Set at Casa Valdez to honor the eight angels</li>
+            <li>Maria Caba · Ramon Caba · Anthony Moreno · Domingo Marte · José Valdez · Maria Valdez · Miguel Valdez · Wilson Valdez</li>
+            <li>Small table, lace runner, gold frames, family photos, florals</li>
+          </ul>
         </div>
 
-        <div class="zone">
-          <div class="zone__bar zone__bar--teal">The Setting</div>
-          <p class="zone__significance">The built and visual layer.</p>
-          <div class="block"><p><em>Placeholder — replace with real content when ready.</em></p></div>
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Cake</h3>
+          <ul class="zone-list">
+            <li>Single tier, white frosting</li>
+            <li>One palm leaf and one orchid bloom on a gold cake stand</li>
+            <li>Cutting is low-key — no formal moment</li>
+            <li>The dessert table gets the limelight</li>
+          </ul>
         </div>
 
-        <div class="zone">
-          <div class="zone__bar zone__bar--forest">The Shape</div>
-          <p class="zone__significance">Sequence, timing, order.</p>
-          <div class="block"><p><em>Placeholder — replace with real content when ready.</em></p></div>
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Favors</h3>
+          <ul class="zone-list">
+            <li>Bamboo fans</li>
+            <li>Mini carved maracas</li>
+            <li>Crystal pouches — malachite, selenite, larimar</li>
+            <li>Personalized mamajuana starters</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">Hora Loca</h3>
+          <ul class="zone-list">
+            <li>The Dominican tradition of turning the party loose</li>
+            <li>Mini carved maracas handed out</li>
+            <li>Props and specifics · <span class="tbc">To be confirmed</span> with Dioris</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Bouquet Toss</h3>
+          <ul class="zone-list">
+            <li>Thrown from the balcony above the reception</li>
+          </ul>
         </div>
 
       </div>
-    </main>
-  </div>
 
-  <script src="../assets/js/sidebar.js"></script>
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/main.js"></script>
+      <!-- ================================================== -->
+      <!-- ZONE 2 · THE SETTING (TEAL)                         -->
+      <!-- ================================================== -->
+      <div class="zone-bar zone-bar--teal">The Setting</div>
+      <p class="zone-significance">The built and visual layer.</p>
+
+      <!-- ------- COCKTAIL HOUR ------- -->
+      <div class="zone-moment">Cocktail Hour</div>
+      <div class="zone-body">
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Mirror</h3>
+          <ul class="zone-list">
+            <li>Single large ornate gold-frame mirror at the entrance</li>
+            <li>Text written directly on the mirror — D &amp; J, 7 · 7 · 27</li>
+            <li>Bilingual EN/ES in Cormorant SC, palette colors</li>
+            <li>Tropical foliage at the base</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">Love Stories</h3>
+          <ul class="zone-list">
+            <li>Small table with lace runner</li>
+            <li>Gold frames with curated photos of couples</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Coconut Bar</h3>
+          <ul class="zone-list">
+            <li>Wooden cart with fresh whole coconuts stacked as the display</li>
+            <li>Drinks dispensers and glassware tiered on wood shelves</li>
+            <li>Canoe bar — whole coconuts, beers, ice</li>
+            <li>Ferns overhead, tropical foliage at the base</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Fruit Station</h3>
+          <ul class="zone-list">
+            <li>Mangoes · pineapples · starfruits · guavas</li>
+            <li>Woven baskets, wooden structure</li>
+            <li>Sourced by José Miguel</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Bar Cart</h3>
+          <ul class="zone-list">
+            <li>Signature cocktails — mojito, margarita</li>
+            <li>Local sourcing — rum, mamajuana, tropical fruit</li>
+            <li>Non-alcoholic — jugo de coco, jugo de cereza</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Bites</h3>
+          <ul class="zone-list">
+            <li>Empanaditas — flour and yuca variations</li>
+            <li>Quipes — fried bulgur wheat shells, seasoned ground beef (or Alcapurrias)</li>
+            <li>Tostones rellenos — fried plantain cups, filled with meat or seafood</li>
+            <li>Croquetas — breaded and fried, ham or chicken</li>
+            <li>Platanitos — thin-sliced fried green plantain chips</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">Party Supplies</h3>
+          <ul class="zone-list">
+            <li>Straw hats</li>
+            <li>Flip-flops</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- ------- THE RECEPTION ------- -->
+      <div class="zone-moment">The Reception</div>
+      <div class="zone-body">
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Tent</h3>
+          <ul class="zone-list">
+            <li>Transparent — clear roof, open to the night sky</li>
+            <li>String lights and uplighting glow through the panels</li>
+            <li>Platform flooring beneath — level ground for tables and dance floor</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Tables</h3>
+          <ul class="zone-list">
+            <li>Gold flatware, wooden chargers, compostable plates and cutlery</li>
+            <li>No plastic, no chrome, no synthetic materials</li>
+            <li><strong>Centerpieces</strong> · <span class="tbc">To be confirmed</span> with wedding party</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Seating Chart</h3>
+          <ul class="zone-list">
+            <li>Botanical display installation</li>
+            <li><strong>Chart</strong> · <span class="tbc">To be confirmed</span></li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Entertainment</h3>
+          <ul class="zone-list">
+            <li><strong>Tipico band</strong> · <span class="tbc">To be confirmed</span></li>
+            <li><strong>DJ</strong> · <span class="tbc">To be confirmed</span></li>
+            <li><strong>Equipment setup</strong> · <span class="tbc">To be confirmed</span></li>
+            <li><strong>Performance schedule</strong> · <span class="tbc">To be confirmed</span></li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Buffet</h3>
+          <ul class="zone-list">
+            <li>Lechón asado — whole roasted pig, the traditional centerpiece of a Dominican wedding</li>
+            <li>Pollo guisado — Dominican-style stewed chicken</li>
+            <li>Moro de guandules — rice with pigeon peas</li>
+            <li>Tostones — fried green plantains</li>
+            <li>Maduros — sweet fried ripe plantains</li>
+            <li>Ensalada de aguacate — avocado salad</li>
+            <li>Ensalada de papa — potato salad (potential vegetarian option)</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Desserts</h3>
+          <ul class="zone-list">
+            <li>Dulce de coco — shredded coconut, slow-cooked in sugar</li>
+            <li>Jalao — coconut and molasses, pressed and sliced</li>
+            <li>Pudín de pan — Dominican bread pudding</li>
+            <li>Coconetes — coconut cookies</li>
+            <li>Dulce de guayaba — guava paste, sliced</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- ================================================== -->
+      <!-- ZONE 3 · THE SHAPE OF THE DAY (FOREST)              -->
+      <!-- ================================================== -->
+      <div class="zone-bar zone-bar--forest">The Shape of the Day</div>
+      <p class="zone-significance">Sequence and timing. All times tentative — <span class="tbc">To be confirmed</span> with Dioris.</p>
+
+      <div class="zone-body">
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">Cocktail Hour</h3>
+          <ul class="zone-list">
+            <li><strong>6:00 – 7:00 PM</strong> · the hour the house wakes up</li>
+          </ul>
+        </div>
+
+        <div class="zone-sub">
+          <h3 class="zone-sub-title">The Reception</h3>
+          <ul class="zone-list">
+            <li><strong>7:15 PM</strong> · grand entrance</li>
+            <li><strong>7:30 PM</strong> · first dance, bride and father dance</li>
+            <li><strong>8:00 PM</strong> · band begins, party opens</li>
+            <li><strong>9:00 PM</strong> · buffet opens</li>
+            <li><strong>9:15 PM</strong> · toasts</li>
+            <li><strong>10:00 PM</strong> · bouquet toss from the balcony</li>
+            <li><strong>10:30 PM</strong> · Hora Loca</li>
+            <li><strong>12:00 AM</strong> · end of night</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">Built for two</div>
+  </footer>
+
 </body>
 </html>
