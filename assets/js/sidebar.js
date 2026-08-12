@@ -27,7 +27,7 @@
         <li><a href="${prefix}brief/the-look.html">The Look</a></li>
         <li><a href="${prefix}brief/the-flora.html">The Flora</a></li>
         <li><a href="${prefix}brief/the-attire.html">The Attire</a></li>
-        <li><a href="${prefix}brief/the-accommodations.html">The Accommodations</a></li>
+        <li><a href="${prefix}brief/the-lodging.html">The Lodging</a></li>
         <li><a href="${prefix}brief/the-ceremony.html">The Ceremony</a></li>
         <li><a href="${prefix}brief/the-evening.html">The Evening</a></li>
         <li><a href="${prefix}brief/the-logistics.html">The Logistics</a></li>
