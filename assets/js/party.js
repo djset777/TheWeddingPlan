@@ -168,7 +168,7 @@
     }).join('');
 
     mount.innerHTML = `
-      <header class="home-head">
+      <header class="home-head home-head--no-border">
         <div class="home-head__title">
           <span class="eyebrow">The Plans</span>
           <h1 class="home-head__h1">The Team</h1>
@@ -176,11 +176,9 @@
         </div>
       </header>
 
-      <p class="team-hint">Tap a name to open their view.</p>
+      ${timelineHtml()}
 
       <div class="team-roster">${rosterHtml}</div>
-
-      ${timelineHtml()}
 
       <section class="tasklist-card">
         <div class="tasklist-card__meta-row">
