@@ -14,7 +14,7 @@
 
   <div class="layout">
 
-    <aside class="sidebar" id="sidebar" aria-label="Site navigation"><!-- filled by sidebar.js --></aside>
+    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
 
     <main class="content">
 
@@ -57,43 +57,61 @@
           </div>
         </div>
 
-        <!-- Task Progress card (donut) -->
-        <div class="card card--chart" data-chart="tasks">
+        <!-- Tasks card (Parents donut + Subtasks donut side by side) -->
+        <div class="card card--chart card--tasks" data-chart="tasks">
           <span class="card__label">Task Progress</span>
-          <svg class="donut" viewBox="0 0 42 42" role="img" aria-label="Task progress donut chart">
-            <circle class="donut__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
-            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
-                    stroke="#D4AF37" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="discover"></circle>
-            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
-                    stroke="#01605F" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="decide"></circle>
-            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
-                    stroke="#014421" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="execute"></circle>
-            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
-                    stroke="#003153" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="done"></circle>
-            <text class="donut__center" x="21" y="20">TOTAL</text>
-            <text class="donut__center-num" x="21" y="26" data-total>89</text>
-          </svg>
-          <div class="legend">
-            <div class="legend__row">
-              <span class="legend__dot" style="background: #D4AF37;"></span>
-              <span class="legend__label">Discover</span>
-              <span class="legend__value" data-legend="discover">—</span>
+
+          <div class="tasks-split">
+
+            <div class="tasks-split__side" data-donut="parents">
+              <svg class="donut" viewBox="0 0 42 42" role="img" aria-label="Parent tasks by phase">
+                <circle class="donut__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
+                <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                        stroke="#D4AF37" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="discover"></circle>
+                <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                        stroke="#01605F" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="decide"></circle>
+                <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                        stroke="#014421" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="execute"></circle>
+                <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                        stroke="#003153" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="done"></circle>
+                <text class="donut__center" x="21" y="20">PARENTS</text>
+                <text class="donut__center-num" x="21" y="26" data-total>—</text>
+              </svg>
+              <div class="legend">
+                <div class="legend__row">
+                  <span class="legend__dot" style="background: #D4AF37;"></span>
+                  <span class="legend__label">Discover</span>
+                  <span class="legend__value" data-legend="discover">—</span>
+                </div>
+                <div class="legend__row">
+                  <span class="legend__dot" style="background: #01605F;"></span>
+                  <span class="legend__label">Decide</span>
+                  <span class="legend__value" data-legend="decide">—</span>
+                </div>
+                <div class="legend__row">
+                  <span class="legend__dot" style="background: #014421;"></span>
+                  <span class="legend__label">Execute</span>
+                  <span class="legend__value" data-legend="execute">—</span>
+                </div>
+                <div class="legend__row">
+                  <span class="legend__dot" style="background: #003153;"></span>
+                  <span class="legend__label">Done</span>
+                  <span class="legend__value" data-legend="done">—</span>
+                </div>
+              </div>
             </div>
-            <div class="legend__row">
-              <span class="legend__dot" style="background: #01605F;"></span>
-              <span class="legend__label">Decide</span>
-              <span class="legend__value" data-legend="decide">—</span>
+
+            <div class="tasks-split__side" data-donut="subtasks">
+              <svg class="donut" viewBox="0 0 42 42" role="img" aria-label="Subtasks total">
+                <circle class="donut__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
+                <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                        stroke="#01605F" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="subtasks"></circle>
+                <text class="donut__center" x="21" y="20">SUBTASKS</text>
+                <text class="donut__center-num" x="21" y="26" data-subtasks-total>—</text>
+              </svg>
+              <div class="tasks-split__caption">In flight beneath the parents</div>
             </div>
-            <div class="legend__row">
-              <span class="legend__dot" style="background: #014421;"></span>
-              <span class="legend__label">Execute</span>
-              <span class="legend__value" data-legend="execute">—</span>
-            </div>
-            <div class="legend__row">
-              <span class="legend__dot" style="background: #003153;"></span>
-              <span class="legend__label">Done</span>
-              <span class="legend__value" data-legend="done">—</span>
-            </div>
+
           </div>
         </div>
 

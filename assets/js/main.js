@@ -7,16 +7,13 @@
   if (!window.TWP || !window.TWP.api) return;
 
   const q = (sel, root = document) => root.querySelector(sel);
-  const all = (sel, root = document) => root.querySelectorAll(sel);
 
   // -- Donut chart hydration ------------------------------------------------
-  // Segments arranged in the order they appear as [data-seg] children.
-  // stroke-dasharray works because circumference = 100 (r ≈ 15.915).
   function drawDonut(cardEl, data, segmentKeys) {
     const total = data.total || 0;
     if (!total) return;
 
-    let offset = 25; // start at top
+    let offset = 25;
     segmentKeys.forEach(key => {
       const value = data[key] || 0;
       const pct = (value / total) * 100;
@@ -28,40 +25,61 @@
       offset = ((offset - pct) % 100 + 100) % 100;
     });
 
-    // Update center total
     const totalEl = q('[data-total]', cardEl);
     if (totalEl) totalEl.textContent = total;
 
-    // Update legend values
     segmentKeys.forEach(key => {
       const el = q(`[data-legend="${key}"]`, cardEl);
       if (el) el.textContent = data[key] ?? 0;
     });
-    // Awaiting / needed are computed, not colored segments
     ['awaiting', 'needed'].forEach(key => {
       const el = q(`[data-legend="${key}"]`, cardEl);
       if (el && data[key] != null) el.textContent = data[key];
     });
   }
 
-  const rsvpCard    = q('[data-chart="rsvp"]');
-  const tasksCard   = q('[data-chart="tasks"]');
-  const vendorsCard = q('[data-chart="vendors"]');
+  // -- Single-color donut (for subtasks — solid ring) -----------------------
+  function drawSolidDonut(sectionEl, total) {
+    const seg = q('[data-seg="subtasks"]', sectionEl);
+    if (seg) {
+      seg.setAttribute('stroke-dasharray', `100 0`);
+      seg.setAttribute('stroke-dashoffset', '25');
+    }
+    const totalEl = q('[data-subtasks-total]', sectionEl);
+    if (totalEl) totalEl.textContent = total;
+  }
 
+  // RSVP donut
+  const rsvpCard = q('[data-chart="rsvp"]');
   if (rsvpCard) {
     const rsvp = await window.TWP.api.get('rsvp');
     if (rsvp) drawDonut(rsvpCard, rsvp, ['confirmed', 'declined']);
   }
+
+  // Tasks card — two donuts side by side
+  const tasksCard = q('[data-chart="tasks"]');
   if (tasksCard) {
     const tasks = await window.TWP.api.get('tasks');
-    if (tasks) drawDonut(tasksCard, tasks, ['discover', 'decide', 'execute', 'done']);
+    if (tasks) {
+      const parentsSection = q('[data-donut="parents"]', tasksCard);
+      if (parentsSection && tasks.parents) {
+        drawDonut(parentsSection, tasks.parents, ['discover', 'decide', 'execute', 'done']);
+      }
+      const subtasksSection = q('[data-donut="subtasks"]', tasksCard);
+      if (subtasksSection && tasks.subtasks) {
+        drawSolidDonut(subtasksSection, tasks.subtasks.total);
+      }
+    }
   }
+
+  // Vendors donut
+  const vendorsCard = q('[data-chart="vendors"]');
   if (vendorsCard) {
     const vendors = await window.TWP.api.get('vendors');
     if (vendors) drawDonut(vendorsCard, vendors, ['booked', 'pending']);
   }
 
-  // -- Upcoming list --------------------------------------------------------
+  // Upcoming list
   const upcomingMount = q('[data-upcoming]');
   if (upcomingMount) {
     const upcoming = await window.TWP.api.get('upcoming');
@@ -77,7 +95,7 @@
     }
   }
 
-  // -- Recent activity feed -------------------------------------------------
+  // Recent activity feed
   const feedMount = q('[data-feed]');
   if (feedMount) {
     const recent = await window.TWP.api.get('recent');

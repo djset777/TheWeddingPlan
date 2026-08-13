@@ -20,11 +20,16 @@ const MOCK = {
     awaiting: 154,
   },
   tasks: {
-    total: 89,
-    discover: 41,
-    decide: 22,
-    execute: 14,
-    done: 12,
+    parents: {
+      total: 89,
+      discover: 41,
+      decide: 22,
+      execute: 14,
+      done: 12,
+    },
+    subtasks: {
+      total: 330,
+    },
   },
   vendors: {
     total: 18,
