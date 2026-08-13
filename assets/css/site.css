@@ -45,7 +45,7 @@
   text-align: center;
   color: var(--accent);
   margin-top: 0;
-  padding-top: var(--space-1);
+  padding-top: var(--space-2);
   padding-bottom: var(--space-3);
   border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   margin-bottom: var(--space-3);
@@ -850,14 +850,14 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: var(--space-3) var(--space-2);
+  padding: var(--space-2) var(--space-2) var(--space-3);
   position: relative;
   margin-bottom: var(--space-3);
   background: transparent;
 }
 .timeline__line {
   position: absolute;
-  top: calc(var(--space-3) + 8px);
+  top: calc(var(--space-2) + 8px);
   left: 0;
   right: 0;
   height: 1px;
@@ -879,25 +879,24 @@
   align-items: center;
   gap: 8px;
 }
-/* Dot wrapper — reserves a 16px slot so all dots align to the same center line */
 .timeline__dot {
   display: block;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(212, 175, 55, 0.35);
+  background: #E8D68C;
   box-shadow: 0 0 0 4px var(--bg);
   transition: transform 0.2s ease, background 0.2s ease;
-  margin: 4px 0; /* keeps small dots vertically centered where the big NOW dot sits */
+  margin: 4px 0;
 }
 .timeline__stop:hover .timeline__dot {
   transform: scale(1.2);
 }
 .timeline__dot--past {
-  background: rgba(212, 175, 55, 0.35);
+  background: #E8D68C;
 }
 .timeline__dot--future {
-  background: rgba(1, 96, 95, 0.35);
+  background: #8FAAA9;
 }
 .timeline__dot--now {
   width: 16px;
