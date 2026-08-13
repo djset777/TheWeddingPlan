@@ -750,10 +750,6 @@
 
 /* --- Home header --------------------------------------------------------- */
 .home-head {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--space-4);
-  align-items: center;
   padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--accent);
   margin-bottom: var(--space-3);
@@ -761,6 +757,13 @@
 .home-head--no-border {
   border-bottom: none;
   margin-bottom: 0;
+}
+/* When the header needs a right-side element (like the person bubble on The Team) */
+.home-head--split {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-4);
+  align-items: center;
 }
 .home-head__title .eyebrow {
   display: block;

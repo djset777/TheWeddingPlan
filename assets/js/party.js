@@ -241,7 +241,7 @@
     mount.innerHTML = `
       <a class="team-back" href="#" data-team-back>← The Team</a>
 
-      <header class="home-head home-head--no-border">
+      <header class="home-head home-head--no-border home-head--split">
         <div class="home-head__title">
           <span class="eyebrow">${person.role}</span>
           <h1 class="home-head__h1">${person.name}</h1>
