@@ -631,73 +631,6 @@
   font-weight: 500;
 }
 
-/* --- Flora card: photo + info side by side ----------------------------- */
-.flora-card {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: var(--space-3);
-  padding: var(--space-3) 0;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
-  align-items: center;
-}
-.flora-card__photo {
-  aspect-ratio: 1;
-  background: rgba(1, 96, 95, 0.06);
-  border: 1px dashed rgba(212, 175, 55, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Cormorant SC', Georgia, serif;
-  color: rgba(12, 52, 61, 0.35);
-  font-size: var(--step--2);
-  letter-spacing: 0.2em;
-  text-align: center;
-  padding: 0.5rem;
-}
-.flora-card__body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-.flora-card__name {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-weight: 500;
-  color: var(--deeper);
-  font-size: var(--step-1);
-  letter-spacing: 0.05em;
-  margin: 0;
-  line-height: 1.2;
-  border: none;
-  padding: 0;
-}
-.flora-card__latin {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  font-weight: 500;
-  color: var(--deeper);
-  font-size: var(--step-0);
-  margin-left: 0.5rem;
-  letter-spacing: 0;
-}
-.flora-card__ref {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-weight: 500;
-  color: var(--accent);
-  font-size: var(--step--2);
-  letter-spacing: 0.18em;
-  align-self: flex-start;
-  margin-top: 0.2rem;
-  border: none;
-}
-.flora-card__ref:hover { color: var(--deeper); }
-.flora-card__desc {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  color: var(--ink);
-  margin: 0.4rem 0 0;
-  line-height: 1.55;
-  font-size: var(--step-0);
-}
-
 /* --- Tier bar (like zone__bar but progressive colors for Flora tiers) --- */
 .tier-bar {
   padding: var(--space-2) var(--space-3);
@@ -1839,16 +1772,19 @@
 }
 
 .flora-card__meta {
-  padding: 11px var(--space-3) 14px;
+  padding: 11px var(--space-2) 12px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  text-align: center;
+  gap: 1px;
 }
 .flora-card__name {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step-0);
   letter-spacing: 0.03em;
   color: var(--anchor);
+  line-height: 1.2;
 }
 .flora-card__latin {
   font-family: 'Cormorant Garamond', Georgia, serif;
@@ -1856,6 +1792,7 @@
   font-size: var(--step--1);
   color: var(--accent);
   margin-left: 0;
+  line-height: 1.2;
 }
 .flora-card__desc {
   font-family: 'Cormorant Garamond', Georgia, serif;
