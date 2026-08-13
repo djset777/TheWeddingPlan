@@ -1818,6 +1818,7 @@
   background: var(--deeper);
   border-radius: 999px;
   padding: 2px;
+  box-shadow: 0 1px 6px rgba(12, 52, 61, 0.35);
 }
 .flora-card__tab {
   font-family: 'Cormorant SC', Georgia, serif;
