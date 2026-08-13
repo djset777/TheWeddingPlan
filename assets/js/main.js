@@ -243,19 +243,19 @@
     }
 
     mount.innerHTML = `
-      <div class="kanban">
+      <div class="kanban kanban--split">
         ${STATUS_COLS.map(col => {
           const items = buckets[col.key];
           const cards = items.length
             ? items.map(renderKanbanCard).join('')
             : '<div class="kanban__empty">—</div>';
           return `
-            <div class="kanban__col">
+            <section class="tasklist-card kanban__card kanban__card--${col.key}">
               <div class="kanban__head kanban__head--${col.key}">
                 ${col.label}<span class="kanban__count">· ${items.length}</span>
               </div>
               <div class="kanban__list">${cards}</div>
-            </div>
+            </section>
           `;
         }).join('')}
       </div>
