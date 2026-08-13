@@ -1626,3 +1626,37 @@
 .sidebar__rsvp-awaiting {
   color: rgba(242, 237, 230, 0.6);
 }
+
+/* --- Timeline read-only marker (personal view) ------------------------ */
+.timeline--static .timeline__stop {
+  cursor: default;
+}
+.timeline--static .timeline__stop:hover .timeline__dot {
+  transform: none;
+}
+.timeline__dot--has-work {
+  background: var(--anchor);
+}
+/* Count number next to timeline label */
+.timeline__label em:last-child {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  color: var(--anchor);
+  margin-top: 2px;
+  letter-spacing: 0;
+}
+
+/* --- Personal kanban: overdue markers --------------------------------- */
+.kcard--overdue {
+  border-left: 3px solid #B85C1E;
+  padding-left: 8px;
+}
+.kcard__overdue {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  color: #B85C1E;
+  flex-shrink: 0;
+}

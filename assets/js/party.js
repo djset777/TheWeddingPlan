@@ -88,8 +88,11 @@
   let activePerson = null;         // null = group view, otherwise ROSTER entry
 
   // Flatten tasks → subtasks (same shape main.js uses)
+  // parentsById lets the modal look up full parent context (notes, phase, etc.)
   const subtasks = [];
+  const parentsById = {};
   tasks.forEach(parent => {
+    parentsById[parent.id] = parent;
     (parent.subtasks || []).forEach(sub => {
       subtasks.push({
         id: sub.id,
@@ -105,7 +108,10 @@
   });
 
   // ----------------------------------------------------------------------
-  // Timeline (same as main.js — inlined so party page is self-contained)
+  // Timeline
+  // - timelineHtml() — filterable, used on group view. Buttons scrub timeframe.
+  // - personTimelineHtml(personName) — read-only marker showing where this
+  //   person's work lands. Dots sized by task count. No click behavior.
   // ----------------------------------------------------------------------
   function timelineHtml() {
     const dots = timeframes.map(tf => {
@@ -128,6 +134,43 @@
         <div class="timeline__line"></div>
         ${dots}
       </nav>
+    `;
+  }
+
+  function personTimelineHtml(personName) {
+    // Count OPEN subtasks per timeframe for this person
+    const counts = {};
+    subtasks.forEach(s => {
+      if (!s.assignees.includes(personName)) return;
+      if ((s.rawStatus || '').toLowerCase() === 'complete') return;
+      counts[s.timeframe] = (counts[s.timeframe] || 0) + 1;
+    });
+
+    const dots = timeframes.map(tf => {
+      const isNow = tf.isNow;
+      const count = counts[tf.code] || 0;
+      let stateClass = '';
+      if (tf.order < NOW_ORDER) stateClass = 'timeline__dot--past';
+      else if (tf.order > NOW_ORDER) stateClass = 'timeline__dot--future';
+      if (isNow) stateClass += ' timeline__dot--now';
+      if (count > 0 && !isNow) stateClass += ' timeline__dot--has-work';
+
+      const label = count > 0
+        ? `${tf.label}<em>${count}</em>`
+        : tf.label;
+
+      return `
+        <div class="timeline__stop timeline__stop--static">
+          <span class="timeline__dot ${stateClass}"></span>
+          <span class="timeline__label">${label}${isNow ? '<em>NOW</em>' : ''}</span>
+        </div>
+      `;
+    }).join('');
+    return `
+      <div class="timeline timeline--static" aria-label="Task distribution across time">
+        <div class="timeline__line"></div>
+        ${dots}
+      </div>
     `;
   }
 
@@ -199,41 +242,82 @@
   }
 
   // ----------------------------------------------------------------------
-  // Personal view — bio + timeline + tasks for this person
+  // Personal view — person-scoped kanban + read-only timeline marker.
+  // Shows ALL of this person's tasks across every timeframe.
+  // Overdue (past-timeframe still-open items) float to the top of their
+  // status column with an amber marker + timeframe tag.
   // ----------------------------------------------------------------------
+  const STATUS_COLS = [
+    { key: 'not',      label: 'Not Started',  matches: ['not started', ''] },
+    { key: 'needs',    label: 'Needs Help',   matches: ['needs help'] },
+    { key: 'progress', label: 'In Progress',  matches: ['in progress'] },
+    { key: 'done',     label: 'Complete',     matches: ['complete'] },
+  ];
+
+  function initialsOf(name) {
+    const person = ROSTER.find(p => p.name === name);
+    if (person) return person.initials;
+    // Fallback for non-roster names (Dioris/Guaroa etc)
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return name.slice(0, 1).toUpperCase();
+  }
+
   function renderPerson() {
     const mount = q('[data-team-view]');
     const person = activePerson;
 
-    // Tasks assigned to this person, for the currently active timeframe
-    const theirsAll = subtasks.filter(s => (s.assignees || []).includes(person.name));
-    const theirsNow = theirsAll.filter(s => s.timeframe === activeTf);
+    // Everything this person is assigned to, across every timeframe
+    const theirs = subtasks
+      .filter(s => (s.assignees || []).includes(person.name))
+      .map(s => {
+        const tf = timeframes.find(t => t.code === s.timeframe);
+        const isOverdue = tf && tf.order < NOW_ORDER
+          && (s.rawStatus || '').toLowerCase() !== 'complete';
+        return { ...s, isOverdue, tfOrder: tf ? tf.order : 999, tfLabel: tf ? tf.label : '' };
+      });
 
-    // Bucket by simple status: open vs done
-    const open = theirsNow.filter(s => (s.rawStatus || '').toLowerCase() !== 'complete');
-    const done = theirsNow.filter(s => (s.rawStatus || '').toLowerCase() === 'complete');
+    // Bucket by status column
+    const buckets = { not: [], needs: [], progress: [], done: [] };
+    theirs.forEach(t => {
+      const key = statusKeyOf(t.rawStatus);
+      buckets[key].push(t);
+    });
 
-    const renderTask = t => {
-      const rawStatus = (t.rawStatus || 'Not Started');
-      const statusKey = statusKeyOf(rawStatus);
+    // Sort each open column: overdue first (earliest timeframe on top),
+    // then current-and-future by timeframe order
+    ['not', 'needs', 'progress'].forEach(col => {
+      buckets[col].sort((a, b) => {
+        if (a.isOverdue && !b.isOverdue) return -1;
+        if (!a.isOverdue && b.isOverdue) return 1;
+        return a.tfOrder - b.tfOrder;
+      });
+    });
+    // Done column: newest-timeframe first (least stale)
+    buckets.done.sort((a, b) => b.tfOrder - a.tfOrder);
+
+    const openCount = theirs.filter(t => t.status !== 'done').length;
+    const overdueCount = theirs.filter(t => t.isOverdue).length;
+
+    const renderCard = t => {
+      const statusKey = statusKeyOf(t.rawStatus);
+      const overdueTag = t.isOverdue
+        ? `<span class="kcard__overdue">${t.tfLabel} · overdue</span>`
+        : '';
       return `
-        <div class="ptask ptask--${statusKey}">
-          <div class="ptask__title">${t.title}</div>
-          <div class="ptask__foot">
-            <span class="ptask__parent">${t.parent}</span>
-            <span class="ptask__status ptask__status--${statusKey}">${rawStatus}</span>
+        <div class="kcard kcard--${statusKey}${t.isOverdue ? ' kcard--overdue' : ''}" data-task-id="${t.id}" data-parent-id="${t.parentId}">
+          <div class="kcard__title">${t.title}</div>
+          <div class="kcard__foot">
+            <span class="kcard__parent">${t.parent}</span>
+            ${overdueTag}
           </div>
         </div>
       `;
     };
 
-    const openHtml = open.length
-      ? open.map(renderTask).join('')
-      : '<div class="kanban__empty">Nothing open in this timeframe.</div>';
-
-    const doneHtml = done.length
-      ? done.map(renderTask).join('')
-      : '<div class="kanban__empty">Nothing completed yet.</div>';
+    const metaText = overdueCount
+      ? `${overdueCount} overdue · ${openCount} open`
+      : `${openCount} open`;
 
     mount.innerHTML = `
       <a class="team-back" href="#" data-team-back>← The Team</a>
@@ -247,25 +331,29 @@
         <div class="team-person-bubble">${person.initials}</div>
       </header>
 
-      ${timelineHtml()}
+      ${personTimelineHtml(person.name)}
 
-      <div class="team-cols">
-        <section class="tasklist-card">
-          <div class="tasklist-card__meta-row">
-            <span class="team-section-label">Planning</span>
-            <span class="tasklist-card__meta">${open.length} open</span>
-          </div>
-          <div class="ptask-list">${openHtml}</div>
-        </section>
-
-        <section class="tasklist-card">
-          <div class="tasklist-card__meta-row">
-            <span class="team-section-label">Done</span>
-            <span class="tasklist-card__meta">${done.length} complete</span>
-          </div>
-          <div class="ptask-list">${doneHtml}</div>
-        </section>
-      </div>
+      <section class="tasklist-card">
+        <div class="tasklist-card__meta-row">
+          <span class="tasklist-card__meta">${metaText}</span>
+        </div>
+        <div class="kanban">
+          ${STATUS_COLS.map(col => {
+            const items = buckets[col.key];
+            const cards = items.length
+              ? items.map(renderCard).join('')
+              : '<div class="kanban__empty">—</div>';
+            return `
+              <div class="kanban__col">
+                <div class="kanban__head kanban__head--${col.key}">
+                  ${col.label}<span class="kanban__count">· ${items.length}</span>
+                </div>
+                <div class="kanban__list">${cards}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </section>
 
       <section class="tasklist-card">
         <div class="tasklist-card__meta-row">
@@ -282,7 +370,13 @@
       activePerson = null;
       render();
     });
-    wireTimeline(mount);
+
+    // Wire card clicks → modal (uses parentsById lookup + same modal shell)
+    qa('.kcard', mount).forEach(card => {
+      card.addEventListener('click', () => {
+        openParentModal(card.dataset.parentId, card.dataset.taskId);
+      });
+    });
   }
 
   // Status vocab reused
@@ -293,6 +387,88 @@
     if (s === 'needs help') return 'needs';
     return 'not';
   }
+
+  // ----------------------------------------------------------------------
+  // Modal — parent task detail (mirrors Home's modal)
+  // ----------------------------------------------------------------------
+  function openParentModal(parentId, selectedTaskId) {
+    const parent = parentsById[parentId];
+    if (!parent) return;
+    const modal = q('[data-modal]');
+    const body = q('[data-modal-body]');
+    if (!modal || !body) return;
+
+    const phaseKey = (parent.phase || 'discover').toLowerCase();
+    const statusKey = statusKeyOf(parent.status);
+    const statusLabel = parent.status || 'Not Started';
+
+    const assignees = (parent.assignees || []).map(name => {
+      return `<span class="kcard__bubble">${initialsOf(name)}</span>`;
+    }).join('');
+
+    const subs = (parent.subtasks || []).map(sub => {
+      const subStatusKey = statusKeyOf(sub.status);
+      const isDone = subStatusKey === 'done';
+      const isSelected = sub.id === selectedTaskId;
+      const boxCls = `msub__box msub__box--${subStatusKey}`;
+      const boxContent = isDone ? '✓' : '';
+      const rowCls = `msub${isDone ? ' msub--done' : ''}${isSelected ? ' msub--selected' : ''}`;
+      const subBubbles = (sub.assignees || []).map(name => {
+        return `<span class="kcard__bubble">${initialsOf(name)}</span>`;
+      }).join('');
+      return `
+        <div class="${rowCls}">
+          <span class="${boxCls}">${boxContent}</span>
+          <span class="msub__title">${sub.title}</span>
+          <span class="msub__bubbles">${subBubbles}</span>
+        </div>
+      `;
+    }).join('');
+
+    const notesBlock = parent.notes
+      ? `<p class="mtask__notes">${parent.notes}</p>`
+      : '';
+
+    body.innerHTML = `
+      <div class="mtask__eyebrow">Parent Task</div>
+      <h2 class="mtask__title" id="modal-title">${parent.title}</h2>
+      ${notesBlock}
+      <div class="mtask__meta">
+        <div class="mtask__meta-item">
+          <span class="mtask__meta-label">Phase</span>
+          <span class="mtask__meta-value mtask__meta-value--${phaseKey}">${(parent.phase || 'Discover').toUpperCase()}</span>
+        </div>
+        <div class="mtask__meta-item">
+          <span class="mtask__meta-label">Status</span>
+          <span class="mtask__meta-value mtask__meta-value--${statusKey}">${statusLabel.toUpperCase()}</span>
+        </div>
+        ${assignees ? `
+          <div class="mtask__meta-item">
+            <span class="mtask__meta-label">With</span>
+            <div class="kcard__assignees">${assignees}</div>
+          </div>
+        ` : ''}
+      </div>
+      <div class="mtask__section-title">All ${parent.subtasks ? parent.subtasks.length : 0} subtasks</div>
+      <div class="mtask__subs">${subs || '<div class="kanban__empty">No subtasks yet.</div>'}</div>
+    `;
+
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeParentModal() {
+    const modal = q('[data-modal]');
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  // Modal close handlers (backdrop + × button + Esc)
+  qa('[data-modal-close]').forEach(el => el.addEventListener('click', closeParentModal));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeParentModal();
+  });
 
   // Root dispatch
   function render() {
