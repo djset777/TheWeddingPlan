@@ -458,8 +458,8 @@
   padding: var(--space-3);
   text-align: center;
   font-style: italic;
-  color: var(--ink);
-  opacity: 0.6;
+  color: var(--accent);
+  opacity: 0.8;
   font-size: var(--step--1);
 }
 
@@ -1754,4 +1754,127 @@
 .phase-bar__sep {
   opacity: 0.5;
   margin: 0 0.6rem;
+}
+
+
+/* ==========================================================================
+   Flora — Direction A grid (compact cards + Plant/Styled toggle)
+   Replaces the old full-width .flora-card row layout
+   ========================================================================== */
+.flora-intro {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: var(--step-0);
+  color: var(--ink);
+  margin-bottom: var(--space-4);
+}
+.flora-intro__sub {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: var(--step--1);
+  font-style: normal;
+  color: rgba(12, 52, 61, 0.65);
+}
+
+.flora-bar {
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-0);
+  letter-spacing: 0.14em;
+  color: var(--linen);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-3);
+}
+.flora-bar--teal  { background: var(--anchor); }
+.flora-bar--green { background: var(--deeper); }
+.flora-bar--navy  { background: var(--deepest); }
+.flora-bar__sep   { opacity: 0.5; margin: 0 0.5rem; }
+
+.flora-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.flora-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--linen-rule);
+  overflow: hidden;
+}
+.flora-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--linen-shade);
+}
+.flora-card__img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.flora-card__img.is-on { opacity: 1; }
+
+.flora-card__toggle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  background: rgba(12, 52, 61, 0.55);
+  border-radius: 999px;
+  padding: 2px;
+  backdrop-filter: blur(2px);
+}
+.flora-card__tab {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.06em;
+  color: rgba(242, 237, 230, 0.75);
+  background: transparent;
+  border: none;
+  padding: 3px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.flora-card__tab.is-on {
+  background: var(--accent);
+  color: var(--abyss);
+}
+
+.flora-card__meta {
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.flora-card__name {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-0);
+  letter-spacing: 0.03em;
+  color: var(--anchor);
+}
+.flora-card__latin {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  color: rgba(12, 52, 61, 0.6);
+}
+.flora-card__desc {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--ink);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .flora-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .flora-grid { grid-template-columns: 1fr; }
 }

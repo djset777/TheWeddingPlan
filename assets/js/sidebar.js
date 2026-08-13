@@ -22,13 +22,12 @@
     <div class="sidebar__rsvp">
       <div class="sidebar__rsvp-head">
         <span class="sidebar__rsvp-label">RSVP</span>
-        <span class="sidebar__rsvp-frac"><span data-rsvp-confirmed>—</span> / <span data-rsvp-total>—</span></span>
       </div>
       <div class="sidebar__rsvp-bar">
         <div class="sidebar__rsvp-fill" data-rsvp-fill style="width: 0%;"></div>
       </div>
       <div class="sidebar__rsvp-foot">
-        <span class="sidebar__rsvp-confirmed">confirmed</span>
+        <span class="sidebar__rsvp-confirmed"><span data-rsvp-confirmed>—</span> confirmed</span>
         <span class="sidebar__rsvp-awaiting"><span data-rsvp-awaiting>—</span> awaiting</span>
       </div>
     </div>
