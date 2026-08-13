@@ -1783,9 +1783,10 @@
   font-size: var(--step-0);
   letter-spacing: 0.14em;
   color: var(--linen);
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
   margin-bottom: var(--space-3);
 }
+.flora-bar:first-of-type { margin-top: 0; }
 .flora-bar--teal  { background: var(--anchor); }
 .flora-bar--green { background: var(--deeper); }
 .flora-bar--navy  { background: var(--deepest); }
@@ -1827,16 +1828,15 @@
   top: 8px;
   right: 8px;
   display: flex;
-  background: rgba(12, 52, 61, 0.55);
+  background: var(--abyss);
   border-radius: 999px;
   padding: 2px;
-  backdrop-filter: blur(2px);
 }
 .flora-card__tab {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
   letter-spacing: 0.06em;
-  color: rgba(242, 237, 230, 0.75);
+  color: var(--linen);
   background: transparent;
   border: none;
   padding: 3px 12px;
@@ -1865,7 +1865,7 @@
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
   font-size: var(--step--1);
-  color: rgba(12, 52, 61, 0.6);
+  color: var(--accent);
 }
 .flora-card__desc {
   font-family: 'Cormorant Garamond', Georgia, serif;
@@ -1896,3 +1896,6 @@
   letter-spacing: 0.12em;
   color: rgba(12, 52, 61, 0.45);
 }
+
+/* Flora page: tighten the gap between the header rule and the first tier bar */
+.content__head + .flora-bar { margin-top: 0; }
