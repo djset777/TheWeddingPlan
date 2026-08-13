@@ -1033,19 +1033,11 @@
   border-radius: 8px;
   border: 1px solid var(--linen-rule);
 }
-.tasklist-card__head {
+.tasklist-card__meta-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: baseline;
   margin-bottom: var(--space-3);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--linen-rule);
-}
-.tasklist-card__label {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--1);
-  color: var(--accent);
-  letter-spacing: 0.14em;
 }
 .tasklist-card__meta {
   font-family: 'Cormorant Garamond', serif;
@@ -1054,133 +1046,297 @@
   color: var(--accent);
 }
 
-/* --- Task rows ----------------------------------------------------------- */
-.tl-row {
+/* --- Kanban board ------------------------------------------------------- */
+.kanban {
   display: grid;
-  grid-template-columns: 20px 1fr auto auto;
-  gap: 12px;
-  align-items: center;
-  padding: 6px 8px;
-  border-bottom: 0.5px solid rgba(212, 175, 55, 0.2);
-  margin: 0 -8px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
 }
-.tl-row:last-child {
-  border-bottom: none;
+.kanban__col { min-width: 0; }
+.kanban__head {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  padding-bottom: 6px;
+  border-bottom: 2px solid;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.tl-row--overdue {
-  background: rgba(212, 175, 55, 0.07);
-  border-radius: 4px;
+.kanban__head--needs   { color: #B85C1E;             border-color: #B85C1E; }
+.kanban__head--progress{ color: var(--anchor);       border-color: var(--anchor); }
+.kanban__head--not     { color: rgba(12, 52, 61, 0.5); border-color: rgba(212, 175, 55, 0.4); }
+.kanban__head--done    { color: rgba(1, 68, 33, 0.65); border-color: rgba(1, 68, 33, 0.3); }
+.kanban__count {
+  opacity: 0.6;
+  margin-left: 4px;
 }
-.tl-row--done {
-  opacity: 0.5;
+.kanban__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
-.tl-row--done .tl-title {
+.kanban__empty {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  color: rgba(12, 52, 61, 0.3);
+  padding: 6px 4px;
+}
+
+/* Task card inside a kanban column */
+.kcard {
+  padding: 8px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+  border: 1px solid transparent;
+}
+.kcard:hover {
+  transform: translateY(-1px);
+  border-color: rgba(212, 175, 55, 0.35);
+}
+.kcard--needs    { background: rgba(184, 92, 30, 0.06); }
+.kcard--progress { background: rgba(1, 96, 95, 0.06); }
+.kcard--not      { background: rgba(212, 175, 55, 0.05); }
+.kcard--done     { background: rgba(1, 68, 33, 0.05); opacity: 0.6; }
+.kcard__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.kcard--done .kcard__title {
   text-decoration: line-through;
   text-decoration-color: rgba(12, 52, 61, 0.3);
 }
-
-.tl-check {
-  display: block;
-  width: 14px;
-  height: 14px;
+.kcard__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+.kcard__parent {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--anchor);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+.kcard__assignees {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.kcard__bubble {
+  min-width: 18px;
+  height: 18px;
   border-radius: 50%;
-  margin: 0 auto;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  letter-spacing: 0.04em;
 }
-.tl-check--open {
-  border: 1.5px solid var(--accent);
+
+/* --- Modal (parent task detail) ---------------------------------------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
 }
-.tl-check--overdue {
-  background: #B85C1E;
+.modal[hidden] { display: none; }
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 52, 61, 0.5);
+  animation: modal-fade-in 0.2s ease;
 }
-.tl-check--done {
-  background: var(--deepest);
+.modal__panel {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 28px 32px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  animation: modal-slide-in 0.2s ease;
+}
+.modal__close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 22px;
+  color: rgba(12, 52, 61, 0.4);
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+.modal__close:hover { color: var(--anchor); }
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modal-slide-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Modal body sections */
+.mtask__eyebrow {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  margin-bottom: 6px;
+}
+.mtask__title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-2);
+  color: var(--anchor);
+  letter-spacing: 0.04em;
+  margin: 0 0 10px;
+  line-height: 1.15;
+}
+.mtask__notes {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  color: rgba(12, 52, 61, 0.7);
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+.mtask__meta {
+  display: flex;
+  gap: 24px;
+  padding: 12px 0;
+  border-top: 0.5px solid rgba(212, 175, 55, 0.3);
+  border-bottom: 0.5px solid rgba(212, 175, 55, 0.3);
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.mtask__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mtask__meta-label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 9px;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+}
+.mtask__meta-value {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  letter-spacing: 0.06em;
+}
+.mtask__meta-value--discover { color: var(--accent); }
+.mtask__meta-value--decide   { color: var(--anchor); }
+.mtask__meta-value--execute  { color: var(--deeper); }
+.mtask__meta-value--done     { color: var(--deepest); }
+.mtask__meta-value--needs    { color: #B85C1E; }
+.mtask__meta-value--progress { color: var(--anchor); }
+.mtask__meta-value--not      { color: rgba(12, 52, 61, 0.6); }
+.mtask__meta-value--complete { color: var(--deeper); }
+
+.mtask__section-title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 9px;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  margin-bottom: 10px;
+}
+.mtask__subs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.msub {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-size: var(--step--1);
+}
+.msub--selected {
+  background: rgba(212, 175, 55, 0.13);
+  font-weight: 500;
+}
+.msub--done {
+  opacity: 0.5;
+}
+.msub--done .msub__title {
+  text-decoration: line-through;
+  text-decoration-color: rgba(12, 52, 61, 0.3);
+}
+.msub__box {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1.5px solid rgba(212, 175, 55, 0.6);
+}
+.msub__box--progress {
+  border-color: var(--anchor);
+  background: rgba(1, 96, 95, 0.15);
+}
+.msub__box--needs {
+  border-color: #B85C1E;
+}
+.msub__box--done {
+  background: var(--deeper);
+  border-color: var(--deeper);
   color: var(--linen);
   font-size: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
 }
-
-.tl-body {
-  min-width: 0;
-}
-.tl-title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: var(--step--1);
-  color: var(--ink);
-  line-height: 1.35;
-}
-.tl-tags {
-  margin-top: 4px;
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.tl-tag {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  color: var(--anchor);
-  letter-spacing: 0.1em;
-  background: rgba(1, 96, 95, 0.08);
-  padding: 1px 6px;
-  border-radius: 2px;
-}
-.tl-tag-note {
+.msub__title {
   font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: var(--step--2);
-  letter-spacing: 0;
+  color: var(--ink);
+  line-height: 1.3;
 }
-.tl-tag-note--overdue {
-  color: #B85C1E;
-}
-
-.tl-assignees {
+.msub__bubbles {
   display: flex;
-  gap: 3px;
-}
-.tl-assignee {
-  min-width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--anchor);
-  color: var(--accent);
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: 0.04em;
-  padding: 0 5px;
+  gap: 2px;
 }
 
-.tl-phase {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  letter-spacing: 0.1em;
+/* Responsive kanban */
+@media (max-width: 820px) {
+  .kanban {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
 }
-.tl-phase--discover { color: var(--accent); }
-.tl-phase--decide   { color: var(--anchor); }
-.tl-phase--execute  { color: var(--deeper); }
-.tl-phase--done     { color: var(--deepest); }
-
-/* Responsive: tighter grid on narrow screens */
-@media (max-width: 720px) {
-  .pies {
+@media (max-width: 480px) {
+  .kanban {
     grid-template-columns: 1fr;
   }
-  .home-head {
-    grid-template-columns: 1fr;
-  }
-  .tl-row {
-    grid-template-columns: 22px 1fr;
-    gap: 10px;
-  }
-  .tl-row .tl-assignees,
-  .tl-row .tl-phase {
-    grid-column: 2;
-    justify-self: start;
+  .modal__panel {
+    padding: 20px 22px;
   }
 }

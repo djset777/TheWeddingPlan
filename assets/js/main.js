@@ -21,17 +21,22 @@
   // Flatten parents → subtasks. Each subtask inherits its parent's timeframe,
   // phase, and any tags/moment/category. The site treats subtasks as the atoms.
   const subtasks = [];
+  const parentsById = {};  // for modal lookup
   (tasks || []).forEach(parent => {
+    parentsById[parent.id] = parent;
     (parent.subtasks || []).forEach(sub => {
+      const rawStatus = (sub.status || 'Not Started');
       subtasks.push({
         id: sub.id,
+        parentId: parent.id,
         title: sub.title,
         parent: sub.parent,
         category: (parent.tags && parent.tags[0]) || parent.moment || '',
         timeframe: parent.timeframe,
         phase: parent.phase ? parent.phase.toLowerCase() : '',
         assignees: sub.assignees && sub.assignees.length ? sub.assignees : (parent.assignees || []),
-        status: (sub.status || '').toLowerCase() === 'complete' ? 'done' : 'open',
+        rawStatus: rawStatus,
+        status: rawStatus.toLowerCase() === 'complete' ? 'done' : 'open',
       });
     });
   });
@@ -179,77 +184,174 @@
   }
 
   // -------------------------------------------------------
-  // Task list — subtasks with parent tag pills
-  // Overdue floats to top with amber marker
+  // Kanban task board — 4 columns by status
   // -------------------------------------------------------
-  function renderTask(task) {
-    const overdueCls = task.isOverdue ? ' tl-row--overdue' : '';
-    const doneCls = task.status === 'done' ? ' tl-row--done' : '';
+  const STATUS_COLS = [
+    { key: 'needs',    label: 'Needs Help',   matches: ['needs help'] },
+    { key: 'progress', label: 'In Progress',  matches: ['in progress'] },
+    { key: 'not',      label: 'Not Started',  matches: ['not started', ''] },
+    { key: 'done',     label: 'Complete',     matches: ['complete'] },
+  ];
 
-    // Left check-state indicator
-    let indicator;
-    if (task.status === 'done') {
-      indicator = '<span class="tl-check tl-check--done">✓</span>';
-    } else if (task.isOverdue) {
-      indicator = '<span class="tl-check tl-check--overdue"></span>';
-    } else {
-      indicator = '<span class="tl-check tl-check--open"></span>';
-    }
+  function statusKeyOf(rawStatus) {
+    const s = (rawStatus || '').toLowerCase().trim();
+    const col = STATUS_COLS.find(c => c.matches.includes(s));
+    return col ? col.key : 'not';
+  }
 
-    // Assignee pills
-    const assignees = (task.assignees || []).map(code => {
-      return `<span class="tl-assignee">${displayCode(code)}</span>`;
+  function renderKanbanCard(task) {
+    const statusKey = statusKeyOf(task.rawStatus);
+    const bubbles = (task.assignees || []).slice(0, 3).map(name => {
+      return `<span class="kcard__bubble">${initialsOf(name)}</span>`;
     }).join('');
-
-    // Overdue note
-    const overdueNote = task.isOverdue
-      ? `<span class="tl-tag-note tl-tag-note--overdue">${task.timeframe.toUpperCase()} · overdue</span>`
-      : '';
-
-    // Phase label
-    const phase = task.phase || 'discover';
-    const phaseCls = `tl-phase tl-phase--${phase}`;
-    const phaseLabel = phase.toUpperCase();
-
     return `
-      <div class="tl-row${overdueCls}${doneCls}">
-        ${indicator}
-        <div class="tl-body">
-          <div class="tl-title">${task.title}</div>
-          <div class="tl-tags">
-            <span class="tl-tag">${task.parent}</span>
-            ${overdueNote}
-          </div>
+      <div class="kcard kcard--${statusKey}" data-task-id="${task.id}" data-parent-id="${task.parentId}">
+        <div class="kcard__title">${task.title}</div>
+        <div class="kcard__foot">
+          <span class="kcard__parent">${task.parent}</span>
+          <div class="kcard__assignees">${bubbles}</div>
         </div>
-        <div class="tl-assignees">${assignees}</div>
-        <span class="${phaseCls}">${phaseLabel}</span>
       </div>
     `;
   }
 
   function renderTaskList() {
     const mount = q('[data-tasklist]');
-    const labelEl = q('[data-tasklist-label]');
     const metaEl = q('[data-tasklist-meta]');
     if (!mount) return;
 
     const { overdue, current } = tasksForActiveTf();
-    const tfLabel = timeframes.find(t => t.code === activeTf).label;
-    const isNow = activeTf === NOW_TF.code;
-    labelEl.textContent = isNow ? `Alive Now · ${tfLabel} Out` : `${tfLabel} Out`;
+    // Overdue subtasks (from earlier timeframes still open) belong at the top
+    // of Needs Help / In Progress / Not Started based on their real status.
+    const all = [...overdue, ...current];
 
-    const openCount = current.filter(t => t.status !== 'done').length;
+    // Bucket by status column
+    const buckets = { needs: [], progress: [], not: [], done: [] };
+    all.forEach(t => {
+      const key = statusKeyOf(t.rawStatus);
+      buckets[key].push(t);
+    });
+
+    const openCount = all.filter(t => t.status !== 'done').length;
     metaEl.textContent = overdue.length
       ? `${overdue.length} overdue · ${openCount} open`
       : `${openCount} open`;
 
-    const rows = [...overdue, ...current];
-    if (!rows.length) {
+    if (!all.length) {
       mount.innerHTML = '<div class="state">Nothing in this timeframe.</div>';
       return;
     }
-    mount.innerHTML = rows.map(renderTask).join('');
+
+    mount.innerHTML = `
+      <div class="kanban">
+        ${STATUS_COLS.map(col => {
+          const items = buckets[col.key];
+          const cards = items.length
+            ? items.map(renderKanbanCard).join('')
+            : '<div class="kanban__empty">—</div>';
+          return `
+            <div class="kanban__col">
+              <div class="kanban__head kanban__head--${col.key}">
+                ${col.label}<span class="kanban__count">· ${items.length}</span>
+              </div>
+              <div class="kanban__list">${cards}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+
+    // Wire card clicks to open the modal
+    qa('.kcard', mount).forEach(card => {
+      card.addEventListener('click', () => {
+        const parentId = card.dataset.parentId;
+        const selectedTaskId = card.dataset.taskId;
+        openModal(parentId, selectedTaskId);
+      });
+    });
   }
+
+  // -------------------------------------------------------
+  // Modal — full parent task detail with all subtasks
+  // -------------------------------------------------------
+  function openModal(parentId, selectedTaskId) {
+    const parent = parentsById[parentId];
+    if (!parent) return;
+    const modal = q('[data-modal]');
+    const body = q('[data-modal-body]');
+    if (!modal || !body) return;
+
+    const phaseKey = (parent.phase || 'discover').toLowerCase();
+    const statusKey = statusKeyOf(parent.status);
+    const statusLabel = parent.status || 'Not Started';
+
+    const assignees = (parent.assignees || []).map(name => {
+      return `<span class="kcard__bubble">${initialsOf(name)}</span>`;
+    }).join('');
+
+    const subs = (parent.subtasks || []).map(sub => {
+      const subStatusKey = statusKeyOf(sub.status);
+      const isDone = subStatusKey === 'done';
+      const isSelected = sub.id === selectedTaskId;
+      const boxCls = `msub__box msub__box--${subStatusKey}`;
+      const boxContent = isDone ? '✓' : '';
+      const rowCls = `msub${isDone ? ' msub--done' : ''}${isSelected ? ' msub--selected' : ''}`;
+      const subBubbles = (sub.assignees || []).map(name => {
+        return `<span class="kcard__bubble">${initialsOf(name)}</span>`;
+      }).join('');
+      return `
+        <div class="${rowCls}">
+          <span class="${boxCls}">${boxContent}</span>
+          <span class="msub__title">${sub.title}</span>
+          <span class="msub__bubbles">${subBubbles}</span>
+        </div>
+      `;
+    }).join('');
+
+    const notesBlock = parent.notes
+      ? `<p class="mtask__notes">${parent.notes}</p>`
+      : '';
+
+    body.innerHTML = `
+      <div class="mtask__eyebrow">Parent Task</div>
+      <h2 class="mtask__title" id="modal-title">${parent.title}</h2>
+      ${notesBlock}
+      <div class="mtask__meta">
+        <div class="mtask__meta-item">
+          <span class="mtask__meta-label">Phase</span>
+          <span class="mtask__meta-value mtask__meta-value--${phaseKey}">${(parent.phase || 'Discover').toUpperCase()}</span>
+        </div>
+        <div class="mtask__meta-item">
+          <span class="mtask__meta-label">Status</span>
+          <span class="mtask__meta-value mtask__meta-value--${statusKey}">${statusLabel.toUpperCase()}</span>
+        </div>
+        ${assignees ? `
+          <div class="mtask__meta-item">
+            <span class="mtask__meta-label">Carried by</span>
+            <div class="kcard__assignees">${assignees}</div>
+          </div>
+        ` : ''}
+      </div>
+      <div class="mtask__section-title">All ${parent.subtasks ? parent.subtasks.length : 0} subtasks</div>
+      <div class="mtask__subs">${subs || '<div class="kanban__empty">No subtasks yet.</div>'}</div>
+    `;
+
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';  // prevent bg scroll
+  }
+
+  function closeModal() {
+    const modal = q('[data-modal]');
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  // Modal close handlers (backdrop + × button + Esc)
+  qa('[data-modal-close]').forEach(el => el.addEventListener('click', closeModal));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
 
   // ---- Init ----
   renderTimeline();

@@ -65,8 +65,7 @@
       </section>
 
       <section class="tasklist-card">
-        <div class="tasklist-card__head">
-          <span class="tasklist-card__label" data-tasklist-label>Alive Now</span>
+        <div class="tasklist-card__meta-row">
           <span class="tasklist-card__meta" data-tasklist-meta>—</span>
         </div>
         <div data-tasklist>
@@ -75,6 +74,15 @@
       </section>
 
     </main>
+  </div>
+
+  <!-- Parent task modal (hidden until a card is clicked) -->
+  <div class="modal" data-modal hidden>
+    <div class="modal__backdrop" data-modal-close></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal__close" data-modal-close aria-label="Close">×</button>
+      <div data-modal-body></div>
+    </div>
   </div>
 
   <script src="assets/js/sidebar.js"></script>
