@@ -1816,7 +1816,7 @@
   top: 6px;
   right: 6px;
   display: flex;
-  background: var(--accent);
+  background: var(--deeper);
   border-radius: 999px;
   padding: 2px;
   box-shadow: 0 1px 6px rgba(12, 52, 61, 0.35);
@@ -1825,7 +1825,7 @@
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
   letter-spacing: 0.06em;
-  color: var(--abyss);
+  color: var(--accent);
   background: transparent;
   border: none;
   padding: 3px 9px;
@@ -1834,12 +1834,12 @@
   transition: all 0.15s ease;
 }
 .flora-card__tab.is-on {
-  background: var(--deeper);
-  color: var(--accent);
+  background: var(--accent);
+  color: var(--abyss);
 }
 
 .flora-card__meta {
-  padding: 11px var(--space-3) var(--space-2);
+  padding: 11px var(--space-3) 14px;
   display: flex;
   flex-direction: column;
   gap: 2px;
