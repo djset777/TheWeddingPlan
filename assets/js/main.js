@@ -327,7 +327,7 @@
         </div>
         ${assignees ? `
           <div class="mtask__meta-item">
-            <span class="mtask__meta-label">Carried by</span>
+            <span class="mtask__meta-label">With</span>
             <div class="kcard__assignees">${assignees}</div>
           </div>
         ` : ''}
