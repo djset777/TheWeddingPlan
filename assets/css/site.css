@@ -41,7 +41,7 @@
 .sidebar__countdown {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step-0);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   text-align: center;
   color: var(--accent);
   margin-top: 0;
@@ -54,7 +54,7 @@
 }
 .sidebar__countdown .sep {
   opacity: 0.4;
-  margin: 0 0.05em;
+  margin: 0 0.07em;
 }
 
 .sidebar__nav { margin-top: var(--space-2); }
@@ -1734,4 +1734,24 @@
   font-size: var(--step-0);
   color: var(--ink);
   line-height: 1.5;
+}
+
+
+/* --- Day-of phase bars (teal / green / navy) --------------------------- */
+.phase-bar {
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-0);
+  letter-spacing: 0.16em;
+  margin-top: var(--space-5);
+  margin-bottom: 0;
+  color: var(--linen);
+}
+.phase-bar--teal  { background: var(--anchor); }
+.phase-bar--green { background: var(--deeper); }
+.phase-bar--navy  { background: var(--deepest); }
+.phase-bar__sep {
+  opacity: 0.5;
+  margin: 0 0.6rem;
 }
