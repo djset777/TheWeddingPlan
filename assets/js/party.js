@@ -150,7 +150,6 @@
       <button class="team-bubble" data-person="${person.name}">
         <span class="team-bubble__circle">${person.initials}</span>
         <span class="team-bubble__name">${person.name}</span>
-        <span class="team-bubble__role">${person.role}</span>
       </button>
     `).join('');
 
@@ -172,7 +171,7 @@
         <div class="home-head__title">
           <span class="eyebrow">The Plans</span>
           <h1 class="home-head__h1">The Team</h1>
-          <p class="home-head__subtitle">The people making this happen.</p>
+          <p class="home-head__subtitle">The ones we couldn't do this without.</p>
         </div>
       </header>
 
