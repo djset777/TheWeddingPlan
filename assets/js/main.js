@@ -43,6 +43,11 @@
   // Helper: person code → name
   const nameOf = code => (people.find(p => p.code === code) || {}).name || code;
 
+  // Helper: person code → short display code (for bubbles)
+  // 'Dioris' is the underlying spreadsheet code (not to be changed);
+  // display shows 'DG' (Dioris Gómez initials) so the bubble stays circle-sized.
+  const displayCode = code => code === 'Dioris' ? 'DG' : code;
+
   // -------------------------------------------------------
   // RSVP donut (header, top-right)
   // Colors: forest confirmed · navy declined · soft gold awaiting
@@ -132,20 +137,21 @@
   // -------------------------------------------------------
   function drawPie(pieEl, buckets, colorMap) {
     const svg = q('.pie__svg', pieEl);
-    if (!svg) return;
+    const legendEl = q('[data-pie-legend]', pieEl);
+    if (!svg || !legendEl) return;
 
     // Remove old segments
     qa('.pie__seg', svg).forEach(el => el.remove());
 
     const total = Object.values(buckets).reduce((a, b) => a + b, 0);
     if (!total) {
-      q('[data-pie-caption]', pieEl).textContent = 'No tasks';
+      legendEl.innerHTML = '<div class="pie__empty">No tasks</div>';
       return;
     }
 
     let offset = 25;
     let idx = 0;
-    const captionParts = [];
+    const legendRows = [];
 
     Object.entries(buckets).forEach(([key, value]) => {
       if (!value) return;
@@ -165,11 +171,19 @@
       svg.appendChild(seg);
 
       offset = ((offset - pct) % 100 + 100) % 100;
-      captionParts.push(key);
+
+      // Match text color to segment color for a cohesive look
+      legendRows.push(`
+        <div class="pie__legend-row" style="color: ${color};">
+          <span class="pie__legend-dot" style="background: ${color};"></span>
+          <span class="pie__legend-value">${value}</span>
+          <span class="pie__legend-label">${key}</span>
+        </div>
+      `);
       idx += 1;
     });
 
-    q('[data-pie-caption]', pieEl).textContent = captionParts.join(' · ');
+    legendEl.innerHTML = legendRows.join('');
   }
 
   function renderPies() {
@@ -216,7 +230,7 @@
 
     // Assignee pills
     const assignees = (task.assignees || []).map(code => {
-      return `<span class="tl-assignee">${code}</span>`;
+      return `<span class="tl-assignee">${displayCode(code)}</span>`;
     }).join('');
 
     // Overdue note

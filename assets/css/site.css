@@ -941,7 +941,6 @@
   background: #FFFFFF;
   padding: var(--space-3);
   border-radius: 8px;
-  text-align: center;
   border: 1px solid var(--linen-rule);
 }
 .pie__label {
@@ -951,21 +950,59 @@
   letter-spacing: 0.14em;
   margin-bottom: var(--space-2);
 }
+.pie__body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 .pie__svg {
   display: block;
-  width: 80px;
-  height: 80px;
-  margin: 0 auto var(--space-2);
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
 }
 .pie__ring {
   stroke: var(--linen-shade);
 }
-.pie__caption {
+.pie__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
-  color: var(--ink);
-  opacity: 0.7;
   letter-spacing: 0.06em;
+  line-height: 1.4;
+  min-width: 0;
+}
+.pie__legend-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pie__legend-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pie__legend-value {
+  min-width: 1.5em;
+  font-weight: 500;
+}
+.pie__legend-label {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0;
+  font-size: var(--step--2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pie__empty {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  color: var(--ink);
+  opacity: 0.5;
 }
 
 /* --- Task list card ------------------------------------------------------ */
