@@ -333,27 +333,26 @@
 
       ${personTimelineHtml(person.name)}
 
-      <section class="tasklist-card">
-        <div class="tasklist-card__meta-row">
-          <span class="tasklist-card__meta">${metaText}</span>
-        </div>
-        <div class="kanban">
-          ${STATUS_COLS.map(col => {
-            const items = buckets[col.key];
-            const cards = items.length
-              ? items.map(renderCard).join('')
-              : '<div class="kanban__empty">—</div>';
-            return `
-              <div class="kanban__col">
-                <div class="kanban__head kanban__head--${col.key}">
-                  ${col.label}<span class="kanban__count">· ${items.length}</span>
-                </div>
-                <div class="kanban__list">${cards}</div>
+      <div class="tasklist-card__meta-row tasklist-card__meta-row--standalone">
+        <span class="tasklist-card__meta">${metaText}</span>
+      </div>
+
+      <div class="kanban kanban--split">
+        ${STATUS_COLS.map(col => {
+          const items = buckets[col.key];
+          const cards = items.length
+            ? items.map(renderCard).join('')
+            : '<div class="kanban__empty">—</div>';
+          return `
+            <section class="tasklist-card kanban__card kanban__card--${col.key}">
+              <div class="kanban__head kanban__head--${col.key}">
+                ${col.label}<span class="kanban__count">· ${items.length}</span>
               </div>
-            `;
-          }).join('')}
-        </div>
-      </section>
+              <div class="kanban__list">${cards}</div>
+            </section>
+          `;
+        }).join('')}
+      </div>
 
       <section class="tasklist-card">
         <div class="tasklist-card__meta-row">

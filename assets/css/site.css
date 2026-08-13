@@ -1660,3 +1660,21 @@
   color: #B85C1E;
   flex-shrink: 0;
 }
+
+/* --- Split kanban: 4 separate cards, one per status column ----------- */
+.kanban--split {
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.kanban__card {
+  padding: var(--space-3);
+  min-height: 120px;
+}
+.kanban__card .kanban__head {
+  margin-bottom: 12px;
+}
+/* Standalone meta row (used when meta sits above a set of cards, not inside one) */
+.tasklist-card__meta-row--standalone {
+  padding: 0 var(--space-1);
+  margin-bottom: var(--space-2);
+}
