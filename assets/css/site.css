@@ -134,7 +134,7 @@
 }
 
 .wrap--narrow {
-  max-width: var(--measure);
+  max-width: none;
 }
 
 /* --- Card grid ----------------------------------------------------------- */
