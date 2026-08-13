@@ -187,9 +187,9 @@
   // Kanban task board — 4 columns by status
   // -------------------------------------------------------
   const STATUS_COLS = [
+    { key: 'not',      label: 'Not Started',  matches: ['not started', ''] },
     { key: 'needs',    label: 'Needs Help',   matches: ['needs help'] },
     { key: 'progress', label: 'In Progress',  matches: ['in progress'] },
-    { key: 'not',      label: 'Not Started',  matches: ['not started', ''] },
     { key: 'done',     label: 'Complete',     matches: ['complete'] },
   ];
 

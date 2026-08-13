@@ -17,21 +17,25 @@
 
     <main class="content">
 
-      <header class="content__head">
-        <span class="eyebrow content__eyebrow">The Plans</span>
-        <h1 class="content__title">The Wedding Party</h1>
-        <p class="subtitle content__subtitle">Bride, groom, madrina, padrino, and the whole party.</p>
+      <header class="home-head home-head--no-border">
+        <div class="home-head__title">
+          <span class="eyebrow">The Plans</span>
+          <h1 class="home-head__h1">The Wedding Party</h1>
+          <p class="home-head__subtitle">Who is carrying what, and when.</p>
+        </div>
       </header>
 
-      <div class="wrap--narrow">
-        <div class="state">This view is scaffolded — content will populate here.</div>
-      </div>
+      <nav class="timeline" data-timeline aria-label="Filter by timeframe"></nav>
+
+      <section class="wrap--narrow">
+        <div class="state">Party content for this timeframe will render here.</div>
+      </section>
 
     </main>
   </div>
 
   <script src="../assets/js/sidebar.js"></script>
   <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/party.js"></script>
 </body>
 </html>

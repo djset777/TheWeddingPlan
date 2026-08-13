@@ -755,6 +755,11 @@
   gap: var(--space-4);
   align-items: center;
   padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--accent);
+  margin-bottom: var(--space-3);
+}
+.home-head--no-border {
+  border-bottom: none;
   margin-bottom: 0;
 }
 .home-head__title .eyebrow {
