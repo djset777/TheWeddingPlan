@@ -168,7 +168,7 @@
     }).join('');
 
     mount.innerHTML = `
-      <header class="home-head home-head--no-border">
+      <header class="home-head">
         <div class="home-head__title">
           <span class="eyebrow">The Plans</span>
           <h1 class="home-head__h1">The Team</h1>

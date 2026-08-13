@@ -41,7 +41,7 @@
 .sidebar__countdown {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step-0);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   text-align: center;
   color: var(--accent);
   margin-top: 0;
@@ -54,7 +54,7 @@
 }
 .sidebar__countdown .sep {
   opacity: 0.4;
-  margin: 0 0.2em;
+  margin: 0 0.05em;
 }
 
 .sidebar__nav { margin-top: var(--space-2); }
