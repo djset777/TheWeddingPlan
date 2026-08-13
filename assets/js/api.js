@@ -6,13 +6,26 @@
    ========================================================================== */
 
 const CONFIG = {
-  // Paste your Apps Script Web App URL here after deployment.
   API_URL: '',
-  // Flip to false once API_URL is set.
   USE_MOCK: true,
 };
 
+const PEOPLE = [
+  { code: 'D',      name: 'Danisa' },
+  { code: 'J',      name: 'Julian' },
+  { code: 'DJ',     name: 'Both' },
+  { code: 'C',      name: 'Carmen' },
+  { code: 'JM',     name: 'José Miguel' },
+  { code: 'Dioris', name: 'Dioris' },
+  { code: 'S',      name: 'Sileni' },
+  { code: 'M',      name: 'Melonie' },
+  { code: 'G',      name: 'Guaroa' },
+  { code: 'K',      name: 'Kailey' },
+  { code: 'N',      name: 'Neisha' },
+];
+
 const MOCK = {
+  people: PEOPLE,
   rsvp: {
     total: 154,
     confirmed: 0,
@@ -38,24 +51,20 @@ const MOCK = {
     needed: 8,
   },
   upcoming: [
-    { task: 'Send save-the-dates',    due: 'This month' },
-    { task: 'Confirm photographer',   due: '3 weeks' },
-    { task: 'Book church band',       due: '5 weeks' },
-    { task: 'Order dress fitting',    due: '6 weeks' },
-    { task: 'Finalize menu tasting',  due: '2 months' },
+    { task: 'Send save-the-dates',    due: 'This month',  assignees: ['D'] },
+    { task: 'Confirm photographer',   due: '3 weeks',     assignees: ['DJ'] },
+    { task: 'Book church band',       due: '5 weeks',     assignees: ['Dioris'] },
+    { task: 'Order dress fitting',    due: '6 weeks',     assignees: ['D'] },
+    { task: 'Finalize menu tasting',  due: '2 months',    assignees: ['DJ'] },
+    { task: 'Rally the bridal tribe', due: '7 weeks',     assignees: ['S', 'M'] },
+    { task: 'Confirm ride timing',    due: '4 weeks',     assignees: ['JM'] },
+    { task: 'Draft ceremony program', due: '8 weeks',     assignees: ['D', 'K'] },
   ],
   recent: [
     { when: '2h ago',    what: 'Photographer moved to Decide phase.' },
     { when: 'Today',     what: 'Guest List — five RSVPs marked confirmed.' },
     { when: 'Yesterday', what: 'Invitations moved to Execute phase.' },
     { when: '2 days',    what: 'Ceremony Music — church band contact added.' },
-  ],
-  party: [
-    { role: 'Bride',         name: 'Danisa Valdez' },
-    { role: 'Groom',         name: 'Julian Soto' },
-    { role: 'Madrina',       name: 'Sileni Milanovic' },
-    { role: 'Miss of Honor', name: 'Kailey' },
-    { role: 'Maid of Honor', name: 'Melonie' },
   ],
 };
 

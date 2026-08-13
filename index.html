@@ -13,7 +13,6 @@
 <body>
 
   <div class="layout">
-
     <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
 
     <main class="content">
@@ -24,40 +23,7 @@
         <p class="subtitle content__subtitle">El Aguacate · La Vega · Dominican Republic</p>
       </header>
 
-      <div class="card-grid">
-
-        <!-- RSVP card (donut) -->
-        <div class="card card--chart" data-chart="rsvp">
-          <span class="card__label">RSVP</span>
-          <svg class="donut" viewBox="0 0 42 42" role="img" aria-label="RSVP status donut chart">
-            <circle class="donut__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
-            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
-                    stroke="#01605F" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="confirmed"></circle>
-            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
-                    stroke="#0C343D" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="declined"></circle>
-            <text class="donut__center" x="21" y="20">TOTAL</text>
-            <text class="donut__center-num" x="21" y="26" data-total>154</text>
-          </svg>
-          <div class="legend">
-            <div class="legend__row">
-              <span class="legend__dot" style="background: #01605F;"></span>
-              <span class="legend__label">Confirmed</span>
-              <span class="legend__value" data-legend="confirmed">—</span>
-            </div>
-            <div class="legend__row">
-              <span class="legend__dot" style="background: #0C343D;"></span>
-              <span class="legend__label">Declined</span>
-              <span class="legend__value" data-legend="declined">—</span>
-            </div>
-            <div class="legend__row">
-              <span class="legend__dot" style="background: #EAE3D7;"></span>
-              <span class="legend__label">Awaiting</span>
-              <span class="legend__value" data-legend="awaiting">—</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tasks card (Parents donut + Subtasks donut side by side) -->
+      <section class="section">
         <div class="card card--chart card--tasks" data-chart="tasks">
           <span class="card__label">Task Progress</span>
 
@@ -114,8 +80,55 @@
 
           </div>
         </div>
+      </section>
 
-        <!-- Vendor Status card (donut) -->
+      <section class="section">
+        <nav class="person-tabs" data-person-tabs aria-label="Filter tasks by person">
+          <button class="person-tab is-active" data-person="everyone">Everyone</button>
+        </nav>
+      </section>
+
+      <section class="section">
+        <div class="card">
+          <span class="card__label">Upcoming</span>
+          <div class="upcoming" data-upcoming>
+            <div class="state">Loading upcoming tasks…</div>
+          </div>
+        </div>
+      </section>
+
+      <div class="card-grid card-grid--small">
+
+        <div class="card card--chart" data-chart="rsvp">
+          <span class="card__label">RSVP</span>
+          <svg class="donut" viewBox="0 0 42 42" role="img" aria-label="RSVP status donut chart">
+            <circle class="donut__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
+            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                    stroke="#01605F" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="confirmed"></circle>
+            <circle class="donut__seg" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"
+                    stroke="#0C343D" stroke-dasharray="0 100" stroke-dashoffset="25" data-seg="declined"></circle>
+            <text class="donut__center" x="21" y="20">TOTAL</text>
+            <text class="donut__center-num" x="21" y="26" data-total>—</text>
+          </svg>
+          <div class="legend">
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #01605F;"></span>
+              <span class="legend__label">Confirmed</span>
+              <span class="legend__value" data-legend="confirmed">—</span>
+            </div>
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #0C343D;"></span>
+              <span class="legend__label">Declined</span>
+              <span class="legend__value" data-legend="declined">—</span>
+            </div>
+            <div class="legend__row">
+              <span class="legend__dot" style="background: #EAE3D7;"></span>
+              <span class="legend__label">Awaiting</span>
+              <span class="legend__value" data-legend="awaiting">—</span>
+            </div>
+          </div>
+        </div>
+
         <div class="card card--chart" data-chart="vendors">
           <span class="card__label">Vendors</span>
           <svg class="donut" viewBox="0 0 42 42" role="img" aria-label="Vendor status donut chart">
@@ -146,23 +159,16 @@
           </div>
         </div>
 
-        <!-- Upcoming card (list) -->
-        <div class="card">
-          <span class="card__label">Upcoming</span>
-          <div class="upcoming" data-upcoming>
-            <div class="state">Loading upcoming tasks…</div>
-          </div>
-        </div>
+      </div>
 
-        <!-- Recent activity card (list) -->
+      <section class="section">
         <div class="card">
           <span class="card__label">Recently</span>
           <div class="feed" data-feed>
             <div class="state">Loading recent changes…</div>
           </div>
         </div>
-
-      </div>
+      </section>
 
     </main>
   </div>

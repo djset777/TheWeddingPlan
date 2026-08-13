@@ -33,7 +33,6 @@
 
       <h3>The Plans</h3>
       <ul>
-        <li><a href="${prefix}dashboard/index.html">Overview</a></li>
         <li><a href="${prefix}dashboard/party.html">Wedding Party</a></li>
         <li><a href="${prefix}dashboard/day-of.html">The Day</a></li>
       </ul>

@@ -44,7 +44,7 @@
   text-align: center;
   color: var(--accent);
   margin-top: 0;
-  padding-top: var(--space-.07);
+  padding-top: var(--space-2);
   padding-bottom: var(--space-3);
   border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   margin-bottom: var(--space-3);
@@ -145,6 +145,47 @@
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
 
+.card-grid--small {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  margin-bottom: var(--space-3);
+}
+
+.section {
+  margin-bottom: var(--space-3);
+}
+
+/* --- Person filter tabs -------------------------------------------------- */
+.person-tabs {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  padding-bottom: 0;
+}
+.person-tab {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0.85rem;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--ink);
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  opacity: 0.6;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+.person-tab:hover {
+  opacity: 0.85;
+}
+.person-tab.is-active {
+  opacity: 1;
+  color: var(--anchor);
+  border-bottom-color: var(--accent);
+}
+
 .card {
   background: #FFFFFF;
   padding: var(--space-3) var(--space-4);
@@ -165,6 +206,30 @@
 .card--chart {
   aspect-ratio: 1 / 1;
   justify-content: space-between;
+}
+
+/* Tasks card: two donuts side by side */
+.card--tasks {
+  aspect-ratio: auto;
+}
+.tasks-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+.tasks-split__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.tasks-split__caption {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--accent);
+  font-size: var(--step--1);
+  text-align: center;
+  padding-top: var(--space-2);
 }
 
 /* Donut SVG */
@@ -306,8 +371,8 @@
   padding-block: var(--space-1);
   border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--space-2);
+  grid-template-columns: 1fr auto auto;
+  gap: var(--space-3);
   align-items: baseline;
   font-size: var(--step--1);
 }
@@ -315,6 +380,12 @@
 .upcoming__task {
   font-family: 'Cormorant Garamond', Georgia, serif;
   color: var(--ink);
+}
+.upcoming__who {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--anchor);
+  letter-spacing: 0.08em;
 }
 .upcoming__due {
   font-family: 'Cormorant SC', Georgia, serif;
