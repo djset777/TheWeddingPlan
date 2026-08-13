@@ -154,38 +154,6 @@
   margin-bottom: var(--space-3);
 }
 
-/* --- Person filter tabs -------------------------------------------------- */
-.person-tabs {
-  display: flex;
-  gap: 2px;
-  overflow-x: auto;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
-  padding-bottom: 0;
-}
-.person-tab {
-  background: transparent;
-  border: none;
-  padding: 0.5rem 0.85rem;
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--1);
-  color: var(--ink);
-  letter-spacing: 0.12em;
-  cursor: pointer;
-  opacity: 0.6;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  white-space: nowrap;
-  transition: opacity 0.2s ease, color 0.2s ease;
-}
-.person-tab:hover {
-  opacity: 0.85;
-}
-.person-tab.is-active {
-  opacity: 1;
-  color: var(--anchor);
-  border-bottom-color: var(--accent);
-}
-
 .card {
   background: #FFFFFF;
   padding: var(--space-3) var(--space-4);
@@ -772,3 +740,389 @@
   border-bottom: 1px solid rgba(212, 175, 55, 0.35);
 }
 .zone-moment:first-of-type { margin-top: var(--space-2); }
+
+
+/* ==========================================================================
+   Home page (Aug 2026 rebuild)
+   Header w/ RSVP donut · timeline strip · category pies · task list
+   ========================================================================== */
+
+/* --- Home header --------------------------------------------------------- */
+.home-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-4);
+  align-items: center;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--accent);
+  margin-bottom: var(--space-4);
+}
+.home-head__title .eyebrow {
+  display: block;
+  margin-bottom: var(--space-1);
+}
+.home-head__h1 {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-3);
+  color: var(--anchor);
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+.home-head__subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--accent);
+  font-size: var(--step-0);
+  margin-top: 4px;
+}
+
+/* --- RSVP donut widget (header, top-right) ------------------------------- */
+.home-head__rsvp {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.rsvp-donut {
+  width: 68px;
+  height: 68px;
+  display: block;
+}
+.rsvp-donut__ring {
+  stroke: rgba(212, 175, 55, 0.18);
+}
+.rsvp-donut__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 2.6px;
+  fill: var(--anchor);
+  letter-spacing: 0.08em;
+  text-anchor: middle;
+}
+.rsvp-donut__num {
+  font-size: 3.5px;
+  fill: var(--accent);
+  text-anchor: middle;
+}
+.rsvp-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+}
+.rsvp-legend__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.rsvp-legend__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.rsvp-legend__value {
+  min-width: 1.8em;
+}
+.rsvp-legend__label {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0;
+  font-size: var(--step--2);
+}
+/* Row colors — text matches its dot */
+.rsvp-legend__row--confirmed { color: var(--deeper); }
+.rsvp-legend__row--confirmed .rsvp-legend__dot { background: var(--deeper); }
+.rsvp-legend__row--declined  { color: var(--deepest); }
+.rsvp-legend__row--declined  .rsvp-legend__dot { background: var(--deepest); }
+.rsvp-legend__row--awaiting  { color: rgba(212, 175, 55, 0.75); }
+.rsvp-legend__row--awaiting  .rsvp-legend__dot { background: rgba(212, 175, 55, 0.4); }
+
+/* --- Timeline strip ------------------------------------------------------ */
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 18px var(--space-2) 8px;
+  position: relative;
+  margin-bottom: var(--space-4);
+  background: transparent;
+}
+.timeline__line {
+  position: absolute;
+  top: 32px;
+  left: calc(var(--space-2) + 20px);
+  right: calc(var(--space-2) + 20px);
+  height: 0.5px;
+  background: rgba(212, 175, 55, 0.35);
+  z-index: 0;
+}
+.timeline__stop {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0 4px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.timeline__dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 0 0 4px var(--bg);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.timeline__stop:hover .timeline__dot {
+  transform: scale(1.2);
+}
+.timeline__dot--past {
+  background: rgba(212, 175, 55, 0.35);
+}
+.timeline__dot--future {
+  background: rgba(1, 96, 95, 0.35);
+}
+.timeline__dot--now {
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 5.5px var(--accent);
+}
+.timeline__dot--active:not(.timeline__dot--now) {
+  width: 12px;
+  height: 12px;
+  background: var(--anchor);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 5.5px var(--anchor);
+}
+.timeline__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--ink);
+  opacity: 0.4;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.timeline__label.is-active {
+  opacity: 1;
+  color: var(--anchor);
+  font-size: var(--step--1);
+  letter-spacing: 0.14em;
+}
+.timeline__label em {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  color: var(--accent);
+  margin-top: 2px;
+  letter-spacing: 0;
+}
+
+/* --- Category pies ------------------------------------------------------- */
+.pies {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.pie {
+  background: #FFFFFF;
+  padding: var(--space-3);
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid var(--linen-rule);
+}
+.pie__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  margin-bottom: var(--space-2);
+}
+.pie__svg {
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-2);
+}
+.pie__ring {
+  stroke: var(--linen-shade);
+}
+.pie__caption {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--ink);
+  opacity: 0.7;
+  letter-spacing: 0.06em;
+}
+
+/* --- Task list card ------------------------------------------------------ */
+.tasklist-card {
+  background: #FFFFFF;
+  padding: var(--space-3) var(--space-4);
+  border-radius: 8px;
+  border: 1px solid var(--linen-rule);
+}
+.tasklist-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--linen-rule);
+}
+.tasklist-card__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--accent);
+  letter-spacing: 0.14em;
+}
+.tasklist-card__meta {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  color: var(--accent);
+}
+
+/* --- Task rows ----------------------------------------------------------- */
+.tl-row {
+  display: grid;
+  grid-template-columns: 22px 1fr auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 8px;
+  border-bottom: 0.5px solid rgba(212, 175, 55, 0.2);
+  margin: 0 -8px;
+}
+.tl-row:last-child {
+  border-bottom: none;
+}
+.tl-row--overdue {
+  background: rgba(212, 175, 55, 0.07);
+  border-radius: 4px;
+}
+.tl-row--done {
+  opacity: 0.5;
+}
+.tl-row--done .tl-title {
+  text-decoration: line-through;
+  text-decoration-color: rgba(12, 52, 61, 0.3);
+}
+
+.tl-check {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+.tl-check--open {
+  border: 1.5px solid var(--accent);
+}
+.tl-check--overdue {
+  background: #B85C1E;
+}
+.tl-check--done {
+  background: var(--deepest);
+  color: var(--linen);
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.tl-body {
+  min-width: 0;
+}
+.tl-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--ink);
+  line-height: 1.35;
+}
+.tl-tags {
+  margin-top: 4px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.tl-tag {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--anchor);
+  letter-spacing: 0.1em;
+  background: rgba(1, 96, 95, 0.08);
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+.tl-tag-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  letter-spacing: 0;
+}
+.tl-tag-note--overdue {
+  color: #B85C1E;
+}
+
+.tl-assignees {
+  display: flex;
+  gap: 3px;
+}
+.tl-assignee {
+  min-width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.04em;
+  padding: 0 5px;
+}
+
+.tl-phase {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.1em;
+}
+.tl-phase--discover { color: var(--accent); }
+.tl-phase--decide   { color: var(--anchor); }
+.tl-phase--execute  { color: var(--deeper); }
+.tl-phase--done     { color: var(--deepest); }
+
+/* Responsive: tighter grid on narrow screens */
+@media (max-width: 720px) {
+  .pies {
+    grid-template-columns: 1fr;
+  }
+  .home-head {
+    grid-template-columns: 1fr;
+  }
+  .tl-row {
+    grid-template-columns: 22px 1fr;
+    gap: 10px;
+  }
+  .tl-row .tl-assignees,
+  .tl-row .tl-phase {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
