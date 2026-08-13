@@ -1806,8 +1806,11 @@
 }
 .flora-card__media {
   position: relative;
+  width: 100%;
   aspect-ratio: 4 / 3;
+  min-height: 180px;
   background: var(--linen-shade);
+  overflow: hidden;
 }
 .flora-card__img {
   position: absolute;
