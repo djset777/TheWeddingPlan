@@ -1678,3 +1678,60 @@
   padding: 0 var(--space-1);
   margin-bottom: var(--space-2);
 }
+
+
+/* ==========================================================================
+   Day-Of timeline (static) — dashboard/day-of.html
+   Phase bars (gold/teal/forest) + vertical timeline of moments
+   ========================================================================== */
+
+.timeline {
+  position: relative;
+  margin: var(--space-2) 0 var(--space-5);
+  padding-left: var(--space-4);
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: rgba(212, 175, 55, 0.35);
+}
+.timeline__item {
+  position: relative;
+  margin-bottom: var(--space-4);
+}
+.timeline__item:last-child { margin-bottom: 0; }
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-4) + 1px);
+  top: 7px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg);
+}
+.timeline__time {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step--1);
+  letter-spacing: 0.14em;
+  color: var(--anchor);
+}
+.timeline__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-1);
+  color: var(--deeper);
+  margin: 2px 0 4px;
+}
+.timeline__note {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step-0);
+  color: var(--ink);
+  line-height: 1.5;
+}
