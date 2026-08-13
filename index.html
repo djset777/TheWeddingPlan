@@ -56,36 +56,12 @@
 
       <nav class="timeline" data-timeline aria-label="Filter by timeframe"></nav>
 
-      <section class="pies">
-        <div class="pie" data-pie="phase">
-          <div class="pie__label">By Phase</div>
-          <div class="pie__body">
-            <svg class="pie__svg" viewBox="0 0 42 42" role="img" aria-label="Tasks by phase">
-              <circle class="pie__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
-            </svg>
-            <div class="pie__legend" data-pie-legend></div>
-          </div>
+      <section class="assignees-card">
+        <div class="assignees-card__head">
+          <span class="assignees-card__label">Carrying This Timeframe</span>
+          <span class="assignees-card__meta" data-assignees-meta>—</span>
         </div>
-
-        <div class="pie" data-pie="category">
-          <div class="pie__label">By Category</div>
-          <div class="pie__body">
-            <svg class="pie__svg" viewBox="0 0 42 42" role="img" aria-label="Tasks by category">
-              <circle class="pie__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
-            </svg>
-            <div class="pie__legend" data-pie-legend></div>
-          </div>
-        </div>
-
-        <div class="pie" data-pie="assignee">
-          <div class="pie__label">By Assignee</div>
-          <div class="pie__body">
-            <svg class="pie__svg" viewBox="0 0 42 42" role="img" aria-label="Tasks by assignee">
-              <circle class="pie__ring" cx="21" cy="21" r="15.915" fill="transparent" stroke-width="4"></circle>
-            </svg>
-            <div class="pie__legend" data-pie-legend></div>
-          </div>
-        </div>
+        <div class="assignees" data-assignees></div>
       </section>
 
       <section class="tasklist-card">

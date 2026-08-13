@@ -930,79 +930,94 @@
   letter-spacing: 0;
 }
 
-/* --- Category pies ------------------------------------------------------- */
-.pies {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
-}
-.pie {
+/* --- Assignee columns ---------------------------------------------------- */
+.assignees-card {
   background: #FFFFFF;
-  padding: var(--space-3);
+  padding: var(--space-3) var(--space-4);
   border-radius: 8px;
   border: 1px solid var(--linen-rule);
+  margin-bottom: var(--space-3);
 }
-.pie__label {
+.assignees-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--linen-rule);
+}
+.assignees-card__label {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
+  font-size: var(--step--1);
   color: var(--accent);
   letter-spacing: 0.14em;
-  margin-bottom: var(--space-2);
 }
-.pie__body {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.assignees-card__meta {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  color: var(--accent);
 }
-.pie__svg {
-  display: block;
-  width: 64px;
-  height: 64px;
-  flex-shrink: 0;
+
+.assignees {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 6px;
+  align-items: end;
 }
-.pie__ring {
-  stroke: var(--linen-shade);
-}
-.pie__legend {
+.assignee-col {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  letter-spacing: 0.06em;
-  line-height: 1.4;
-  min-width: 0;
-}
-.pie__legend-row {
-  display: flex;
   align-items: center;
   gap: 6px;
+  text-align: center;
+  min-width: 0;
 }
-.pie__legend-dot {
-  width: 6px;
-  height: 6px;
+.assignee-col__count {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-2);
+  color: var(--anchor);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.assignee-col__bubble {
+  min-width: 28px;
+  height: 28px;
   border-radius: 50%;
-  flex-shrink: 0;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.04em;
+  padding: 0 5px;
 }
-.pie__legend-value {
-  min-width: 1.5em;
-  font-weight: 500;
-}
-.pie__legend-label {
-  font-family: 'Cormorant Garamond', serif;
-  letter-spacing: 0;
+.assignee-col__name {
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step--2);
+  color: var(--ink);
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
 }
-.pie__empty {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: var(--step--2);
-  color: var(--ink);
-  opacity: 0.5;
+.assignee-col--idle {
+  opacity: 0.3;
+}
+
+@media (max-width: 900px) {
+  .assignees {
+    grid-template-columns: repeat(6, 1fr);
+    row-gap: var(--space-3);
+  }
+}
+@media (max-width: 480px) {
+  .assignees {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 /* --- Task list card ------------------------------------------------------ */
@@ -1036,10 +1051,10 @@
 /* --- Task rows ----------------------------------------------------------- */
 .tl-row {
   display: grid;
-  grid-template-columns: 22px 1fr auto auto;
-  gap: 14px;
+  grid-template-columns: 20px 1fr auto auto;
+  gap: 12px;
   align-items: center;
-  padding: 10px 8px;
+  padding: 6px 8px;
   border-bottom: 0.5px solid rgba(212, 175, 55, 0.2);
   margin: 0 -8px;
 }
@@ -1103,8 +1118,8 @@
   color: var(--anchor);
   letter-spacing: 0.1em;
   background: rgba(1, 96, 95, 0.08);
-  padding: 2px 8px;
-  border-radius: 3px;
+  padding: 1px 6px;
+  border-radius: 2px;
 }
 .tl-tag-note {
   font-family: 'Cormorant Garamond', serif;

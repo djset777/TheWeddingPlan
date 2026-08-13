@@ -10,24 +10,6 @@
   const q = (sel, root = document) => root.querySelector(sel);
   const qa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-  // Color palette for pies (must match locked design system)
-  const PIE_COLORS = {
-    phase: {
-      discover: '#D4AF37',
-      decide:   '#01605F',
-      execute:  '#014421',
-      done:     '#003153',
-    },
-    category: [
-      '#01605F', '#014421', '#D4AF37', '#003153', '#0C343D',
-    ],
-    assignee: [
-      '#01605F', '#014421', '#D4AF37', '#003153', '#0C343D',
-    ],
-  };
-
-  const PHASE_ORDER = ['discover', 'decide', 'execute', 'done'];
-
   // ------------- Load data -------------
   const [rsvp, people, timeframes, subtasks] = await Promise.all([
     window.TWP.api.get('rsvp'),
@@ -107,7 +89,7 @@
       btn.addEventListener('click', () => {
         activeTf = btn.dataset.tf;
         renderTimeline();
-        renderPies();
+        renderAssignees();
         renderTaskList();
       });
     });
@@ -133,81 +115,48 @@
   }
 
   // -------------------------------------------------------
-  // Three category pies — computed off current timeframe tasks
+  // Assignee columns — one per person, sorted by task count desc
+  // People with zero tasks in this timeframe are dimmed
   // -------------------------------------------------------
-  function drawPie(pieEl, buckets, colorMap) {
-    const svg = q('.pie__svg', pieEl);
-    const legendEl = q('[data-pie-legend]', pieEl);
-    if (!svg || !legendEl) return;
+  function renderAssignees() {
+    const mount = q('[data-assignees]');
+    const metaEl = q('[data-assignees-meta]');
+    if (!mount) return;
 
-    // Remove old segments
-    qa('.pie__seg', svg).forEach(el => el.remove());
-
-    const total = Object.values(buckets).reduce((a, b) => a + b, 0);
-    if (!total) {
-      legendEl.innerHTML = '<div class="pie__empty">No tasks</div>';
-      return;
-    }
-
-    let offset = 25;
-    let idx = 0;
-    const legendRows = [];
-
-    Object.entries(buckets).forEach(([key, value]) => {
-      if (!value) return;
-      const pct = (value / total) * 100;
-      const color = Array.isArray(colorMap) ? colorMap[idx % colorMap.length] : (colorMap[key] || '#01605F');
-
-      const seg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      seg.setAttribute('class', 'pie__seg');
-      seg.setAttribute('cx', 21);
-      seg.setAttribute('cy', 21);
-      seg.setAttribute('r', 15.915);
-      seg.setAttribute('fill', 'transparent');
-      seg.setAttribute('stroke-width', 4);
-      seg.setAttribute('stroke', color);
-      seg.setAttribute('stroke-dasharray', `${pct} ${100 - pct}`);
-      seg.setAttribute('stroke-dashoffset', String(offset));
-      svg.appendChild(seg);
-
-      offset = ((offset - pct) % 100 + 100) % 100;
-
-      // Match text color to segment color for a cohesive look
-      legendRows.push(`
-        <div class="pie__legend-row" style="color: ${color};">
-          <span class="pie__legend-dot" style="background: ${color};"></span>
-          <span class="pie__legend-value">${value}</span>
-          <span class="pie__legend-label">${key}</span>
-        </div>
-      `);
-      idx += 1;
-    });
-
-    legendEl.innerHTML = legendRows.join('');
-  }
-
-  function renderPies() {
     const { current } = tasksForActiveTf();
 
-    // Phase breakdown
-    const byPhase = {};
-    PHASE_ORDER.forEach(p => { byPhase[p] = 0; });
-    current.forEach(t => { if (byPhase[t.phase] != null) byPhase[t.phase] += 1; });
-    drawPie(q('[data-pie="phase"]'), byPhase, PIE_COLORS.phase);
-
-    // Category breakdown
-    const byCategory = {};
-    current.forEach(t => { byCategory[t.category] = (byCategory[t.category] || 0) + 1; });
-    drawPie(q('[data-pie="category"]'), byCategory, PIE_COLORS.category);
-
-    // Assignee breakdown
-    const byAssignee = {};
-    current.forEach(t => {
-      (t.assignees || []).forEach(a => {
-        byAssignee[nameOf(a)] = (byAssignee[nameOf(a)] || 0) + 1;
+    // Count tasks per assignee code (a subtask can have multiple assignees)
+    const counts = {};
+    people.forEach(p => { counts[p.code] = 0; });
+    current.forEach(task => {
+      (task.assignees || []).forEach(code => {
+        if (counts[code] != null) counts[code] += 1;
       });
     });
-    drawPie(q('[data-pie="assignee"]'), byAssignee, PIE_COLORS.assignee);
+
+    // Sort by count desc, then original order (people list order)
+    const sorted = [...people].sort((a, b) => {
+      const diff = (counts[b.code] || 0) - (counts[a.code] || 0);
+      if (diff !== 0) return diff;
+      return people.indexOf(a) - people.indexOf(b);
+    });
+
+    const activeCount = sorted.filter(p => counts[p.code] > 0).length;
+    if (metaEl) {
+      metaEl.textContent = `${current.length} subtasks · ${activeCount} carrying`;
+    }
+
+    mount.innerHTML = sorted.map(person => {
+      const n = counts[person.code] || 0;
+      const isIdle = n === 0;
+      return `
+        <div class="assignee-col${isIdle ? ' assignee-col--idle' : ''}">
+          <div class="assignee-col__count">${n}</div>
+          <div class="assignee-col__bubble">${displayCode(person.code)}</div>
+          <div class="assignee-col__name">${person.name}</div>
+        </div>
+      `;
+    }).join('');
   }
 
   // -------------------------------------------------------
@@ -284,6 +233,6 @@
 
   // ---- Init ----
   renderTimeline();
-  renderPies();
+  renderAssignees();
   renderTaskList();
 })();
