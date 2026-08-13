@@ -1,350 +1,510 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Flora — The Wedding Plan</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../assets/css/site.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Flora — The Wedding Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#01605F;
+  --forest:#014421;
+  --navy:#003153;
+  --gold:#D4AF37;
+  --cream:#F5F0E8;
+  --ink:#004B49;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:var(--cream);
+  color:var(--teal);
+  font-family:'Cormorant Garamond',serif;
+  line-height:1.11;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── HEADER ── */
+.brief-header{
+  max-width:1100px;
+  margin:0 auto;
+  padding:4rem 2.5rem 0;
+}
+.brief-eyebrow{
+  font-family:'Cormorant SC',serif;
+  font-weight:600;font-size:14pt;
+  color:var(--gold);
+  letter-spacing:0.18em;
+  margin-bottom:0.7rem;
+}
+.brief-title{
+  font-family:'Cormorant SC',serif;
+  font-weight:500;font-size:48pt;
+  color:var(--teal);
+  letter-spacing:0.04em;
+  line-height:1.05;
+  margin-bottom:0.6rem;
+}
+.brief-subtitle{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-weight:400;font-size:17pt;
+  color:var(--gold);
+  letter-spacing:0.02em;
+}
+.header-rule{
+  width:100%;height:1px;
+  background:linear-gradient(to right,
+    rgba(212,175,55,0) 0%,
+    rgba(212,175,55,1) 4%,
+    rgba(212,175,55,1) 96%,
+    rgba(212,175,55,0) 100%);
+  border:none;
+  margin:2rem 0 0;
+}
+
+/* ── CAPTION above grid ── */
+.brief-caption{
+  max-width:1100px;
+  margin:2.5rem auto 0;
+  padding:0 2.5rem;
+}
+.brief-caption p{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:500;font-size:12pt;
+  color:var(--teal);
+  letter-spacing:0.01em;
+}
+
+/* ── TIER BANNER ── */
+.tier-banner{
+  max-width:1100px;
+  margin:3.5rem auto 0;
+  padding:0 2.5rem;
+}
+.tier-banner-inner{
+  background:var(--teal);
+  padding:1.1em 1.6em;
+  display:flex;align-items:baseline;gap:1em;
+}
+.tier-num{
+  font-family:'Cormorant SC',serif;
+  font-weight:600;font-size:15pt;
+  color:var(--gold);
+  letter-spacing:0.14em;
+}
+.tier-name{
+  font-family:'Cormorant SC',serif;
+  font-weight:400;font-size:15pt;
+  color:var(--cream);
+  letter-spacing:0.14em;
+}
+
+/* ── CARD GRID ── */
+.flora-grid{
+  max-width:1100px;
+  margin:1.5rem auto 0;
+  padding:0 2.5rem;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+}
+@media(max-width:900px){.flora-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){
+  .flora-grid{grid-template-columns:1fr;padding:0 1.2rem;}
+  .brief-header,.brief-caption,.tier-banner{padding-left:1.2rem;padding-right:1.2rem;}
+  .brief-title{font-size:36pt;}
+}
+
+.flora-card{
+  background:var(--cream);
+  border:1px solid var(--teal);
+  display:flex;flex-direction:column;
+}
+
+/* image well */
+.card-well{
+  position:relative;
+  width:100%;
+  aspect-ratio:4/3;
+  background:var(--ink);
+  overflow:hidden;
+}
+.card-well img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.card-well img.loaded{opacity:1;}
+.card-well-placeholder{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:1em;
+  font-family:'Cormorant SC',serif;
+  font-weight:400;font-size:12pt;
+  color:var(--gold);
+  letter-spacing:0.1em;
+}
+
+/* toggle */
+.card-toggle{
+  display:inline-flex;
+  align-self:flex-start;
+  margin:1.1em 1.3em 0;
+  border:1px solid var(--gold);
+  border-radius:999px;
+  overflow:hidden;
+}
+.card-toggle button{
+  font-family:'Cormorant SC',serif;
+  font-weight:600;font-size:9.5pt;
+  letter-spacing:0.1em;
+  color:var(--teal);
+  background:transparent;
+  border:none;cursor:pointer;
+  padding:0.4em 1.1em;
+  transition:all 0.2s;
+}
+.card-toggle button.on{
+  background:var(--gold);
+  color:var(--forest);
+}
+
+.card-name{
+  font-family:'Cormorant SC',serif;
+  font-weight:600;font-size:16pt;
+  color:var(--teal);
+  letter-spacing:0.05em;
+  margin:0.8em 1.3rem 0.15em;
+}
+.card-latin{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-weight:400;font-size:12pt;
+  color:var(--gold);
+  margin:0 1.3rem 0.6em;
+}
+.card-body{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:500;font-size:12pt;
+  color:var(--teal);
+  line-height:1.25;
+  margin:0 1.3rem 1.4rem;
+}
+
+/* ── FOOTER ── */
+.brief-footer{
+  max-width:1100px;
+  margin:4rem auto 0;
+  padding:2rem 2.5rem 3rem;
+  text-align:center;
+  font-family:'Cormorant SC',serif;
+  font-weight:400;font-size:11pt;
+  color:var(--gold);
+  letter-spacing:0.12em;
+}
+</style>
 </head>
 <body>
 
-  <div class="layout">
-    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
+<header class="brief-header">
+  <div class="brief-eyebrow">The Brief</div>
+  <h1 class="brief-title">The Flora</h1>
+  <div class="brief-subtitle">Outdoor jungle garden party.</div>
+  <hr class="header-rule">
+</header>
 
-    <main class="content">
+<div class="brief-caption">
+  <p>Plant shows the bloom itself. Styled shows it in an approved arrangement.</p>
+</div>
 
-      <header class="content__head">
-        <span class="eyebrow content__eyebrow">The Brief</span>
-        <h1 class="content__title">The Flora</h1>
-        <p class="subtitle content__subtitle">Outdoor jungle garden party.</p>
-      </header>
+<!-- TIER 1 -->
+<div class="tier-banner">
+  <div class="tier-banner-inner">
+    <span class="tier-num">Tier 1</span>
+    <span class="tier-name">Non-Negotiables</span>
+  </div>
+</div>
+<div class="flora-grid">
 
-      <p class="flora-intro">Organized by priority. Final selections confirmed with the florist.<br><span class="flora-intro__sub">Plant shows the bloom itself. Styled shows it in an approved arrangement.</span></p>
-
-        <div class="flora-bar flora-bar--teal">Tier 1 <span class='flora-bar__sep'>·</span> Non-Negotiables</div>
-        <div class="flora-grid">
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/736x/bc/e8/9a/bce89ae7b6b9d1383582b3ac30683a9a.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/736x/bc/e8/9a/bce89ae7b6b9d1383582b3ac30683a9a.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Areca Palm</span>
-              <span class="flora-card__latin">Dypsis lutescens</span>
-              <span class="flora-card__desc">Wide, pleated fronds in deep yellow-green. The bold architectural green that anchors arches and backdrops.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/736x/94/6c/31/946c316884cb9b8061821ae43d47175a.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/736x/94/6c/31/946c316884cb9b8061821ae43d47175a.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Hibiscus</span>
-              <span class="flora-card__latin">Hibiscus rosa-sinensis</span>
-              <span class="flora-card__desc">Oversized, sunshine-yellow blooms. Dramatic scale and bold color for focal accents in bouquets and table florals.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/736x/bd/4e/9b/bd4e9bcdfa32363e053d832328d29e00.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/736x/bd/4e/9b/bd4e9bcdfa32363e053d832328d29e00.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Monstera</span>
-              <span class="flora-card__latin">Monstera deliciosa</span>
-              <span class="flora-card__desc">Deep forest green leaves with dramatic cutouts. The primary structural anchor of any arrangement.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://paikobotanicals.com/cdn/shop/files/1-05.jpg?v=1688727720')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://paikobotanicals.com/cdn/shop/files/1-05.jpg?v=1688727720')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Beehive Ginger</span>
-              <span class="flora-card__latin">Zingiber spectabile</span>
-              <span class="flora-card__desc">Waxy, layered gold cones. A vibrant, distinctive texture that reads as gold from across the room.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/1200x/cc/2c/bb/cc2cbb1059ee497202f60ec03936eba9.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/1200x/cc/2c/bb/cc2cbb1059ee497202f60ec03936eba9.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Fan Palm Fronds</span>
-              <span class="flora-card__latin">Livistona chinensis</span>
-              <span class="flora-card__desc">Wide, pleated, radiating fronds. Structural scale for arches and overhead installations.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/1200x/e2/97/d8/e297d86bca9e8577d6309247a64b0e61.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/1200x/e2/97/d8/e297d86bca9e8577d6309247a64b0e61.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Heliconia</span>
-              <span class="flora-card__latin">Heliconia psittacorum</span>
-              <span class="flora-card__desc">Vibrant yellow, sculptural points shooting upward. An active, architectural layer.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/1200x/b7/bd/66/b7bd66ed92b84942fa9033b443cb190e.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/1200x/b7/bd/66/b7bd66ed92b84942fa9033b443cb190e.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Banana Leaf</span>
-              <span class="flora-card__latin">Musa</span>
-              <span class="flora-card__desc">Massive, deep green leaves. Expansive canopy and dramatic scale — backdrop and installation only.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/1200x/4f/af/8e/4faf8e1b7e03646c7552954ec82df805.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/1200x/4f/af/8e/4faf8e1b7e03646c7552954ec82df805.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Pincushion Protea</span>
-              <span class="flora-card__latin">Leucospermum cordifolium 'Yellow Bird'</span>
-              <span class="flora-card__desc">Spiky, warm gold pincushions. A bold sculptural element that pulls warm light into the arrangement.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flora-bar flora-bar--green">Tier 2 <span class='flora-bar__sep'>·</span> Strong Yes</div>
-        <div class="flora-grid">
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/1200x/ba/d4/b7/bad4b7490cc9afd3f1f0c2db06eaad5b.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/1200x/ba/d4/b7/bad4b7490cc9afd3f1f0c2db06eaad5b.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Green Amaranthus</span>
-              <span class="flora-card__latin">Amaranthus caudatus</span>
-              <span class="flora-card__desc">Long, draping green strands. A dramatic, curtain-like effect for verticals and edges.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://asset.bloomnation.com/c_pad,d_vendor:global:catalog:product:image.png,f_auto,fl_preserve_transparency,q_auto,w_1400/v1778469938/vendor/3965/catalog/product/2/0/20220603050023_file_62999567cecdb_629995b18d051.png')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://asset.bloomnation.com/c_pad,d_vendor:global:catalog:product:image.png,f_auto,fl_preserve_transparency,q_auto,w_1400/v1778469938/vendor/3965/catalog/product/2/0/20220603050023_file_62999567cecdb_629995b18d051.png')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Bird of Paradise</span>
-              <span class="flora-card__latin">Strelitzia reginae 'Mandela's Gold'</span>
-              <span class="flora-card__desc">Striking, bright yellow blooms. Only 'Mandela's Gold' — never the standard orange and blue.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/1200x/7e/7a/34/7e7a3440dafd44c06581502907180a17.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/1200x/7e/7a/34/7e7a3440dafd44c06581502907180a17.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Sword Fern</span>
-              <span class="flora-card__latin">Nephrolepis exaltata</span>
-              <span class="flora-card__desc">Arching, forest green fronds. Dense background volume for depth.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://image.floranext.com/instances/societeflowers_com/catalog/product/l/e/lemon_haze_2021_1.jpg.webp?h=800&w=800&r=255&g=255&b=255')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://image.floranext.com/instances/societeflowers_com/catalog/product/l/e/lemon_haze_2021_1.jpg.webp?h=800&w=800&r=255&g=255&b=255')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Leucadendron</span>
-              <span class="flora-card__latin">Leucadendron orientale</span>
-              <span class="flora-card__desc">Layered, golden-yellow cones. A distinct supporting texture that anchors the display.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://www.flowersbyspecialarrangement.com/cdn/shop/files/yellow-celosia-calla-lilies-freesia-913382.png?v=1742235852&width=1646')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://www.flowersbyspecialarrangement.com/cdn/shop/files/yellow-celosia-calla-lilies-freesia-913382.png?v=1742235852&width=1646')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Celosia</span>
-              <span class="flora-card__latin">Celosia argentea — gold/yellow, feathered plume</span>
-              <span class="flora-card__desc">Feathery, golden-yellow plumes. A deeply textured, gestural layer.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/1200x/4c/5f/76/4c5f76e46bbd5b4e8ee1a6ee52c0b611.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/1200x/4c/5f/76/4c5f76e46bbd5b4e8ee1a6ee52c0b611.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Ti Plant</span>
-              <span class="flora-card__latin">Cordyline fruticosa, green</span>
-              <span class="flora-card__desc">Broad, glossy green blades. Upright structure at mid-height, a staple of Caribbean gardens.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/736x/28/d0/62/28d062198d43e427890d804ff2e7fd10.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/736x/28/d0/62/28d062198d43e427890d804ff2e7fd10.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Anthurium</span>
-              <span class="flora-card__latin">Anthurium andraeanum 'Midori'</span>
-              <span class="flora-card__desc">Glossy, heart-shaped blooms in green and golden-yellow. The lacquered petals hold their shape for hours in heat.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flora-bar flora-bar--navy">Tier 3 <span class='flora-bar__sep'>·</span> Florist's Discretion</div>
-        <div class="flora-grid">
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://static.squarespace.com/static/531386c5e4b06c7ef09c11c1/53bb2dc5e4b01e826709450f/53bb2e55e4b01e8267095ded/1404776021409/201204181462.jpg?format=original')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://static.squarespace.com/static/531386c5e4b06c7ef09c11c1/53bb2dc5e4b01e826709450f/53bb2e55e4b01e8267095ded/1404776021409/201204181462.jpg?format=original')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Gloriosa Lily</span>
-              <span class="flora-card__latin">Gloriosa superba</span>
-              <span class="flora-card__desc">Distinctive, flame-like golden blooms. A rare vertical texture, used sparingly.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://www.hartfloraldesign.com/wp-content/uploads/2024/02/Kylie-Kyle-Wedding-Smith-James-Events-Parker-Palm-Springs-3225-1.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://www.hartfloraldesign.com/wp-content/uploads/2024/02/Kylie-Kyle-Wedding-Smith-James-Events-Parker-Palm-Springs-3225-1.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Spanish Moss</span>
-              <span class="flora-card__latin">Tillandsia usneoides</span>
-              <span class="flora-card__desc">Trailing silver fibers. Softens hard structures into something that feels grown rather than built.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://i.pinimg.com/1200x/fe/26/30/fe2630f778f7013a246ad31105111f92.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://i.pinimg.com/1200x/fe/26/30/fe2630f778f7013a246ad31105111f92.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Mokara Orchid</span>
-              <span class="flora-card__latin">Mokara 'Sunshine Bright Yellow'</span>
-              <span class="flora-card__desc">Bright yellow blooms clustered along tall, cascading stems. Long-lasting and vivid, a tropical sculptural accent.</span>
-            </div>
-          </div>
-          <div class="flora-card">
-            <div class="flora-card__media">
-              <div class="flora-card__img flora-card__img--plant is-on" style="background-image:url('https://www.petalrepublic.com/wp-content/uploads/2025/03/Yellow-Wedding-Bouquet-61-683x1024.jpg')" data-plant></div>
-              <div class="flora-card__img flora-card__img--styled" style="background-image:url('https://www.petalrepublic.com/wp-content/uploads/2025/03/Yellow-Wedding-Bouquet-61-683x1024.jpg')" data-styled></div>
-              <div class="flora-card__toggle">
-                <button class="flora-card__tab is-on" data-show="plant">Plant</button>
-                <button class="flora-card__tab" data-show="styled">Styled</button>
-              </div>
-            </div>
-            <div class="flora-card__meta">
-              <span class="flora-card__name">Plumeria</span>
-              <span class="flora-card__latin">Plumeria rubra</span>
-              <span class="flora-card__desc">Fragrant, velvety white and yellow blooms. Soft, lush texture for close-up placements.</span>
-            </div>
-          </div>
-        </div>
-
-
-    </main>
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/areca-palm-plant.jpg" data-styled="flora/areca-palm-styled.jpg" alt="Areca Palm">
+      <div class="card-well-placeholder">Areca Palm</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Areca Palm</div>
+    <div class="card-latin">Dypsis lutescens</div>
+    <div class="card-body">Wide, pleated fronds fan out for structural scale: the bold architectural green that anchors an arch or backdrop.</div>
   </div>
 
-  <script src="../assets/js/sidebar.js"></script>
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/main.js"></script>
-  <script>
-    // Flora card Plant / Styled toggle
-    document.querySelectorAll('.flora-card').forEach(function(card){
-      var tabs = card.querySelectorAll('.flora-card__tab');
-      var plant = card.querySelector('[data-plant]');
-      var styled = card.querySelector('[data-styled]');
-      tabs.forEach(function(tab){
-        tab.addEventListener('click', function(){
-          tabs.forEach(function(t){ t.classList.remove('is-on'); });
-          tab.classList.add('is-on');
-          var show = tab.dataset.show;
-          plant.classList.toggle('is-on', show === 'plant');
-          styled.classList.toggle('is-on', show === 'styled');
-        });
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/hibiscus-plant.jpg" data-styled="flora/hibiscus-styled.jpg" alt="Hibiscus">
+      <div class="card-well-placeholder">Hibiscus</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Hibiscus</div>
+    <div class="card-latin">Hibiscus rosa-sinensis</div>
+    <div class="card-body">Oversized, yellow blooms provide dramatic scale and bold color. These backyard mainstays are brewed into traditional, healing Caribbean teas.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/monstera-plant.jpg" data-styled="flora/monstera-styled.jpg" alt="Monstera">
+      <div class="card-well-placeholder">Monstera</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Monstera</div>
+    <div class="card-latin">Monstera deliciosa</div>
+    <div class="card-body">Deep forest green leaves with dramatic cutouts form the primary structural anchor, channeling the shaded, tangled energy of native island woodlands.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/beehive-ginger-plant.jpg" data-styled="flora/beehive-ginger-styled.jpg" alt="Beehive Ginger">
+      <div class="card-well-placeholder">Beehive Ginger</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Beehive Ginger</div>
+    <div class="card-latin">Zingiber spectabile</div>
+    <div class="card-body">Waxy, layered gold cones add a vibrant, distinctive texture. Thriving in deep shade, these architectural gems mirror the lush floor of mature island forests.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/fan-palm-plant.jpg" data-styled="flora/fan-palm-styled.jpg" alt="Fan Palm Fronds">
+      <div class="card-well-placeholder">Fan Palm Fronds</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Fan Palm Fronds</div>
+    <div class="card-latin">Livistona chinensis</div>
+    <div class="card-body">Wide, radiating fronds provide structural scale for arches. The Hispaniolan Taíno harvested these guano palm leaves to weave sturdy baskets and cordage.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/heliconia-plant.jpg" data-styled="flora/heliconia-styled.jpg" alt="Heliconia">
+      <div class="card-well-placeholder">Heliconia</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Heliconia</div>
+    <div class="card-latin">Heliconia psittacorum</div>
+    <div class="card-body">Vibrant yellow, sculptural points shoot upward for an active, architectural layer. This native rainforest beauty continually draws in local island hummingbirds.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/banana-leaf-plant.jpg" data-styled="flora/banana-leaf-styled.jpg" alt="Banana Leaf">
+      <div class="card-well-placeholder">Banana Leaf</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Banana Leaf</div>
+    <div class="card-latin">Musa</div>
+    <div class="card-body">Massive, deep green leaves offer an expansive canopy and dramatic scale. They filter the intense island sun, providing lush, essential shade across the land.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/pincushion-protea-plant.jpg" data-styled="flora/pincushion-protea-styled.jpg" alt="Pincushion Protea">
+      <div class="card-well-placeholder">Pincushion Protea</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Pincushion Protea</div>
+    <div class="card-latin">Leucospermum cordifolium 'Yellow Bird'</div>
+    <div class="card-body">Spiky, warm gold pincushions add a bold sculptural element. Their sun-gold color pulls the warm Dominican light straight into the arrangement.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/green-amaranthus-plant.jpg" data-styled="flora/green-amaranthus-styled.jpg" alt="Green Amaranthus">
+      <div class="card-well-placeholder">Green Amaranthus</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Green Amaranthus</div>
+    <div class="card-latin">Amaranthus caudatus</div>
+    <div class="card-body">Long, draping green strands create a dramatic, curtain-like effect. They drop heavily, mimicking the vertical flow of a secluded rainforest waterfall.</div>
+  </div>
+
+</div>
+
+<!-- TIER 2 -->
+<div class="tier-banner">
+  <div class="tier-banner-inner">
+    <span class="tier-num">Tier 2</span>
+    <span class="tier-name">Strong Yes</span>
+  </div>
+</div>
+<div class="flora-grid">
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/bird-of-paradise-plant.jpg" data-styled="flora/bird-of-paradise-styled.jpg" alt="Bird of Paradise">
+      <div class="card-well-placeholder">Bird of Paradise</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Bird of Paradise</div>
+    <div class="card-latin">Strelitzia reginae 'Mandela's Gold'</div>
+    <div class="card-body">Striking, bright yellow blooms offer a rare, sculpted look. Only the golden 'Mandela's Gold' cultivar belongs here, never the standard orange and blue.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/sword-fern-plant.jpg" data-styled="flora/sword-fern-styled.jpg" alt="Sword Fern">
+      <div class="card-well-placeholder">Sword Fern</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Sword Fern</div>
+    <div class="card-latin">Nephrolepis exaltata</div>
+    <div class="card-body">Arching, forest green fronds provide dense background volume. They evoke the cool, sheltered depth of native limestone caverns and ravines.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/leucadendron-plant.jpg" data-styled="flora/leucadendron-styled.jpg" alt="Leucadendron">
+      <div class="card-well-placeholder">Leucadendron</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Leucadendron</div>
+    <div class="card-latin">Leucadendron orientale</div>
+    <div class="card-body">Layered, golden-yellow cones offer a distinct supporting texture. Their radiant hue anchors the display, reflecting the sunlit tones of the coast.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/celosia-plant.jpg" data-styled="flora/celosia-styled.jpg" alt="Celosia">
+      <div class="card-well-placeholder">Celosia</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Celosia</div>
+    <div class="card-latin">Celosia argentea</div>
+    <div class="card-body">Feathery, golden-yellow plumes offer a deeply textured, gestural layer. Their fluid forms mirror the dancing crests of native tropical songbirds.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/ti-plant-plant.jpg" data-styled="flora/ti-plant-styled.jpg" alt="Ti Plant">
+      <div class="card-well-placeholder">Ti Plant</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Ti Plant</div>
+    <div class="card-latin">Cordyline fruticosa</div>
+    <div class="card-body">Broad, glossy green blades add upright structure at mid-height. A staple of Caribbean gardens, thriving in the island heat.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/anthurium-plant.jpg" data-styled="flora/anthurium-styled.jpg" alt="Anthurium">
+      <div class="card-well-placeholder">Anthurium</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Anthurium</div>
+    <div class="card-latin">Anthurium andraeanum 'Midori'</div>
+    <div class="card-body">Glossy, heart-shaped blooms in green and golden-yellow add sculptural texture. The thick, lacquered petals hold their shape for hours in heat.</div>
+  </div>
+
+</div>
+
+<!-- TIER 3 -->
+<div class="tier-banner">
+  <div class="tier-banner-inner">
+    <span class="tier-num">Tier 3</span>
+    <span class="tier-name">Florist's Discretion</span>
+  </div>
+</div>
+<div class="flora-grid">
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/gloriosa-lily-plant.jpg" data-styled="flora/gloriosa-lily-styled.jpg" alt="Gloriosa Lily">
+      <div class="card-well-placeholder">Gloriosa Lily</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Gloriosa Lily</div>
+    <div class="card-latin">Gloriosa superba</div>
+    <div class="card-body">Distinctive, flame-like golden blooms add a rare vertical texture. Their climbing habit mimics the wild, reaching vines of native tropical canopies.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/spanish-moss-plant.jpg" data-styled="flora/spanish-moss-styled.jpg" alt="Spanish Moss">
+      <div class="card-well-placeholder">Spanish Moss</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Spanish Moss</div>
+    <div class="card-latin">Tillandsia usneoides</div>
+    <div class="card-body">Trailing silver fibers introduce an airy, organic texture. Draped overhead, it softens hard structures into something that feels grown rather than built.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/mokara-orchid-plant.jpg" data-styled="flora/mokara-orchid-styled.jpg" alt="Mokara Orchid">
+      <div class="card-well-placeholder">Mokara Orchid</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Mokara Orchid</div>
+    <div class="card-latin">Mokara 'Sunshine Bright Yellow'</div>
+    <div class="card-body">Bright yellow blooms cluster along tall, cascading stems. Long-lasting and vivid, they add a tropical, sculptural accent to the arrangement.</div>
+  </div>
+
+  <div class="flora-card">
+    <div class="card-well">
+      <img data-plant="flora/plumeria-plant.jpg" data-styled="flora/plumeria-styled.jpg" alt="Plumeria">
+      <div class="card-well-placeholder">Plumeria</div>
+    </div>
+    <div class="card-toggle"><button class="on" data-v="plant">Plant</button><button data-v="styled">Styled</button></div>
+    <div class="card-name">Plumeria</div>
+    <div class="card-latin">Plumeria rubra</div>
+    <div class="card-body">Fragrant, velvety white and yellow blooms offer a soft, lush texture. They carry a deep history as traditional adornments across native island rituals.</div>
+  </div>
+
+</div>
+
+<footer class="brief-footer">
+  Danisa &amp; Julian · 07 · 07 · 27 · El Aguacate, Dominican Republic
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  // Toggle plant/styled per card
+  document.querySelectorAll('.flora-card').forEach(function(card){
+    var img = card.querySelector('.card-well img');
+    var placeholder = card.querySelector('.card-well-placeholder');
+    var btns = card.querySelectorAll('.card-toggle button');
+
+    function show(view){
+      var src = img.getAttribute('data-' + view);
+      // reset
+      img.classList.remove('loaded');
+      var probe = new Image();
+      probe.onload = function(){
+        img.src = src;
+        img.classList.add('loaded');
+      };
+      probe.onerror = function(){
+        img.classList.remove('loaded'); // placeholder stays visible
+        img.removeAttribute('src');
+      };
+      probe.src = src;
+    }
+
+    btns.forEach(function(b){
+      b.addEventListener('click', function(){
+        btns.forEach(function(x){ x.classList.remove('on'); });
+        b.classList.add('on');
+        show(b.getAttribute('data-v'));
       });
     });
-  </script>
+
+    // initial attempt (plant view) — placeholder shows if file missing
+    show('plant');
+  });
+
+})();
+</script>
 </body>
 </html>
