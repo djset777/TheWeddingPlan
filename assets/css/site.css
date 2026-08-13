@@ -45,7 +45,7 @@
   text-align: center;
   color: var(--accent);
   margin-top: 0;
-  padding-top: 0.35rem;
+  padding-top: var(--space-1);
   padding-bottom: var(--space-3);
   border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   margin-bottom: var(--space-3);
@@ -843,28 +843,25 @@
 .rsvp-legend__row--awaiting  .rsvp-legend__dot { background: rgba(212, 175, 55, 0.4); }
 
 /* --- Timeline strip ------------------------------------------------------ */
+/* The horizontal gold line runs THROUGH the dot centers.
+   This line IS the divider between the header and the content below —
+   there is no separate border above or below the timeline. */
 .timeline {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 0 var(--space-2);
+  padding: var(--space-3) var(--space-2);
   position: relative;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-3);
   background: transparent;
-  /* The timeline IS the divider between header and content */
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--accent);
 }
-/* The horizontal line runs through the dot centers.
-   Dots are 8px (past/future), 16px (now) — center is at top: 12px from the padding-top line.
-   padding-top is var(--space-3) = 1.4rem ≈ 22px, dots start at 22px, dot center = 22 + 4 = 26px. */
 .timeline__line {
   position: absolute;
   top: calc(var(--space-3) + 8px);
-  left: calc(var(--space-2) + 20px);
-  right: calc(var(--space-2) + 20px);
-  height: 0.5px;
-  background: rgba(212, 175, 55, 0.35);
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--accent);
   z-index: 0;
 }
 .timeline__stop {
