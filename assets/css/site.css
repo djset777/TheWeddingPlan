@@ -1576,3 +1576,53 @@
     grid-column: 2;
   }
 }
+
+/* --- Sidebar RSVP block ------------------------------------------------- */
+.sidebar__rsvp {
+  padding: 0 0 var(--space-3);
+  margin-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+}
+.sidebar__rsvp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.sidebar__rsvp-label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--accent);
+  letter-spacing: 0.18em;
+}
+.sidebar__rsvp-frac {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--linen);
+  letter-spacing: 0.04em;
+}
+.sidebar__rsvp-bar {
+  height: 5px;
+  background: rgba(212, 175, 55, 0.18);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.sidebar__rsvp-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.6s ease;
+}
+.sidebar__rsvp-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.08em;
+}
+.sidebar__rsvp-confirmed {
+  color: var(--accent);
+}
+.sidebar__rsvp-awaiting {
+  color: rgba(242, 237, 230, 0.6);
+}

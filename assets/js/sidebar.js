@@ -19,6 +19,20 @@
       <span data-cd-day>—</span>D<span class="sep">·</span><span data-cd-hr>—</span>H<span class="sep">·</span><span data-cd-min>—</span>M<span class="sep">·</span><span data-cd-sec>—</span>S
     </div>
 
+    <div class="sidebar__rsvp">
+      <div class="sidebar__rsvp-head">
+        <span class="sidebar__rsvp-label">RSVP</span>
+        <span class="sidebar__rsvp-frac"><span data-rsvp-confirmed>—</span> / <span data-rsvp-total>—</span></span>
+      </div>
+      <div class="sidebar__rsvp-bar">
+        <div class="sidebar__rsvp-fill" data-rsvp-fill style="width: 0%;"></div>
+      </div>
+      <div class="sidebar__rsvp-foot">
+        <span class="sidebar__rsvp-confirmed">confirmed</span>
+        <span class="sidebar__rsvp-awaiting"><span data-rsvp-awaiting>—</span> awaiting</span>
+      </div>
+    </div>
+
     <nav class="sidebar__nav" aria-label="Primary">
       <h3>The Brief</h3>
       <ul>
@@ -81,4 +95,31 @@
   }
   tickSidebar();
   setInterval(tickSidebar, 1000);
+
+  // --- RSVP hydration -------------------------------------------------
+  // Wait until TWP.api is available (api.js loads after sidebar.js on some
+  // pages), then fetch and paint the progress bar.
+  function hydrateRsvp() {
+    if (!window.TWP || !window.TWP.api) {
+      setTimeout(hydrateRsvp, 100);
+      return;
+    }
+    window.TWP.api.get('rsvp').then(rsvp => {
+      if (!rsvp) return;
+      const total = rsvp.total || 0;
+      const confirmed = rsvp.confirmed || 0;
+      const awaiting = rsvp.awaiting != null ? rsvp.awaiting : (total - confirmed - (rsvp.declined || 0));
+
+      const totalEl = mount.querySelector('[data-rsvp-total]');
+      const confEl = mount.querySelector('[data-rsvp-confirmed]');
+      const awaitEl = mount.querySelector('[data-rsvp-awaiting]');
+      const fillEl = mount.querySelector('[data-rsvp-fill]');
+
+      if (totalEl) totalEl.textContent = total;
+      if (confEl) confEl.textContent = confirmed;
+      if (awaitEl) awaitEl.textContent = awaiting;
+      if (fillEl) fillEl.style.width = total ? `${(confirmed / total) * 100}%` : '0%';
+    }).catch(err => console.warn('Sidebar RSVP fetch failed', err));
+  }
+  hydrateRsvp();
 })();
