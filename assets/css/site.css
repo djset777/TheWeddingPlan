@@ -1823,7 +1823,7 @@
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
   letter-spacing: 0.06em;
-  color: var(--linen);
+  color: var(--accent);
   background: transparent;
   border: none;
   padding: 3px 9px;
