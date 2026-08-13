@@ -5,8 +5,8 @@
    ========================================================================== */
 
 const CONFIG = {
-  API_URL: '',
-  USE_MOCK: true,
+  API_URL: 'https://script.google.com/macros/s/AKfycbyl3mtgwwDnxPAT9rG12rgPQka2SjRlbRIAVBKCVetCCJsucxm07iONQkoXsp6Ikv9BHw/exec',
+  USE_MOCK: false,
 };
 
 // The 11 assignees stored in the spreadsheet
@@ -75,15 +75,48 @@ const MOCK = {
   },
 };
 
+// Cache the /all response so we make one request per page load, not one per path
+let _allPromise = null;
+
 async function apiGet(path) {
   if (CONFIG.USE_MOCK || !CONFIG.API_URL) {
     if (path in MOCK) return MOCK[path];
     return null;
   }
-  const res = await fetch(`${CONFIG.API_URL}?path=${encodeURIComponent(path)}`);
+
+  // Fetch everything once, then serve individual paths from cache
+  if (!_allPromise) {
+    _allPromise = fetch(`${CONFIG.API_URL}?path=all`, {
+      method: 'GET',
+      redirect: 'follow',
+    }).then(res => {
+      if (!res.ok) throw new Error(`API ${res.status}`);
+      return res.json();
+    });
+  }
+
+  const all = await _allPromise;
+  if (all && (path in all)) return all[path];
+  return null;
+}
+
+// POST endpoint for task updates.
+// Apps Script /exec expects a plain POST body; using text/plain to avoid a
+// CORS preflight (application/json triggers one and Apps Script doesn't
+// answer OPTIONS requests cleanly).
+async function apiPost(action, payload) {
+  if (CONFIG.USE_MOCK || !CONFIG.API_URL) {
+    return { ok: false, error: 'Mock mode — writes disabled' };
+  }
+  const res = await fetch(CONFIG.API_URL, {
+    method: 'POST',
+    redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action, ...payload }),
+  });
   if (!res.ok) throw new Error(`API ${res.status}`);
   return res.json();
 }
 
 window.TWP = window.TWP || {};
-window.TWP.api = { get: apiGet, config: CONFIG };
+window.TWP.api = { get: apiGet, post: apiPost, config: CONFIG };

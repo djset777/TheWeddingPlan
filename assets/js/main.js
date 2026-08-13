@@ -11,24 +11,43 @@
   const qa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   // ------------- Load data -------------
-  const [rsvp, people, timeframes, subtasks] = await Promise.all([
+  const [rsvp, people, timeframes, tasks] = await Promise.all([
     window.TWP.api.get('rsvp'),
     window.TWP.api.get('people'),
     window.TWP.api.get('timeframes'),
-    window.TWP.api.get('subtasks'),
+    window.TWP.api.get('tasks'),
   ]);
+
+  // Flatten parents → subtasks. Each subtask inherits its parent's timeframe,
+  // phase, and any tags/moment/category. The site treats subtasks as the atoms.
+  const subtasks = [];
+  (tasks || []).forEach(parent => {
+    (parent.subtasks || []).forEach(sub => {
+      subtasks.push({
+        id: sub.id,
+        title: sub.title,
+        parent: sub.parent,
+        category: (parent.tags && parent.tags[0]) || parent.moment || '',
+        timeframe: parent.timeframe,
+        phase: parent.phase ? parent.phase.toLowerCase() : '',
+        assignees: sub.assignees && sub.assignees.length ? sub.assignees : (parent.assignees || []),
+        status: (sub.status || '').toLowerCase() === 'complete' ? 'done' : 'open',
+      });
+    });
+  });
 
   const NOW_TF = timeframes.find(t => t.isNow) || timeframes[0];
   const NOW_ORDER = NOW_TF.order;
   let activeTf = NOW_TF.code;
 
-  // Helper: person code → name
-  const nameOf = code => (people.find(p => p.code === code) || {}).name || code;
-
-  // Helper: person code → short display code (for bubbles)
-  // 'Dioris' is the underlying spreadsheet code (not to be changed);
-  // display shows 'DG' (Dioris Gómez initials) so the bubble stays circle-sized.
-  const displayCode = code => code === 'Dioris' ? 'DG' : code;
+  // People are stored as full names in the spreadsheet.
+  // Site displays the `initials` field from the API on the bubbles.
+  const initialsOf = name => {
+    const p = people.find(p => p.name === name);
+    return p ? p.initials : name.slice(0, 1).toUpperCase();
+  };
+  const nameOf = name => name;  // no-op: assignees are already full names
+  const displayCode = name => initialsOf(name);
 
   // -------------------------------------------------------
   // RSVP donut (header, top-right)
@@ -125,34 +144,34 @@
 
     const { current } = tasksForActiveTf();
 
-    // Count tasks per assignee code (a subtask can have multiple assignees)
+    // Count tasks per assignee name (a subtask can have multiple assignees)
     const counts = {};
-    people.forEach(p => { counts[p.code] = 0; });
+    people.forEach(p => { counts[p.name] = 0; });
     current.forEach(task => {
-      (task.assignees || []).forEach(code => {
-        if (counts[code] != null) counts[code] += 1;
+      (task.assignees || []).forEach(name => {
+        if (counts[name] != null) counts[name] += 1;
       });
     });
 
     // Sort by count desc, then original order (people list order)
     const sorted = [...people].sort((a, b) => {
-      const diff = (counts[b.code] || 0) - (counts[a.code] || 0);
+      const diff = (counts[b.name] || 0) - (counts[a.name] || 0);
       if (diff !== 0) return diff;
       return people.indexOf(a) - people.indexOf(b);
     });
 
-    const activeCount = sorted.filter(p => counts[p.code] > 0).length;
+    const activeCount = sorted.filter(p => counts[p.name] > 0).length;
     if (metaEl) {
       metaEl.textContent = `${current.length} subtasks · ${activeCount} carrying`;
     }
 
     mount.innerHTML = sorted.map(person => {
-      const n = counts[person.code] || 0;
+      const n = counts[person.name] || 0;
       const isIdle = n === 0;
       return `
         <div class="assignee-col${isIdle ? ' assignee-col--idle' : ''}">
           <div class="assignee-col__count">${n}</div>
-          <div class="assignee-col__bubble">${displayCode(person.code)}</div>
+          <div class="assignee-col__bubble">${person.initials}</div>
           <div class="assignee-col__name">${person.name}</div>
         </div>
       `;
@@ -188,8 +207,9 @@
       : '';
 
     // Phase label
-    const phaseCls = `tl-phase tl-phase--${task.phase}`;
-    const phaseLabel = task.phase.toUpperCase();
+    const phase = task.phase || 'discover';
+    const phaseCls = `tl-phase tl-phase--${phase}`;
+    const phaseLabel = phase.toUpperCase();
 
     return `
       <div class="tl-row${overdueCls}${doneCls}">
