@@ -1828,7 +1828,7 @@
   top: 8px;
   right: 8px;
   display: flex;
-  background: var(--abyss);
+  background: var(--deeper);
   border-radius: 999px;
   padding: 2px;
 }
