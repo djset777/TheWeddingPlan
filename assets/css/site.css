@@ -1878,3 +1878,18 @@
 @media (max-width: 560px) {
   .flora-grid { grid-template-columns: 1fr; }
 }
+
+/* Styled slot awaiting a photo — clearly marked so it's easy to spot/swap */
+.flora-card__img--tocome {
+  background: var(--linen-shade);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flora-card__img--tocome::after {
+  content: "Styled photo to come";
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  color: rgba(12, 52, 61, 0.45);
+}
