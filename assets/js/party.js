@@ -223,7 +223,7 @@
       <div class="team-roster">${rosterHtml}</div>
 
       <section class="tasklist-card">
-        <div class="tasklist-card__meta-row">
+        <div class="tasklist-card__meta-row tasklist-card__meta-row--split">
           <span class="team-section-label">What the Team's Moving On</span>
           <span class="tasklist-card__meta">recent updates</span>
         </div>

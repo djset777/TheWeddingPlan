@@ -1829,3 +1829,10 @@
 
 /* Flora page: tighten the gap between the header rule and the first tier bar */
 .content__head + .flora-bar { margin-top: 0; }
+
+/* Meta row with a label on the left and meta on the right (Team feed header) */
+.tasklist-card__meta-row--split {
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
