@@ -1,0 +1,118 @@
+/* ==========================================================================
+   The Attire — Option B (progressive disclosure), Style 3 open/decided.
+   Scoped to .att-* so nothing leaks into other pages.
+   ========================================================================== */
+
+[data-attire-view] { max-width: 760px; }
+
+.att-legend {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12.5px;
+  font-style: italic;
+  color: #5F5E5A;
+  margin: 0.9rem 0 0;
+}
+.att-legend .att-dot { color: #D4AF37; font-style: normal; }
+
+/* Section anchor — large gold caps */
+.att-group { margin-top: 2.6rem; }
+.att-group:first-of-type { margin-top: 1.8rem; }
+.att-section__label {
+  font-family: 'Cormorant SC', serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 22px;
+  font-weight: 500;
+  color: #D4AF37;
+  margin: 0 0 0.6rem;
+}
+
+/* Person row */
+.att-person { border-top: 0.5px solid #e2d9c2; }
+.att-person:last-child { border-bottom: 0.5px solid #e2d9c2; }
+
+.att-person__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: none;
+  border: 0;
+  padding: 13px 2px;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Cormorant Garamond', serif;
+}
+.att-person__head:hover .att-person__name { color: #014421; }
+
+.att-person__name {
+  flex: 1 1 auto;
+  font-style: italic;
+  font-size: 16px;
+  color: #01605F;
+  transition: color 0.15s ease;
+  min-width: 0;
+}
+.att-person__name b { font-style: normal; font-weight: 500; }
+
+.att-person__bar {
+  flex: 0 0 120px;
+  height: 4px;
+  background: #e6ddc6;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.att-person__bar > span {
+  display: block;
+  height: 100%;
+  background: #D4AF37;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.att-person__count {
+  flex: 0 0 auto;
+  font-size: 12.5px;
+  color: #5F5E5A;
+  width: 62px;
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+.att-person__chev {
+  flex: 0 0 auto;
+  color: #B0902A;
+  font-size: 12px;
+  width: 14px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+.att-person.is-collapsed .att-person__chev { transform: rotate(-90deg); }
+
+/* Item grid */
+.att-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px 28px;
+  padding: 2px 2px 16px 2px;
+  overflow: hidden;
+}
+.att-person.is-collapsed .att-items { display: none; }
+
+.att-item {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  color: #0C343D;
+  line-height: 1.5;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.12s ease;
+}
+.att-item:hover { background: #f6f0e4; }
+.att-item .att-dot { color: #D4AF37; }
+.att-item .att-dot--open { color: #D4AF37; }
+.att-item .att-v { color: #0C343D; }
+.att-item .att-open { color: #B0902A; font-style: italic; }
+
+@media (max-width: 640px) {
+  .att-items { grid-template-columns: 1fr; }
+  .att-person__bar { flex-basis: 76px; }
+}
