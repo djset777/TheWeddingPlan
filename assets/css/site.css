@@ -2141,3 +2141,15 @@
   margin-top: var(--space-1);
   font-size: var(--step--1);
 }
+
+/* --- Dress cards: single consistent column ------------------------------- */
+/* Every gown sits in the same left column with its details beside it.
+   Alternating layout removed — the zigzag broke the vertical rhythm. */
+.dress-card {
+  grid-template-columns: 300px 1fr;
+  gap: var(--space-4);
+  align-items: start;
+  margin-bottom: var(--space-5);
+}
+.dress-card__body { padding-top: 0; }
+.dress-card__name { margin-top: 0; line-height: 1.1; }
