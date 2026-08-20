@@ -17,7 +17,7 @@
     <a class="sidebar__brand" href="${prefix}index.html">7 · 7 · 27</a>
 
     <div class="sidebar__countdown" data-sidebar-countdown>
-      <span data-cd-day>—</span>D<span class="sep">·</span><span data-cd-hr>—</span>H<span class="sep">·</span><span data-cd-min>—</span>M<span class="sep">·</span><span data-cd-sec>—</span>S
+      <span data-cd-mo>—</span> MO<span class="sep">|</span><span data-cd-wk>—</span> WKS<span class="sep">|</span><span data-cd-day>—</span> DAYS<span class="sep">|</span><span data-cd-hr>—</span> HRS
     </div>
 
     <div class="sidebar__rsvp">
@@ -68,29 +68,34 @@
   // --- Countdown (days · hours · minutes · seconds) ------------------
   const target = new Date('2027-07-07T16:00:00-04:00');
   const el = {
+    mo:  mount.querySelector('[data-cd-mo]'),
+    wk:  mount.querySelector('[data-cd-wk]'),
     day: mount.querySelector('[data-cd-day]'),
     hr:  mount.querySelector('[data-cd-hr]'),
-    min: mount.querySelector('[data-cd-min]'),
-    sec: mount.querySelector('[data-cd-sec]'),
   };
 
   function tickSidebar() {
     const now = new Date();
-    let delta = Math.max(0, target - now);
+    const delta = Math.max(0, target - now);
 
-    const day = 1000 * 60 * 60 * 24;
-    const hr  = 1000 * 60 * 60;
-    const min = 1000 * 60;
+    const hrMs  = 1000 * 60 * 60;
+    const dayMs = hrMs * 24;
 
-    const days    = Math.floor(delta / day); delta -= days * day;
-    const hours   = Math.floor(delta / hr);  delta -= hours * hr;
-    const minutes = Math.floor(delta / min); delta -= minutes * min;
-    const seconds = Math.floor(delta / 1000);
+    // Parallel totals — each expresses the whole remaining span in its own unit.
+    const totalHours = Math.floor(delta / hrMs);
+    const totalDays  = Math.floor(delta / dayMs);
+    const totalWeeks = Math.floor(totalDays / 7);
 
-    if (el.day) el.day.textContent = days;
-    if (el.hr)  el.hr.textContent  = String(hours).padStart(2, '0');
-    if (el.min) el.min.textContent = String(minutes).padStart(2, '0');
-    if (el.sec) el.sec.textContent = String(seconds).padStart(2, '0');
+    // Whole calendar months between now and the target.
+    let months = (target.getFullYear() - now.getFullYear()) * 12
+               + (target.getMonth() - now.getMonth());
+    if (target.getDate() < now.getDate()) months -= 1;
+    months = Math.max(0, months);
+
+    if (el.mo)  el.mo.textContent  = months;
+    if (el.wk)  el.wk.textContent  = totalWeeks;
+    if (el.day) el.day.textContent = totalDays;
+    if (el.hr)  el.hr.textContent  = totalHours;
   }
   tickSidebar();
   setInterval(tickSidebar, 1000);
