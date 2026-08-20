@@ -2513,3 +2513,23 @@
 /* Mood tiles: smaller — these are reference, not feature images. */
 .mood-plain { grid-template-columns: repeat(4, 1fr); gap: var(--space-1); }
 .mood-plain .mb-tile { aspect-ratio: 1 / 1; }
+
+/* Section titles on The Look — sized as real headers, not body text. */
+.zone__bar {
+  font-size: var(--step-2);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  padding: var(--space-3);
+}
+
+/* Section titles on The Look — real header weight, with the gold rule
+   that marks section starts elsewhere on the site. */
+.section-head {
+  font-size: var(--step-3);
+  letter-spacing: 0.06em;
+  color: var(--anchor);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: var(--space-2);
+  margin: var(--space-5) 0 var(--space-3);
+}
+.content__head + .wrap--narrow .zone:first-child .section-head { margin-top: 0; }
