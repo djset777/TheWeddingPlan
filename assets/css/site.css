@@ -2533,3 +2533,16 @@
   margin: var(--space-5) 0 var(--space-3);
 }
 .content__head + .wrap--narrow .zone:first-child .section-head { margin-top: 0; }
+
+/* Swatches match the mood tiles exactly — same square, same gap, same columns. */
+.swatches {
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-1);
+}
+.swatch {
+  min-height: 0;
+  aspect-ratio: 1 / 1;
+  padding: var(--space-3);
+  justify-content: flex-start;
+}
+.swatch__use { margin-top: auto; }
