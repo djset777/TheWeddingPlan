@@ -13,6 +13,7 @@
   const prefix = inSubfolder ? '../' : '';
 
   mount.innerHTML = `
+    <a class="sidebar__mark" href="${prefix}index.html">DJ</a>
     <a class="sidebar__brand" href="${prefix}index.html">7 · 7 · 27</a>
 
     <div class="sidebar__countdown" data-sidebar-countdown>

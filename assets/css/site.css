@@ -2626,3 +2626,18 @@
   font-weight: 300;
   letter-spacing: 3.4px;
 }
+
+/* DJ mark above the date — aligns the sidebar with the content eyebrow. */
+.sidebar__mark {
+  display: block;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: 15.2px;
+  letter-spacing: 2.13px;
+  color: var(--accent);
+  text-align: center;
+  text-decoration: none;
+  margin-top: 22px;
+  margin-bottom: var(--space-1);
+}
+.sidebar__mark:hover { color: var(--linen); }

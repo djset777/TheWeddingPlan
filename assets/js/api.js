@@ -1,122 +1,27 @@
-/* ==========================================================================
-   The Wedding Plan — API
-   Mock data until the Apps Script endpoint is deployed.
-   Data shape mirrors what the JSON API will return.
-   ========================================================================== */
-
-const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbyl3mtgwwDnxPAT9rG12rgPQka2SjRlbRIAVBKCVetCCJsucxm07iONQkoXsp6Ikv9BHw/exec',
-  USE_MOCK: false,
-};
-
-// The 11 assignees stored in the spreadsheet
-const PEOPLE = [
-  { code: 'D',      name: 'Danisa' },
-  { code: 'J',      name: 'Julian' },
-  { code: 'DJ',     name: 'Both' },
-  { code: 'C',      name: 'Carmen' },
-  { code: 'JM',     name: 'José Miguel' },
-  { code: 'Dioris', name: 'Dioris' },
-  { code: 'S',      name: 'Sileni' },
-  { code: 'M',      name: 'Melonie' },
-  { code: 'G',      name: 'Guaroa' },
-  { code: 'K',      name: 'Kailey' },
-  { code: 'N',      name: 'Neisha' },
-];
-
-// Timeframes in order, plus which one is "now"
-const TIMEFRAMES = [
-  { code: '22mo', label: '22MO', order: 0 },
-  { code: '16mo', label: '16MO', order: 1 },
-  { code: '12mo', label: '12MO', order: 2, isNow: true },
-  { code: '7mo',  label: '7MO',  order: 3 },
-  { code: '3mo',  label: '3MO',  order: 4 },
-  { code: '1mo',  label: '1MO',  order: 5 },
-  { code: '1wk',  label: '1WK',  order: 6 },
-];
-
-// Mock subtasks — each has a parent, timeframe, phase, assignee, status
-// Statuses: open | done
-// Phases: discover | decide | execute | done
-const SUBTASKS = [
-  // Overdue (past timeframe, still open — will float to top)
-  { id: 1, title: 'Get referrals from Dioris',         parent: 'Photographer',   category: 'Vendors',    timeframe: '16mo', phase: 'discover', assignees: ['D'],  status: 'open' },
-  { id: 2, title: 'Draft invitation copy',              parent: 'Invitations',    category: 'Stationery', timeframe: '16mo', phase: 'execute',  assignees: ['D'],  status: 'open' },
-
-  // 12MO — current timeframe
-  { id: 10, title: 'Review portfolios',                 parent: 'Photographer',   category: 'Vendors',    timeframe: '12mo', phase: 'discover', assignees: ['D'],       status: 'open' },
-  { id: 11, title: 'Request quotes from 3 photographers', parent: 'Photographer', category: 'Vendors',    timeframe: '12mo', phase: 'discover', assignees: ['D', 'J'],  status: 'open' },
-  { id: 12, title: 'Ask Dioris for local tent vendors', parent: 'Tent Vendor',    category: 'Vendors',    timeframe: '12mo', phase: 'discover', assignees: ['D'],       status: 'open' },
-  { id: 13, title: 'Write save-the-date copy',          parent: 'Save-the-Dates', category: 'Stationery', timeframe: '12mo', phase: 'execute',  assignees: ['D'],       status: 'open' },
-  { id: 14, title: 'Julian proofreads copy',            parent: 'Save-the-Dates', category: 'Stationery', timeframe: '12mo', phase: 'execute',  assignees: ['J'],       status: 'open' },
-  { id: 15, title: 'Confirm cabana block dates',        parent: 'Cabana Block',   category: 'Lodging',    timeframe: '12mo', phase: 'decide',   assignees: ['D'],       status: 'open' },
-  { id: 16, title: 'Talk to Dioris about band options', parent: 'Church Band',    category: 'Ceremony',   timeframe: '12mo', phase: 'discover', assignees: ['Dioris'],  status: 'open' },
-  { id: 17, title: 'Discuss ride timing with father',   parent: 'The Ride',       category: 'Ceremony',   timeframe: '12mo', phase: 'discover', assignees: ['D', 'JM'], status: 'open' },
-  { id: 18, title: 'Confirm venue with José Miguel',    parent: 'Venue',          category: 'Logistics',  timeframe: '12mo', phase: 'done',     assignees: ['D'],       status: 'done' },
-  { id: 19, title: 'Rally the bridal tribe',            parent: 'Wedding Party',  category: 'People',     timeframe: '12mo', phase: 'execute',  assignees: ['S', 'M'],  status: 'open' },
-  { id: 20, title: 'Confirm florist availability',      parent: 'Florist',        category: 'Vendors',    timeframe: '12mo', phase: 'discover', assignees: ['D'],       status: 'open' },
-  { id: 21, title: 'Update WithJoy → GitHub site copy', parent: 'Guest Website',  category: 'Stationery', timeframe: '12mo', phase: 'execute',  assignees: ['D'],       status: 'open' },
-  { id: 22, title: 'Order dress fitting',               parent: 'Wedding Dress',  category: 'Attire',     timeframe: '12mo', phase: 'execute',  assignees: ['D'],       status: 'open' },
-
-  // 7MO — future
-  { id: 30, title: 'Finalize photographer contract',    parent: 'Photographer',   category: 'Vendors',    timeframe: '7mo',  phase: 'execute',  assignees: ['D'],  status: 'open' },
-  { id: 31, title: 'Menu tasting',                      parent: 'Catering',       category: 'Vendors',    timeframe: '7mo',  phase: 'decide',   assignees: ['DJ'], status: 'open' },
-];
-
-const MOCK = {
-  people: PEOPLE,
-  timeframes: TIMEFRAMES,
-  subtasks: SUBTASKS,
-  rsvp: {
-    total: 154,
-    confirmed: 0,
-    declined: 0,
-    awaiting: 154,
-  },
-};
-
-// Cache the /all response so we make one request per page load, not one per path
-let _allPromise = null;
-
-async function apiGet(path) {
-  if (CONFIG.USE_MOCK || !CONFIG.API_URL) {
-    if (path in MOCK) return MOCK[path];
-    return null;
-  }
-
-  // Fetch everything once, then serve individual paths from cache
-  if (!_allPromise) {
-    _allPromise = fetch(`${CONFIG.API_URL}?path=all`, {
-      method: 'GET',
-      redirect: 'follow',
-    }).then(res => {
-      if (!res.ok) throw new Error(`API ${res.status}`);
-      return res.json();
-    });
-  }
-
-  const all = await _allPromise;
-  if (all && (path in all)) return all[path];
-  return null;
-}
-
-// POST endpoint for task updates.
-// Apps Script /exec expects a plain POST body; using text/plain to avoid a
-// CORS preflight (application/json triggers one and Apps Script doesn't
-// answer OPTIONS requests cleanly).
-async function apiPost(action, payload) {
-  if (CONFIG.USE_MOCK || !CONFIG.API_URL) {
-    return { ok: false, error: 'Mock mode — writes disabled' };
-  }
-  const res = await fetch(CONFIG.API_URL, {
-    method: 'POST',
-    redirect: 'follow',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({ action, ...payload }),
-  });
-  if (!res.ok) throw new Error(`API ${res.status}`);
-  return res.json();
-}
-
 window.TWP = window.TWP || {};
-window.TWP.api = { get: apiGet, post: apiPost, config: CONFIG };
+const PEOPLE = [
+  {name:'Danisa',initials:'D'},{name:'Julian',initials:'J'},{name:'Carmen',initials:'C'},
+  {name:'José Miguel',initials:'JM'},{name:'Dioris',initials:'DG'},{name:'Sileni',initials:'S'},
+  {name:'Melonie',initials:'M'},{name:'Neisha',initials:'N'},{name:'Kailey',initials:'K'},
+  {name:'Guaroa',initials:'G'},{name:'Mane',initials:'MN'}
+];
+const TIMEFRAMES = [
+  {code:'22mo',label:'22MO',order:0},{code:'16mo',label:'16MO',order:1},
+  {code:'12mo',label:'12MO',order:2,isNow:true},{code:'7mo',label:'7MO',order:3},
+  {code:'3mo',label:'3MO',order:4},{code:'1mo',label:'1MO',order:5},{code:'1wk',label:'1WK',order:6}
+];
+const TASKS = [
+  {id:'t1',title:'The Flowers',parent:'The Flowers',tags:['Flora'],timeframe:'12mo',phase:'Execute',status:'In Progress',assignees:['Sileni'],
+   subtasks:[{id:'s1',parent:'The Flowers',title:'Confirm florist quote',status:'In Progress',assignees:['Sileni']},
+             {id:'s2',parent:'The Flowers',title:'Pick arch blooms',status:'Not Started',assignees:['Sileni','Melonie']}]},
+  {id:'t2',title:'The Music',parent:'The Music',tags:['Music'],timeframe:'16mo',phase:'Decide',status:'Needs Help',assignees:['Mane'],
+   subtasks:[{id:'s3',parent:'The Music',title:'Church band inquiry',status:'Needs Help',assignees:['Mane']}]},
+  {id:'t3',title:'The Rings',parent:'The Rings',tags:['Decor'],timeframe:'12mo',phase:'Execute',status:'In Progress',assignees:['Danisa','Julian'],
+   subtasks:[{id:'s4',parent:'The Rings',title:'Choose wooden box',status:'In Progress',assignees:['Danisa','Julian']}]},
+  {id:'t4',title:'The Coordinator',parent:'The Coordinator',tags:['Logistics'],timeframe:'12mo',phase:'Execute',status:'Complete',assignees:['Dioris'],
+   subtasks:[{id:'s5',parent:'The Coordinator',title:'Confirm day-of timeline',status:'Complete',assignees:['Dioris']}]}
+];
+const MOCK={people:PEOPLE,timeframes:TIMEFRAMES,tasks:TASKS,rsvp:{total:130,confirmed:14,declined:2,awaiting:114}};
+async function apiGet(path){return (path in MOCK)?MOCK[path]:null;}
+async function apiPost(){return{ok:false};}
+window.TWP.api={get:apiGet,post:apiPost,config:{}};
