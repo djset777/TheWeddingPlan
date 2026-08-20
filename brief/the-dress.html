@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Dress — The Wedding Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -168,46 +171,43 @@
 
   <script src="../assets/js/sidebar.js"></script>
 
-  <!-- Gate logic — hashed, self-contained. The password never appears in source. -->
+  <!-- Gate logic — synchronous, no crypto, no async. Works on every browser,
+       every protocol (file/http/https), even if other scripts fail. -->
   <script>
   (function () {
-    var HASH = "aa938e4a3233a1dd44e8f250d8d2f0ea3db9e12c9d9680cd4c782602abd33709";          // sha-256 of the password
+    var ENC = [128, 115, 117, 118, 122, 115, 121, 112, 110];
+    var PASS = ENC.slice().reverse().map(function (n){ return String.fromCharCode(n - 7); }).join("");
     var KEY  = "twp-dress-unlocked";
     var gate    = document.getElementById("dressGate");
     var layout  = document.getElementById("dressLayout");
     var input   = document.getElementById("dressGateInput");
     var btn     = document.getElementById("dressGateBtn");
     var errorEl = document.getElementById("dressGateError");
+    if (!gate || !input || !btn) return;
 
     function unlock() {
       gate.hidden = true;
-      layout.classList.remove("dress-locked");
+      gate.style.display = "none";
+      if (layout) layout.classList.remove("dress-locked");
     }
-
-    if (sessionStorage.getItem(KEY) === "1") { unlock(); return; }
+    try { if (sessionStorage.getItem(KEY) === "1") { unlock(); return; } } catch (e) {}
     gate.hidden = false;
 
-    async function sha256(str) {
-      var buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
-      return Array.from(new Uint8Array(buf))
-        .map(function (b) { return b.toString(16).padStart(2, "0"); }).join("");
-    }
-
-    async function tryUnlock() {
-      var typed = input.value.trim().toLowerCase();
-      var h = await sha256(typed);
-      if (h === HASH) {
-        sessionStorage.setItem(KEY, "1");
+    function tryUnlock() {
+      var typed = (input.value || "").trim().toLowerCase();
+      if (typed === PASS) {
+        try { sessionStorage.setItem(KEY, "1"); } catch (e) {}
         unlock();
       } else {
-        errorEl.hidden = false;
+        if (errorEl) errorEl.hidden = false;
         input.value = "";
         input.focus();
       }
     }
-
-    btn.addEventListener("click", tryUnlock);
-    input.addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); });
+    btn.onclick = tryUnlock;
+    input.onkeydown = function (e) {
+      if (e.key === "Enter" || e.keyCode === 13) { e.preventDefault(); tryUnlock(); }
+    };
     input.focus();
   })();
   </script>

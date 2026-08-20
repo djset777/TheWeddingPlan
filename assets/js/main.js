@@ -1,13 +1,17 @@
 /* ==========================================================================
    The Wedding Plan — Main
-   Renders: RSVP donut · timeline strip · three category pies · task list.
-   Task list groups by timeframe (default: NOW), overdue floats to top.
+   Home now opens with an orientation line + three grouped views:
+     · Timeline (default) — scrub timeframes, see that timeframe's tasks
+     · Person — each person's open tasks, grouped
+     · Category — grouped by domain tag (Music, Flora, Food, Attire…)
+   Tasks render as a checkable list. Clicking any task opens the detail modal
+   (unchanged). The old status-kanban logic is preserved in main-kanban.js.
    ========================================================================== */
 
 (async function hydrateHome() {
   if (!window.TWP || !window.TWP.api) return;
 
-  const q = (sel, root = document) => root.querySelector(sel);
+  const q  = (sel, root = document) => root.querySelector(sel);
   const qa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   // ------------- Load data -------------
@@ -18,10 +22,9 @@
     window.TWP.api.get('tasks'),
   ]);
 
-  // Flatten parents → subtasks. Each subtask inherits its parent's timeframe,
-  // phase, and any tags/moment/category. The site treats subtasks as the atoms.
+  // Flatten parents → subtasks (subtasks are the atoms the site works with).
   const subtasks = [];
-  const parentsById = {};  // for modal lookup
+  const parentsById = {};
   (tasks || []).forEach(parent => {
     parentsById[parent.id] = parent;
     (parent.subtasks || []).forEach(sub => {
@@ -31,7 +34,7 @@
         parentId: parent.id,
         title: sub.title,
         parent: sub.parent,
-        category: (parent.tags && parent.tags[0]) || parent.moment || '',
+        category: (parent.tags && parent.tags[0]) || parent.moment || 'Uncategorized',
         timeframe: parent.timeframe,
         phase: parent.phase ? parent.phase.toLowerCase() : '',
         assignees: sub.assignees && sub.assignees.length ? sub.assignees : (parent.assignees || []),
@@ -41,239 +44,191 @@
     });
   });
 
-  const NOW_TF = timeframes.find(t => t.isNow) || timeframes[0];
+  const NOW_TF = (timeframes || []).find(t => t.isNow) || (timeframes || [])[0] || { code: '', order: 0 };
   const NOW_ORDER = NOW_TF.order;
-  let activeTf = NOW_TF.code;
 
-  // People are stored as full names in the spreadsheet.
-  // Site displays the `initials` field from the API on the bubbles.
   const initialsOf = name => {
-    const p = people.find(p => p.name === name);
-    return p ? p.initials : name.slice(0, 1).toUpperCase();
+    const p = (people || []).find(p => p.name === name);
+    return p ? p.initials : (name || '?').slice(0, 1).toUpperCase();
   };
-  const nameOf = name => name;  // no-op: assignees are already full names
-  const displayCode = name => initialsOf(name);
 
-  // -------------------------------------------------------
-  // RSVP donut (header, top-right)
-  // Colors: forest confirmed · navy declined · soft gold awaiting
-  // -------------------------------------------------------
-  function drawRsvp() {
-    const card = q('[data-chart="rsvp"]');
-    if (!card || !rsvp) return;
-    const total = rsvp.total || 0;
-    if (!total) return;
-
-    let offset = 25;
-    ['confirmed', 'declined'].forEach(key => {
-      const value = rsvp[key] || 0;
-      const pct = (value / total) * 100;
-      const seg = q(`[data-seg="${key}"]`, card);
-      if (seg) {
-        seg.setAttribute('stroke-dasharray', `${pct} ${100 - pct}`);
-        seg.setAttribute('stroke-dashoffset', String(offset));
-      }
-      offset = ((offset - pct) % 100 + 100) % 100;
-    });
-
-    q('[data-total]', card).textContent = total;
-    ['confirmed', 'declined', 'awaiting'].forEach(key => {
-      const el = q(`[data-legend="${key}"]`, card);
-      if (el) el.textContent = rsvp[key] ?? 0;
-    });
-  }
-  drawRsvp();
-
-  // -------------------------------------------------------
-  // Timeline strip
-  // -------------------------------------------------------
-  function renderTimeline() {
-    const mount = q('[data-timeline]');
-    if (!mount) return;
-
-    const dots = timeframes.map(tf => {
-      const isActive = tf.code === activeTf;
-      const isNow = tf.isNow;
-      let stateClass = '';
-      if (tf.order < NOW_ORDER) stateClass = 'timeline__dot--past';
-      else if (tf.order > NOW_ORDER) stateClass = 'timeline__dot--future';
-      if (isActive) stateClass += ' timeline__dot--active';
-      if (isNow) stateClass += ' timeline__dot--now';
-
-      return `
-        <button class="timeline__stop" data-tf="${tf.code}">
-          <span class="timeline__dot ${stateClass}"></span>
-          <span class="timeline__label ${isActive ? 'is-active' : ''}">${tf.label}${isNow ? '<em>NOW</em>' : ''}</span>
-        </button>
-      `;
-    }).join('');
-
-    mount.innerHTML = `<div class="timeline__line"></div>${dots}`;
-    qa('.timeline__stop', mount).forEach(btn => {
-      btn.addEventListener('click', () => {
-        activeTf = btn.dataset.tf;
-        renderTimeline();
-        renderAssignees();
-        renderTaskList();
-      });
-    });
-  }
-
-  // -------------------------------------------------------
-  // Get tasks for the active timeframe (plus overdue if viewing NOW)
-  // -------------------------------------------------------
-  function tasksForActiveTf() {
-    if (activeTf === NOW_TF.code) {
-      // Include overdue: any open subtask whose timeframe is past NOW
-      const overdue = subtasks.filter(s => {
-        const tf = timeframes.find(t => t.code === s.timeframe);
-        return tf && tf.order < NOW_ORDER && s.status !== 'done';
-      }).map(s => ({ ...s, isOverdue: true }));
-      const current = subtasks.filter(s => s.timeframe === activeTf).map(s => ({ ...s, isOverdue: false }));
-      return { overdue, current };
-    }
-    return {
-      overdue: [],
-      current: subtasks.filter(s => s.timeframe === activeTf),
-    };
-  }
-
-  // -------------------------------------------------------
-  // Assignee columns — one per person, sorted by task count desc
-  // People with zero tasks in this timeframe are dimmed
-  // -------------------------------------------------------
-  function renderAssignees() {
-    const mount = q('[data-assignees]');
-    const metaEl = q('[data-assignees-meta]');
-    if (!mount) return;
-
-    const { current } = tasksForActiveTf();
-
-    // Count tasks per assignee name (a subtask can have multiple assignees)
-    const counts = {};
-    people.forEach(p => { counts[p.name] = 0; });
-    current.forEach(task => {
-      (task.assignees || []).forEach(name => {
-        if (counts[name] != null) counts[name] += 1;
-      });
-    });
-
-    // Sort by count desc, then original order (people list order)
-    const sorted = [...people].sort((a, b) => {
-      const diff = (counts[b.name] || 0) - (counts[a.name] || 0);
-      if (diff !== 0) return diff;
-      return people.indexOf(a) - people.indexOf(b);
-    });
-
-    const activeCount = sorted.filter(p => counts[p.name] > 0).length;
-    if (metaEl) {
-      metaEl.textContent = `${current.length} subtasks · ${activeCount} carrying`;
-    }
-
-    mount.innerHTML = sorted.map(person => {
-      const n = counts[person.name] || 0;
-      const isIdle = n === 0;
-      return `
-        <div class="assignee-col${isIdle ? ' assignee-col--idle' : ''}">
-          <div class="assignee-col__count">${n}</div>
-          <div class="assignee-col__bubble">${person.initials}</div>
-          <div class="assignee-col__name">${person.name}</div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  // -------------------------------------------------------
-  // Kanban task board — 4 columns by status
-  // -------------------------------------------------------
   const STATUS_COLS = [
-    { key: 'not',      label: 'Not Started',  matches: ['not started', ''] },
-    { key: 'needs',    label: 'Needs Help',   matches: ['needs help'] },
-    { key: 'progress', label: 'In Progress',  matches: ['in progress'] },
-    { key: 'done',     label: 'Complete',     matches: ['complete'] },
+    { key: 'not',      label: 'Not Started', matches: ['not started', ''] },
+    { key: 'needs',    label: 'Needs Help',  matches: ['needs help'] },
+    { key: 'progress', label: 'In Progress', matches: ['in progress'] },
+    { key: 'done',     label: 'Complete',    matches: ['complete'] },
   ];
-
   function statusKeyOf(rawStatus) {
     const s = (rawStatus || '').toLowerCase().trim();
     const col = STATUS_COLS.find(c => c.matches.includes(s));
     return col ? col.key : 'not';
   }
 
-  function renderKanbanCard(task) {
-    const statusKey = statusKeyOf(task.rawStatus);
-    const bubbles = (task.assignees || []).slice(0, 3).map(name => {
-      return `<span class="kcard__bubble">${initialsOf(name)}</span>`;
-    }).join('');
-    return `
-      <div class="kcard kcard--${statusKey}" data-task-id="${task.id}" data-parent-id="${task.parentId}">
-        <div class="kcard__title">${task.title}</div>
-        <div class="kcard__foot">
-          <span class="kcard__parent">${task.parent}</span>
-          <div class="kcard__assignees">${bubbles}</div>
-        </div>
-      </div>
-    `;
+  // ------------- View state -------------
+  let activeView = 'timeline';   // timeline | person | category
+  let activeTf = NOW_TF.code;    // used by timeline view
+
+  // ------------- Orientation line -------------
+  function orientationText() {
+    const total = subtasks.length;
+    const done = subtasks.filter(s => s.status === 'done').length;
+    const needs = subtasks.filter(s => statusKeyOf(s.rawStatus) === 'needs').length;
+    let out = `${total} tasks · ${done} done`;
+    if (needs) out += ` · ${needs} need help`;
+    return out;
   }
 
-  function renderTaskList() {
+  // ------------- A single checkable task row -------------
+  function taskRow(t) {
+    const statusKey = statusKeyOf(t.rawStatus);
+    const isDone = statusKey === 'done';
+    const box = `<span class="msub__box msub__box--${statusKey}">${isDone ? '✓' : ''}</span>`;
+    const bubbles = (t.assignees || []).slice(0, 3)
+      .map(name => `<span class="kcard__bubble">${initialsOf(name)}</span>`).join('');
+    const tf = (timeframes || []).find(x => x.code === t.timeframe);
+    const isOverdue = tf && tf.order < NOW_ORDER && !isDone;
+    const meta = isOverdue
+      ? `<span class="kcard__overdue">${tf.label} · overdue</span>`
+      : `<span class="grouprow__parent">${t.parent}</span>`;
+    return `
+      <div class="grouprow${isDone ? ' grouprow--done' : ''}${isOverdue ? ' grouprow--overdue' : ''}"
+           data-task-id="${t.id}" data-parent-id="${t.parentId}">
+        ${box}
+        <span class="grouprow__title">${t.title}</span>
+        ${meta}
+        <span class="grouprow__bubbles">${bubbles}</span>
+      </div>`;
+  }
+
+  // ------------- A titled group of rows -------------
+  function groupBlock(title, count, rowsHtml) {
+    return `
+      <section class="group-section">
+        <div class="group-section__head">${title}<span class="group-section__count">· ${count}</span></div>
+        <div class="group-section__list">${rowsHtml || '<div class="kanban__empty">—</div>'}</div>
+      </section>`;
+  }
+
+  // ------------- Timeline view (default) -------------
+  function timelineStripHtml() {
+    const dots = (timeframes || []).map(tf => {
+      const isActive = tf.code === activeTf;
+      const isNow = tf.isNow;
+      let cls = '';
+      if (tf.order < NOW_ORDER) cls = 'timeline__dot--past';
+      else if (tf.order > NOW_ORDER) cls = 'timeline__dot--future';
+      if (isActive) cls += ' timeline__dot--active';
+      if (isNow) cls += ' timeline__dot--now';
+      return `
+        <button class="timeline__stop" data-tf="${tf.code}">
+          <span class="timeline__dot ${cls}"></span>
+          <span class="timeline__label ${isActive ? 'is-active' : ''}">${tf.label}${isNow ? '<em>NOW</em>' : ''}</span>
+        </button>`;
+    }).join('');
+    return `<nav class="timeline" aria-label="Filter by timeframe" data-timeline><div class="timeline__line"></div>${dots}</nav>`;
+  }
+
+  function renderTimelineView() {
+    // Tasks in the active timeframe, plus overdue when viewing NOW
+    let rows;
+    if (activeTf === NOW_TF.code) {
+      const overdue = subtasks.filter(s => {
+        const tf = (timeframes || []).find(t => t.code === s.timeframe);
+        return tf && tf.order < NOW_ORDER && s.status !== 'done';
+      });
+      const current = subtasks.filter(s => s.timeframe === activeTf);
+      rows = [...overdue, ...current];
+    } else {
+      rows = subtasks.filter(s => s.timeframe === activeTf);
+    }
+    const open = rows.filter(r => r.status !== 'done');
+    const done = rows.filter(r => r.status === 'done');
+    const body = rows.length
+      ? groupBlock('To do', open.length, open.map(taskRow).join(''))
+        + (done.length ? groupBlock('Done', done.length, done.map(taskRow).join('')) : '')
+      : '<div class="state">Nothing in this timeframe.</div>';
+    return timelineStripHtml() + body;
+  }
+
+  // ------------- Person view -------------
+  function renderPersonView() {
+    const order = (people || []);
+    const blocks = order.map(person => {
+      const theirs = subtasks.filter(s => (s.assignees || []).includes(person.name));
+      if (!theirs.length) return '';
+      const open = theirs.filter(t => t.status !== 'done');
+      const done = theirs.filter(t => t.status === 'done');
+      const rows = [...open, ...done].map(taskRow).join('');
+      const label = `${person.initials ? `<span class="kcard__bubble">${person.initials}</span> ` : ''}${person.name}`;
+      return groupBlock(label, open.length, rows);
+    }).filter(Boolean).join('');
+    return blocks || '<div class="state">No assigned tasks yet.</div>';
+  }
+
+  // ------------- Category view -------------
+  function renderCategoryView() {
+    const byCat = {};
+    subtasks.forEach(s => {
+      const c = s.category || 'Uncategorized';
+      (byCat[c] = byCat[c] || []).push(s);
+    });
+    const cats = Object.keys(byCat).sort();
+    const blocks = cats.map(cat => {
+      const items = byCat[cat];
+      const open = items.filter(t => t.status !== 'done');
+      const done = items.filter(t => t.status === 'done');
+      const rows = [...open, ...done].map(taskRow).join('');
+      return groupBlock(cat, open.length, rows);
+    }).join('');
+    return blocks || '<div class="state">No tasks yet.</div>';
+  }
+
+  // ------------- Render the active view -------------
+  function renderView() {
     const mount = q('[data-tasklist]');
-    const metaEl = q('[data-tasklist-meta]');
     if (!mount) return;
+    let html;
+    if (activeView === 'person') html = renderPersonView();
+    else if (activeView === 'category') html = renderCategoryView();
+    else html = renderTimelineView();
+    mount.innerHTML = html;
 
-    const { overdue, current } = tasksForActiveTf();
-    // Overdue subtasks (from earlier timeframes still open) belong at the top
-    // of Needs Help / In Progress / Not Started based on their real status.
-    const all = [...overdue, ...current];
-
-    // Bucket by status column
-    const buckets = { needs: [], progress: [], not: [], done: [] };
-    all.forEach(t => {
-      const key = statusKeyOf(t.rawStatus);
-      buckets[key].push(t);
+    // Wire timeline scrub (only present in timeline view)
+    qa('.timeline__stop', mount).forEach(btn => {
+      btn.addEventListener('click', () => { activeTf = btn.dataset.tf; renderView(); });
+    });
+    // Wire task rows → modal
+    qa('.grouprow', mount).forEach(row => {
+      row.addEventListener('click', () => openModal(row.dataset.parentId, row.dataset.taskId));
     });
 
-    const openCount = all.filter(t => t.status !== 'done').length;
-    metaEl.textContent = overdue.length
-      ? `${overdue.length} overdue · ${openCount} open`
-      : `${openCount} open`;
+    const metaEl = q('[data-tasklist-meta]');
+    if (metaEl) metaEl.textContent = orientationText();
+  }
 
-    if (!all.length) {
-      mount.innerHTML = '<div class="state">Nothing in this timeframe.</div>';
-      return;
-    }
-
-    mount.innerHTML = `
-      <div class="kanban kanban--split">
-        ${STATUS_COLS.map(col => {
-          const items = buckets[col.key];
-          const cards = items.length
-            ? items.map(renderKanbanCard).join('')
-            : '<div class="kanban__empty">—</div>';
-          return `
-            <section class="tasklist-card kanban__card kanban__card--${col.key}">
-              <div class="kanban__head kanban__head--${col.key}">
-                ${col.label}<span class="kanban__count">· ${items.length}</span>
-              </div>
-              <div class="kanban__list">${cards}</div>
-            </section>
-          `;
-        }).join('')}
-      </div>
-    `;
-
-    // Wire card clicks to open the modal
-    qa('.kcard', mount).forEach(card => {
-      card.addEventListener('click', () => {
-        const parentId = card.dataset.parentId;
-        const selectedTaskId = card.dataset.taskId;
-        openModal(parentId, selectedTaskId);
+  // ------------- Tab bar -------------
+  function renderTabs() {
+    const mount = q('[data-view-tabs]');
+    if (!mount) return;
+    const tabs = [
+      { key: 'timeline', label: 'Timeline' },
+      { key: 'person',   label: 'Person' },
+      { key: 'category', label: 'Category' },
+    ];
+    mount.innerHTML = tabs.map(t =>
+      `<button class="viewtab${t.key === activeView ? ' is-active' : ''}" data-view="${t.key}">${t.label}</button>`
+    ).join('');
+    qa('.viewtab', mount).forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeView = btn.dataset.view;
+        if (activeView === 'timeline') activeTf = NOW_TF.code;
+        renderTabs();
+        renderView();
       });
     });
   }
 
-  // -------------------------------------------------------
-  // Modal — full parent task detail with all subtasks
-  // -------------------------------------------------------
+  // ------------- Modal (unchanged from original) -------------
   function openModal(parentId, selectedTaskId) {
     const parent = parentsById[parentId];
     if (!parent) return;
@@ -284,10 +239,8 @@
     const phaseKey = (parent.phase || 'discover').toLowerCase();
     const statusKey = statusKeyOf(parent.status);
     const statusLabel = parent.status || 'Not Started';
-
-    const assignees = (parent.assignees || []).map(name => {
-      return `<span class="kcard__bubble">${initialsOf(name)}</span>`;
-    }).join('');
+    const assignees = (parent.assignees || [])
+      .map(name => `<span class="kcard__bubble">${initialsOf(name)}</span>`).join('');
 
     const subs = (parent.subtasks || []).map(sub => {
       const subStatusKey = statusKeyOf(sub.status);
@@ -296,21 +249,17 @@
       const boxCls = `msub__box msub__box--${subStatusKey}`;
       const boxContent = isDone ? '✓' : '';
       const rowCls = `msub${isDone ? ' msub--done' : ''}${isSelected ? ' msub--selected' : ''}`;
-      const subBubbles = (sub.assignees || []).map(name => {
-        return `<span class="kcard__bubble">${initialsOf(name)}</span>`;
-      }).join('');
+      const subBubbles = (sub.assignees || [])
+        .map(name => `<span class="kcard__bubble">${initialsOf(name)}</span>`).join('');
       return `
         <div class="${rowCls}">
           <span class="${boxCls}">${boxContent}</span>
           <span class="msub__title">${sub.title}</span>
           <span class="msub__bubbles">${subBubbles}</span>
-        </div>
-      `;
+        </div>`;
     }).join('');
 
-    const notesBlock = parent.notes
-      ? `<p class="mtask__notes">${parent.notes}</p>`
-      : '';
+    const notesBlock = parent.notes ? `<p class="mtask__notes">${parent.notes}</p>` : '';
 
     body.innerHTML = `
       <div class="mtask__eyebrow">Parent Task</div>
@@ -329,15 +278,14 @@
           <div class="mtask__meta-item">
             <span class="mtask__meta-label">With</span>
             <div class="kcard__assignees">${assignees}</div>
-          </div>
-        ` : ''}
+          </div>` : ''}
       </div>
       <div class="mtask__section-title">All ${parent.subtasks ? parent.subtasks.length : 0} subtasks</div>
       <div class="mtask__subs">${subs || '<div class="kanban__empty">No subtasks yet.</div>'}</div>
     `;
 
     modal.hidden = false;
-    document.body.style.overflow = 'hidden';  // prevent bg scroll
+    document.body.style.overflow = 'hidden';
   }
 
   function closeModal() {
@@ -346,15 +294,10 @@
     modal.hidden = true;
     document.body.style.overflow = '';
   }
-
-  // Modal close handlers (backdrop + × button + Esc)
   qa('[data-modal-close]').forEach(el => el.addEventListener('click', closeModal));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
   // ---- Init ----
-  renderTimeline();
-  renderAssignees();
-  renderTaskList();
+  renderTabs();
+  renderView();
 })();

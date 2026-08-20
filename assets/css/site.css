@@ -1987,3 +1987,88 @@
   .dress-card--flip .dress-card__body  { order: 2; }
   .dress-card__media { max-width: 300px; }
 }
+
+/* --- Home: view tabs + grouped task rows --------------------------------- */
+/* Three-view switcher (Timeline / Person / Category) and the checkable
+   list rows they render. New classes only; palette + type tokens are existing. */
+
+.viewtabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--linen-rule);
+  margin-bottom: var(--space-3);
+}
+.viewtab {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  font-size: var(--step--1);
+  color: rgba(12, 52, 61, 0.5);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: -1px;
+  cursor: pointer;
+}
+.viewtab:hover { color: var(--anchor); }
+.viewtab.is-active {
+  color: var(--anchor);
+  border-bottom-color: var(--accent);
+}
+
+.group-section { margin-bottom: var(--space-4); }
+.group-section__head {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  font-size: var(--step-0);
+  color: var(--deeper);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--linen-rule);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.group-section__count {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  color: rgba(12, 52, 61, 0.45);
+  letter-spacing: normal;
+}
+.group-section__list { display: flex; flex-direction: column; }
+
+.grouprow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--linen-rule);
+  cursor: pointer;
+}
+.grouprow:last-child { border-bottom: none; }
+.grouprow:hover { background: var(--linen-shade); }
+.grouprow__title {
+  flex: 1 1 auto;
+  color: var(--ink);
+  font-size: var(--step-0);
+}
+.grouprow--done .grouprow__title {
+  color: rgba(12, 52, 61, 0.45);
+  text-decoration: line-through;
+}
+.grouprow__parent {
+  flex: 0 0 auto;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: rgba(12, 52, 61, 0.5);
+  letter-spacing: 0.04em;
+}
+.grouprow__bubbles { flex: 0 0 auto; display: flex; gap: 2px; }
+.grouprow--overdue .grouprow__title { color: #B85C1E; }
+
+@media (max-width: 640px) {
+  .grouprow__parent { display: none; }
+  .viewtab { padding: var(--space-2); }
+}
