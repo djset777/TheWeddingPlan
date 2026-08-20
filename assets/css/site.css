@@ -2072,3 +2072,72 @@
   .grouprow__parent { display: none; }
   .viewtab { padding: var(--space-2); }
 }
+
+/* --- Refinements: countdown spacing · dress image sizing · page footer ---- */
+
+/* Countdown — spread across the full sidebar width, matching the 7·7·27 brand
+   above it, instead of bunching in the middle. */
+.sidebar__countdown {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  padding-left: 0;
+  padding-right: 0;
+}
+.sidebar__countdown .sep {
+  opacity: 0.35;
+  margin: 0;
+}
+
+/* Dress cards — lock every image to the same box so all seven render
+   identically regardless of source ratio. */
+.dress-card,
+.dress-card--flip {
+  grid-template-columns: 300px 1fr;
+  align-items: start;
+}
+.dress-card__media {
+  width: 300px;
+  height: 400px;
+  aspect-ratio: auto;
+  overflow: hidden;
+  background: var(--linen-shade);
+}
+.dress-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .dress-card,
+  .dress-card--flip { grid-template-columns: 1fr; }
+  .dress-card__media { width: 100%; max-width: 300px; height: 400px; }
+}
+
+/* Page footer — the couple mark, closing each page. */
+.page-footer {
+  border-top: 1px solid var(--accent);
+  margin-top: var(--space-5);
+  padding-top: var(--space-3);
+  text-align: center;
+}
+.page-footer__name {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: var(--step--1);
+  color: var(--accent);
+  display: block;
+}
+.page-footer__line {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: rgba(12, 52, 61, 0.55);
+  margin-top: var(--space-1);
+  font-size: var(--step--1);
+}
