@@ -19,6 +19,7 @@
        Not real security — just keeps a stray click from spoiling the surprise. -->
   <div class="dress-gate" id="dressGate" hidden>
     <div class="dress-gate__card">
+      <span class="eyebrow">Girls Only</span>
       <h2 class="dress-gate__title">The Dress</h2>
       <p class="dress-gate__note">A little locked. Enter the password to peek.</p>
       <input class="dress-gate__input" id="dressGateInput" type="password"
@@ -39,7 +40,9 @@
         <p class="subtitle content__subtitle">A reference for my girls — gowns worth a look.</p>
       </header>
 
-      <!-- Card 1 -->
+      <h2 class="h2 dress-section">The Inspiration</h2>
+
+      <!-- Card 1 — image left -->
       <article class="dress-card">
         <div class="dress-card__media">
           <img class="dress-card__img" src="../assets/img/dress/berta-25-02.webp" alt="Berta 25-02" loading="lazy">
@@ -56,8 +59,8 @@
         </div>
       </article>
 
-      <!-- Card 2 -->
-      <article class="dress-card">
+      <!-- Card 2 — image right -->
+      <article class="dress-card dress-card--flip">
         <div class="dress-card__media">
           <img class="dress-card__img" src="../assets/img/dress/royaldi-nancy.webp" alt="Royaldi Nancy" loading="lazy">
         </div>
@@ -73,7 +76,7 @@
         </div>
       </article>
 
-      <!-- Card 3 -->
+      <!-- Card 3 — image left -->
       <article class="dress-card">
         <div class="dress-card__media">
           <img class="dress-card__img" src="../assets/img/dress/wona-encore.webp" alt="WONÁ Encore" loading="lazy">
@@ -90,8 +93,8 @@
         </div>
       </article>
 
-      <!-- Card 4 -->
-      <article class="dress-card">
+      <!-- Card 4 — image right -->
+      <article class="dress-card dress-card--flip">
         <div class="dress-card__media">
           <img class="dress-card__img" src="../assets/img/dress/oleg-baburov-verbena.webp" alt="Oleg Baburov Verbena" loading="lazy">
         </div>
@@ -107,7 +110,7 @@
         </div>
       </article>
 
-      <!-- Card 5 -->
+      <!-- Card 5 — image left -->
       <article class="dress-card">
         <div class="dress-card__media">
           <img class="dress-card__img" src="../assets/img/dress/ange-etoiles-blanca.webp" alt="Ange Étoiles Blanca" loading="lazy">
@@ -124,8 +127,8 @@
         </div>
       </article>
 
-      <!-- Card 6 -->
-      <article class="dress-card">
+      <!-- Card 6 — image right -->
+      <article class="dress-card dress-card--flip">
         <div class="dress-card__media">
           <img class="dress-card__img" src="../assets/img/dress/calla-blanche-ruya.webp" alt="Calla Blanche Ruya" loading="lazy">
         </div>
@@ -141,7 +144,7 @@
         </div>
       </article>
 
-      <!-- Card 7 -->
+      <!-- Card 7 — image left -->
       <article class="dress-card">
         <div class="dress-card__media">
           <img class="dress-card__img" src="../assets/img/dress/margot-venus.webp" alt="Margot Venus" loading="lazy">
@@ -158,10 +161,10 @@
         </div>
       </article>
 
-      <footer class="page-footer">
-        <span class="page-footer__name">Danisa &amp; Julian</span>
-        <p class="page-footer__line">Where the hills are green, the nights are alive, and the love is deep.</p>
-      </footer>
+      <div class="dress-signoff">
+        <span class="eyebrow">DJ Set</span>
+        <p class="subtitle">Where the hills are green, the nights are alive, and the love is deep.</p>
+      </div>
 
     </main>
   </div>
@@ -174,6 +177,7 @@
   (function () {
     var ENC = [128, 115, 117, 118, 122, 115, 121, 112, 110];
     var PASS = ENC.slice().reverse().map(function (n){ return String.fromCharCode(n - 7); }).join("");
+    var KEY  = "twp-dress-unlocked";
     var gate    = document.getElementById("dressGate");
     var layout  = document.getElementById("dressLayout");
     var input   = document.getElementById("dressGateInput");
@@ -186,11 +190,13 @@
       gate.style.display = "none";
       if (layout) layout.classList.remove("dress-locked");
     }
+    try { if (sessionStorage.getItem(KEY) === "1") { unlock(); return; } } catch (e) {}
     gate.hidden = false;
 
     function tryUnlock() {
       var typed = (input.value || "").trim().toLowerCase();
       if (typed === PASS) {
+        try { sessionStorage.setItem(KEY, "1"); } catch (e) {}
         unlock();
       } else {
         if (errorEl) errorEl.hidden = false;
