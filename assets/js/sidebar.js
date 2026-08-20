@@ -37,8 +37,6 @@
       <ul>
         <li><a href="${prefix}brief/the-look.html">The Look</a></li>
         <li><a href="${prefix}brief/the-flora.html">The Flora</a></li>
-        <li><a href="${prefix}brief/the-ceremony.html">The Ceremony</a></li>
-        <li><a href="${prefix}brief/the-evening.html">The Evening</a></li>
         <li><a href="${prefix}brief/the-dress.html">The Dress</a></li>
       </ul>
 

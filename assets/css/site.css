@@ -2410,3 +2410,15 @@
 @media (max-width: 640px) {
   .mb-cat__grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* --- The Look: single mood grid ------------------------------------------ */
+/* One ungrouped grid — general direction, not a catalogue. */
+.mood-plain {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+}
+@media (max-width: 640px) {
+  .mood-plain { grid-template-columns: repeat(2, 1fr); }
+}
