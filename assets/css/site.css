@@ -2422,3 +2422,94 @@
 @media (max-width: 640px) {
   .mood-plain { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* --- Cleanup: fewer rules, less boxing ----------------------------------- */
+/* One rule under the page header. The tab strip and filters are a single
+   control cluster — no dividers between them. */
+.viewtabs {
+  border-bottom: none;
+  margin-bottom: var(--space-2);
+  gap: var(--space-3);
+}
+.viewtab {
+  padding: var(--space-1) 0;
+  border-bottom: 2px solid transparent;
+}
+.viewtab.is-active { border-bottom-color: var(--accent); }
+
+/* Filter chips: text + count, no boxes. Active one is simply gold. */
+.statusfilters {
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding-bottom: 0;
+}
+.statchip {
+  border: none;
+  padding: var(--space-1) 0;
+  color: rgba(12, 52, 61, 0.55);
+  background: none;
+}
+.statchip:hover { color: var(--anchor); border: none; }
+.statchip.is-active,
+.statchip--needs.is-active,
+.statchip--done.is-active {
+  background: none;
+  border: none;
+  color: var(--accent);
+}
+.statchip__n { opacity: 0.55; }
+
+/* Section headings on The Look — no filled bars. */
+.section-head {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-1);
+  color: var(--anchor);
+  border: none;
+  padding: 0;
+  margin: var(--space-5) 0 var(--space-1);
+}
+.zone:first-of-type .section-head { margin-top: var(--space-3); }
+
+/* --- Cleanup: one rule, not four ----------------------------------------- */
+/* The tabs carry the only rule in this stack — gold, matching the header.
+   Filters sit beneath as plain text, so they read as a filter row rather
+   than five buttons competing with the tabs. */
+.viewtabs {
+  border-bottom: none;
+  margin-bottom: var(--space-2);
+}
+.viewtab {
+  border-bottom: 2px solid transparent;
+  padding: var(--space-1) var(--space-3) var(--space-2) 0;
+  margin-right: var(--space-3);
+}
+.viewtab.is-active { border-bottom-color: var(--accent); }
+
+.statusfilters {
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--accent);
+}
+.statchip {
+  border: none;
+  padding: 0;
+  color: rgba(12, 52, 61, 0.5);
+}
+.statchip:hover { color: var(--anchor); }
+.statchip.is-active,
+.statchip--needs.is-active,
+.statchip--done.is-active {
+  background: transparent;
+  color: var(--anchor);
+  border: none;
+}
+.statchip.is-active .statchip__n { color: var(--accent); opacity: 1; }
+
+/* Task rows: lighten the dividers so they recede. */
+.grouprow { border-bottom: 1px solid rgba(12, 52, 61, 0.07); }
+
+/* Mood tiles: smaller — these are reference, not feature images. */
+.mood-plain { grid-template-columns: repeat(4, 1fr); gap: var(--space-1); }
+.mood-plain .mb-tile { aspect-ratio: 1 / 1; }
