@@ -2549,3 +2549,21 @@
 
 /* Palette boxes keep the grid width but sit shorter than the photo tiles. */
 .swatch { aspect-ratio: 4 / 3; }
+
+/* --- Type corrections ---------------------------------------------------- */
+/* Sizes and tracking set explicitly per role. */
+
+.content__title,
+.home-head__h1 { font-size: 44px; }
+
+.section-head { font-size: 33px; }
+
+.dress-card__name { font-size: 33px; }
+
+.page-footer__name {
+  font-size: 17px;
+  letter-spacing: 2.12px;
+}
+
+.flora-bar { letter-spacing: 2.48px; }
+.phase-bar { letter-spacing: 2.48px; }
