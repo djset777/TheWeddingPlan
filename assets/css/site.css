@@ -2186,3 +2186,27 @@
   opacity: 0.35;
   margin: 0 0.45em;
 }
+
+/* --- The Look: refinements ----------------------------------------------- */
+/* Navy zone bar — completes the teal → forest → navy sequence already used
+   on The Flora (tiers) and The Day (phases). */
+.zone__bar--navy { background: var(--deepest); color: var(--linen); }
+
+/* Palette grid — 3 across gives two clean rows of three instead of
+   orphaning Abyss and Linen on a second row. */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* Linen swatch reads as an empty box against the linen page background —
+   give it a definite edge so it registers as a deliberate colour. */
+.swatch--light[style*="F2EDE6"] {
+  border: 1px solid rgba(12, 52, 61, 0.25);
+}
+
+@media (max-width: 640px) {
+  .swatches { grid-template-columns: repeat(2, 1fr); }
+}
