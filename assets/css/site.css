@@ -2567,3 +2567,47 @@
 
 .flora-bar { letter-spacing: 2.48px; }
 .phase-bar { letter-spacing: 2.48px; }
+
+/* --- Titles: larger and lighter; sections bracketed by two rules --------- */
+/* Page title — big and light, as in the document. */
+.content__title,
+.home-head__h1 {
+  font-size: 64px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  line-height: 1.05;
+}
+
+/* Section heads — lighter, and framed by rules above AND below so they
+   read differently from the page title's single rule. */
+.section-head {
+  font-weight: 300;
+  border-top: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+  padding: var(--space-2) 0;
+  margin: var(--space-5) 0 var(--space-3);
+}
+
+/* The section's top rule now closes the header, so the header drops its own. */
+.content__head { border-bottom: none; padding-bottom: var(--space-2); }
+
+/* --- The Look: title anchored to 7·7·27, sections as gold labels --------- */
+/* Title matches the brand mark's size and weight so the two feel linked. */
+.content__title,
+.home-head__h1 {
+  font-size: 60.6px;
+  font-weight: 300;
+  letter-spacing: 1.82px;
+}
+
+/* Section heads drop to the eyebrow register — a label on the content,
+   not a smaller version of the page title. No rule needed. */
+.section-head {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 3.4px;
+  color: var(--accent);
+  border: none;
+  padding: 0;
+  margin: var(--space-5) 0 var(--space-2);
+}
