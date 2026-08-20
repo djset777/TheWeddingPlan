@@ -66,16 +66,44 @@
 
   // ------------- View state -------------
   let activeView = 'timeline';   // timeline | person | category
+  let activeStatus = 'all';      // all | not | needs | progress | done
   let activeTf = NOW_TF.code;    // used by timeline view
 
   // ------------- Orientation line -------------
-  function orientationText() {
-    const total = subtasks.length;
-    const done = subtasks.filter(s => s.status === 'done').length;
-    const needs = subtasks.filter(s => statusKeyOf(s.rawStatus) === 'needs').length;
-    let out = `${total} tasks · ${done} done`;
-    if (needs) out += ` · ${needs} need help`;
-    return out;
+  function statusCounts() {
+    const c = { all: subtasks.length, not: 0, needs: 0, progress: 0, done: 0 };
+    subtasks.forEach(s => { c[statusKeyOf(s.rawStatus)] += 1; });
+    return c;
+  }
+
+  function renderStatusFilters() {
+    const mount = q('[data-status-filters]');
+    if (!mount) return;
+    const c = statusCounts();
+    const chips = [
+      { key: 'all',      label: 'All' },
+      { key: 'not',      label: 'Not Started' },
+      { key: 'progress', label: 'In Progress' },
+      { key: 'needs',    label: 'Needs Help' },
+      { key: 'done',     label: 'Complete' },
+    ];
+    mount.innerHTML = chips.map(ch =>
+      `<button class="statchip statchip--${ch.key}${ch.key === activeStatus ? ' is-active' : ''}" data-status="${ch.key}">
+         ${ch.label}<span class="statchip__n">${c[ch.key]}</span>
+       </button>`
+    ).join('');
+    qa('.statchip', mount).forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeStatus = btn.dataset.status;
+        renderStatusFilters();
+        renderView();
+      });
+    });
+  }
+
+  function applyStatusFilter(list) {
+    if (activeStatus === 'all') return list;
+    return list.filter(t => statusKeyOf(t.rawStatus) === activeStatus);
   }
 
   // ------------- A single checkable task row -------------
@@ -141,6 +169,7 @@
     } else {
       rows = subtasks.filter(s => s.timeframe === activeTf);
     }
+    rows = applyStatusFilter(rows);
     const open = rows.filter(r => r.status !== 'done');
     const done = rows.filter(r => r.status === 'done');
     const body = rows.length
@@ -154,7 +183,7 @@
   function renderPersonView() {
     const order = (people || []);
     const blocks = order.map(person => {
-      const theirs = subtasks.filter(s => (s.assignees || []).includes(person.name));
+      const theirs = applyStatusFilter(subtasks.filter(s => (s.assignees || []).includes(person.name)));
       if (!theirs.length) return '';
       const open = theirs.filter(t => t.status !== 'done');
       const done = theirs.filter(t => t.status === 'done');
@@ -168,18 +197,19 @@
   // ------------- Category view -------------
   function renderCategoryView() {
     const byCat = {};
-    subtasks.forEach(s => {
+    applyStatusFilter(subtasks).forEach(s => {
       const c = s.category || 'Uncategorized';
       (byCat[c] = byCat[c] || []).push(s);
     });
     const cats = Object.keys(byCat).sort();
     const blocks = cats.map(cat => {
-      const items = byCat[cat];
+      const items = applyStatusFilter(byCat[cat]);
+      if (!items.length) return '';
       const open = items.filter(t => t.status !== 'done');
       const done = items.filter(t => t.status === 'done');
       const rows = [...open, ...done].map(taskRow).join('');
       return groupBlock(cat, open.length, rows);
-    }).join('');
+    }).filter(Boolean).join('');
     return blocks || '<div class="state">No tasks yet.</div>';
   }
 
@@ -202,8 +232,7 @@
       row.addEventListener('click', () => openModal(row.dataset.parentId, row.dataset.taskId));
     });
 
-    const metaEl = q('[data-tasklist-meta]');
-    if (metaEl) metaEl.textContent = orientationText();
+
   }
 
   // ------------- Tab bar -------------
@@ -299,5 +328,6 @@
 
   // ---- Init ----
   renderTabs();
+  renderStatusFilters();
   renderView();
 })();
