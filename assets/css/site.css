@@ -2153,3 +2153,36 @@
 }
 .dress-card__body { padding-top: 0; }
 .dress-card__name { margin-top: 0; line-height: 1.1; }
+
+/* --- Final refinements --------------------------------------------------- */
+
+/* Gate subtitle — gold, matching the two-register rule (italic Garamond
+   grounds emotionally; gold is its colour). */
+.dress-gate__note { color: var(--accent); }
+
+/* Dress images at 77% — smaller, less dominant on the page. */
+.dress-card {
+  grid-template-columns: 231px 1fr;
+}
+.dress-card__media {
+  width: 231px;
+  height: 308px;
+}
+@media (max-width: 640px) {
+  .dress-card { grid-template-columns: 1fr; }
+  .dress-card__media { width: 100%; max-width: 231px; height: 308px; }
+}
+
+/* Countdown — deliberate spacing instead of leaked letter-spacing.
+   Number sits tight to its unit letter; the · separators carry the gaps. */
+.sidebar__countdown {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  letter-spacing: 0;
+  gap: 0;
+}
+.sidebar__countdown .sep {
+  opacity: 0.35;
+  margin: 0 0.45em;
+}
