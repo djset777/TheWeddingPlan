@@ -2072,3 +2072,208 @@
   .grouprow__parent { display: none; }
   .viewtab { padding: var(--space-2); }
 }
+
+/* --- Refinements: countdown spacing · dress image sizing · page footer ---- */
+
+/* Countdown — spread across the full sidebar width, matching the 7·7·27 brand
+   above it, instead of bunching in the middle. */
+.sidebar__countdown {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  padding-left: 0;
+  padding-right: 0;
+}
+.sidebar__countdown .sep {
+  opacity: 0.35;
+  margin: 0;
+}
+
+/* Dress cards — lock every image to the same box so all seven render
+   identically regardless of source ratio. */
+.dress-card,
+.dress-card--flip {
+  grid-template-columns: 300px 1fr;
+  align-items: start;
+}
+.dress-card__media {
+  width: 300px;
+  height: 400px;
+  aspect-ratio: auto;
+  overflow: hidden;
+  background: var(--linen-shade);
+}
+.dress-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .dress-card,
+  .dress-card--flip { grid-template-columns: 1fr; }
+  .dress-card__media { width: 100%; max-width: 300px; height: 400px; }
+}
+
+/* Page footer — the couple mark, closing each page. */
+.page-footer {
+  border-top: 1px solid var(--accent);
+  margin-top: var(--space-5);
+  padding-top: var(--space-3);
+  text-align: center;
+}
+.page-footer__name {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: var(--step--1);
+  color: var(--accent);
+  display: block;
+}
+.page-footer__line {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: rgba(12, 52, 61, 0.55);
+  margin-top: var(--space-1);
+  font-size: var(--step--1);
+}
+
+/* --- Dress cards: single consistent column ------------------------------- */
+/* Every gown sits in the same left column with its details beside it.
+   Alternating layout removed — the zigzag broke the vertical rhythm. */
+.dress-card {
+  grid-template-columns: 300px 1fr;
+  gap: var(--space-4);
+  align-items: start;
+  margin-bottom: var(--space-5);
+}
+.dress-card__body { padding-top: 0; }
+.dress-card__name { margin-top: 0; line-height: 1.1; }
+
+/* --- Final refinements --------------------------------------------------- */
+
+/* Gate subtitle — gold, matching the two-register rule (italic Garamond
+   grounds emotionally; gold is its colour). */
+.dress-gate__note { color: var(--accent); }
+
+/* Dress images at 77% — smaller, less dominant on the page. */
+.dress-card {
+  grid-template-columns: 231px 1fr;
+}
+.dress-card__media {
+  width: 231px;
+  height: 308px;
+}
+@media (max-width: 640px) {
+  .dress-card { grid-template-columns: 1fr; }
+  .dress-card__media { width: 100%; max-width: 231px; height: 308px; }
+}
+
+/* Countdown — deliberate spacing instead of leaked letter-spacing.
+   Number sits tight to its unit letter; the · separators carry the gaps. */
+.sidebar__countdown {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  letter-spacing: 0;
+  gap: 0;
+}
+.sidebar__countdown .sep {
+  opacity: 0.35;
+  margin: 0 0.45em;
+}
+
+/* --- The Look: refinements ----------------------------------------------- */
+/* Navy zone bar — completes the teal → forest → navy sequence already used
+   on The Flora (tiers) and The Day (phases). */
+.zone__bar--navy { background: var(--deepest); color: var(--linen); }
+
+/* Palette grid — 3 across gives two clean rows of three instead of
+   orphaning Abyss and Linen on a second row. */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* Linen swatch reads as an empty box against the linen page background —
+   give it a definite edge so it registers as a deliberate colour. */
+.swatch--light[style*="F2EDE6"] {
+  border: 1px solid rgba(12, 52, 61, 0.25);
+}
+
+@media (max-width: 640px) {
+  .swatches { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --- The Look: palette with roles + mood board --------------------------- */
+
+/* Swatches now carry role and use, so they need more vertical room. */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.swatch {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-3);
+}
+.swatch__role {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  opacity: 0.7;
+  margin-bottom: var(--space-1);
+}
+.swatch__use {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  opacity: 0.85;
+  margin-top: auto;
+  line-height: 1.35;
+}
+.swatch--primary { grid-row: span 1; }
+
+/* Mood board — a woven grid, not a uniform matrix. Two tiles break the
+   rhythm so it reads as a board rather than a spreadsheet. */
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 150px;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.mood-tile {
+  margin: 0;
+  overflow: hidden;
+  background: var(--linen-shade);
+}
+.mood-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.mood-tile--tall { grid-row: span 2; }
+.mood-tile--wide { grid-column: span 2; }
+
+@media (max-width: 640px) {
+  .swatches { grid-template-columns: repeat(2, 1fr); }
+  .mood-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 120px; }
+  .mood-tile--wide { grid-column: span 2; }
+}
+
+/* Footer is now a single gold line + the couple mark on every page. */
+.page-footer {
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+}
