@@ -1836,3 +1836,154 @@
   align-items: baseline;
   gap: var(--space-3);
 }
+
+/* --- The Dress ----------------------------------------------------------- */
+/* A gated brief page: image-beside-bullets reference cards + casual password
+   overlay. New classes only; palette + type tokens are the existing system. */
+
+.dress-section { margin-top: var(--space-4); }
+
+.dress-card {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) 1fr;
+  gap: var(--space-4);
+  align-items: start;
+  margin-bottom: var(--space-5);
+}
+.dress-card--flip .dress-card__media { order: 2; }
+.dress-card--flip .dress-card__body  { order: 1; }
+
+.dress-card__media {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--linen-shade);
+}
+.dress-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.dress-card__body { padding-top: var(--space-1); }
+.dress-card__name {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 400;
+  font-size: var(--step-2);
+  color: var(--deeper);
+  margin: 0;
+}
+.dress-card__ref {
+  display: inline-block;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: var(--step--1);
+  color: var(--accent);
+  margin: var(--space-1) 0 var(--space-2);
+}
+.dress-card__ref:hover { text-decoration: underline; }
+
+.dress-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.dress-card__list li {
+  position: relative;
+  padding-left: 1.4em;
+  margin-bottom: var(--space-1);
+  color: var(--ink);
+}
+.dress-card__list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.dress-signoff {
+  border-top: 1px solid var(--accent);
+  padding-top: var(--space-3);
+  margin-top: var(--space-4);
+  text-align: center;
+}
+.dress-signoff .subtitle { margin-top: var(--space-1); }
+
+/* Casual gate overlay */
+.dress-locked { filter: blur(14px); pointer-events: none; user-select: none; }
+
+.dress-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--linen);
+  padding: var(--space-3);
+}
+.dress-gate__card {
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+}
+.dress-gate__title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 400;
+  font-size: var(--step-4);
+  color: var(--anchor);
+  border: none;
+  padding: 0;
+  margin: var(--space-1) 0 var(--space-1);
+}
+.dress-gate__note {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: var(--space-3);
+}
+.dress-gate__input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step-0);
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  outline: none;
+  margin-bottom: var(--space-2);
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+.dress-gate__input:focus { border-color: var(--anchor); }
+.dress-gate__btn {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: var(--step--1);
+  color: var(--linen);
+  background: var(--anchor);
+  border: none;
+  cursor: pointer;
+}
+.dress-gate__btn:hover { background: var(--deeper); }
+.dress-gate__error {
+  color: #B85C1E;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 640px) {
+  .dress-card,
+  .dress-card--flip {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+  .dress-card--flip .dress-card__media { order: 1; }
+  .dress-card--flip .dress-card__body  { order: 2; }
+  .dress-card__media { max-width: 300px; }
+}

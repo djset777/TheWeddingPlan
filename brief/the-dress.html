@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Dress — The Wedding Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body>
+
+  <!-- Casual gate: hides the page until the password is entered.
+       Not real security — just keeps a stray click from spoiling the surprise. -->
+  <div class="dress-gate" id="dressGate" hidden>
+    <div class="dress-gate__card">
+      <span class="eyebrow">Girls Only</span>
+      <h2 class="dress-gate__title">The Dress</h2>
+      <p class="dress-gate__note">A little locked. Enter the password to peek.</p>
+      <input class="dress-gate__input" id="dressGateInput" type="password"
+             placeholder="Password" autocomplete="off" aria-label="Password">
+      <button class="dress-gate__btn" id="dressGateBtn">Enter</button>
+      <p class="dress-gate__error" id="dressGateError" hidden>Not quite — try again.</p>
+    </div>
+  </div>
+
+  <div class="layout dress-locked" id="dressLayout">
+    <aside class="sidebar" id="sidebar" aria-label="Site navigation"></aside>
+
+    <main class="content">
+
+      <header class="content__head">
+        <span class="eyebrow content__eyebrow">The Brief</span>
+        <h1 class="content__title">The Dress</h1>
+        <p class="subtitle content__subtitle">A reference for my girls — gowns worth a look.</p>
+      </header>
+
+      <h2 class="h2 dress-section">The Inspiration</h2>
+
+      <!-- Card 1 — image left -->
+      <article class="dress-card">
+        <div class="dress-card__media">
+          <img class="dress-card__img" src="../assets/img/dress/berta-25-02.webp" alt="Berta 25-02" loading="lazy">
+        </div>
+        <div class="dress-card__body">
+          <h3 class="dress-card__name">Berta 25-02</h3>
+          <a class="dress-card__ref" href="https://www.instagram.com/bertaprivee/" target="_blank" rel="noopener">View Reference →</a>
+          <ul class="dress-card__list">
+            <li>Off-shoulder long-sleeve lace mermaid, sheer corset bodice with 3D floral</li>
+            <li>The Privée line — most romantic, most lace-heavy</li>
+            <li>Tryable in the US: Berta flagships &amp; stockists (not far to travel)</li>
+            <li>IG: @berta / @bertaprivee</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 2 — image right -->
+      <article class="dress-card dress-card--flip">
+        <div class="dress-card__media">
+          <img class="dress-card__img" src="../assets/img/dress/royaldi-nancy.webp" alt="Royaldi Nancy" loading="lazy">
+        </div>
+        <div class="dress-card__body">
+          <h3 class="dress-card__name">Royaldi Nancy</h3>
+          <a class="dress-card__ref" href="https://www.instagram.com/royaldiofficial/" target="_blank" rel="noopener">View Reference →</a>
+          <ul class="dress-card__list">
+            <li>Lace mermaid, off-shoulder, long sleeve, cathedral lace veil</li>
+            <li>Italian house — order via stocking boutique, not direct</li>
+            <li>Made to order through boutique fitting appointment</li>
+            <li>IG: @royaldiofficial</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 3 — image left -->
+      <article class="dress-card">
+        <div class="dress-card__media">
+          <img class="dress-card__img" src="../assets/img/dress/wona-encore.webp" alt="WONÁ Encore" loading="lazy">
+        </div>
+        <div class="dress-card__body">
+          <h3 class="dress-card__name">WONÁ Encore</h3>
+          <a class="dress-card__ref" href="https://www.instagram.com/wona_concept/" target="_blank" rel="noopener">View Reference →</a>
+          <ul class="dress-card__list">
+            <li>Lace mermaid, off-shoulder sleeves, corset lace-up back</li>
+            <li>NYC bridal house — order via boutique appointment</li>
+            <li>Detachable overskirt — mermaid or full train, two looks</li>
+            <li>IG: @wona_concept</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 4 — image right -->
+      <article class="dress-card dress-card--flip">
+        <div class="dress-card__media">
+          <img class="dress-card__img" src="../assets/img/dress/oleg-baburov-verbena.webp" alt="Oleg Baburov Verbena" loading="lazy">
+        </div>
+        <div class="dress-card__body">
+          <h3 class="dress-card__name">Oleg Baburov 'Verbena'</h3>
+          <a class="dress-card__ref" href="https://www.instagram.com/oleg_baburow/" target="_blank" rel="noopener">View Reference →</a>
+          <ul class="dress-card__list">
+            <li>Lace mermaid, sweetheart neckline, off-shoulder straps</li>
+            <li>Long sleeves flare into a soft bell shape at the wrist, sheer lace throughout</li>
+            <li>Delicate floral lace overlay, subtle shimmer, matching lace cathedral veil</li>
+            <li>IG: @oleg_baburow</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 5 — image left -->
+      <article class="dress-card">
+        <div class="dress-card__media">
+          <img class="dress-card__img" src="../assets/img/dress/ange-etoiles-blanca.webp" alt="Ange Étoiles Blanca" loading="lazy">
+        </div>
+        <div class="dress-card__body">
+          <h3 class="dress-card__name">Ange Étoiles Blanca</h3>
+          <a class="dress-card__ref" href="https://www.instagram.com/dellamorebridal/" target="_blank" rel="noopener">View Reference →</a>
+          <ul class="dress-card__list">
+            <li>Satin and tulle A-line, clean minimal lines, no embellishment</li>
+            <li>Low open back, modest coverage through the bodice</li>
+            <li>Simple, beach-inspired silhouette — pared-back rather than dramatic</li>
+            <li>IG: @dellamorebridal</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 6 — image right -->
+      <article class="dress-card dress-card--flip">
+        <div class="dress-card__media">
+          <img class="dress-card__img" src="../assets/img/dress/calla-blanche-ruya.webp" alt="Calla Blanche Ruya" loading="lazy">
+        </div>
+        <div class="dress-card__body">
+          <h3 class="dress-card__name">Calla Blanche Ruya</h3>
+          <a class="dress-card__ref" href="https://www.instagram.com/callablanchebridal/" target="_blank" rel="noopener">View Reference →</a>
+          <ul class="dress-card__list">
+            <li>Beaded lace sheath, corset bodice, matching long-sleeve jacket</li>
+            <li>Toronto-based designer — order via stocking boutique</li>
+            <li>Strapless underneath, jacket detaches for two looks</li>
+            <li>IG: @callablanchebridal</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Card 7 — image left -->
+      <article class="dress-card">
+        <div class="dress-card__media">
+          <img class="dress-card__img" src="../assets/img/dress/margot-venus.webp" alt="Margot Venus" loading="lazy">
+        </div>
+        <div class="dress-card__body">
+          <h3 class="dress-card__name">Margot 'Venus'</h3>
+          <a class="dress-card__ref" href="https://www.instagram.com/maison_margot_official/" target="_blank" rel="noopener">View Reference →</a>
+          <ul class="dress-card__list">
+            <li>Sequin lace bodice, square neckline, off-shoulder straps</li>
+            <li>Long sleeves flare into a soft bell shape, sheer lace overlay through the arm</li>
+            <li>Delicate sequin/floral lace throughout, subtle sparkle</li>
+            <li>IG: @maison_margot_official</li>
+          </ul>
+        </div>
+      </article>
+
+      <div class="dress-signoff">
+        <span class="eyebrow">DJ Set</span>
+        <p class="subtitle">Where the hills are green, the nights are alive, and the love is deep.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../assets/js/sidebar.js"></script>
+  <script src="../assets/js/api.js"></script>
+
+  <!-- Gate logic -->
+  <script>
+  (function () {
+    var PASSWORD = 'girlsonly';
+    var KEY = 'twp-dress-unlocked';
+    var gate    = document.getElementById('dressGate');
+    var layout  = document.getElementById('dressLayout');
+    var input   = document.getElementById('dressGateInput');
+    var btn     = document.getElementById('dressGateBtn');
+    var errorEl = document.getElementById('dressGateError');
+
+    function unlock() {
+      gate.hidden = true;
+      layout.classList.remove('dress-locked');
+    }
+
+    // Already unlocked this session? Skip the prompt.
+    if (sessionStorage.getItem(KEY) === '1') {
+      unlock();
+      return;
+    }
+
+    // Otherwise show the gate.
+    gate.hidden = false;
+
+    function tryUnlock() {
+      if (input.value.trim().toLowerCase() === PASSWORD) {
+        sessionStorage.setItem(KEY, '1');
+        unlock();
+      } else {
+        errorEl.hidden = false;
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    btn.addEventListener('click', tryUnlock);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') tryUnlock();
+    });
+    input.focus();
+  })();
+  </script>
+
+</body>
+</html>
