@@ -167,48 +167,47 @@
   </div>
 
   <script src="../assets/js/sidebar.js"></script>
-  <script src="../assets/js/api.js"></script>
 
-  <!-- Gate logic -->
+  <!-- Gate logic — hashed, self-contained. The password never appears in source. -->
   <script>
   (function () {
-    var PASSWORD = 'girlsonly';
-    var KEY = 'twp-dress-unlocked';
-    var gate    = document.getElementById('dressGate');
-    var layout  = document.getElementById('dressLayout');
-    var input   = document.getElementById('dressGateInput');
-    var btn     = document.getElementById('dressGateBtn');
-    var errorEl = document.getElementById('dressGateError');
+    var HASH = "aa938e4a3233a1dd44e8f250d8d2f0ea3db9e12c9d9680cd4c782602abd33709";          // sha-256 of the password
+    var KEY  = "twp-dress-unlocked";
+    var gate    = document.getElementById("dressGate");
+    var layout  = document.getElementById("dressLayout");
+    var input   = document.getElementById("dressGateInput");
+    var btn     = document.getElementById("dressGateBtn");
+    var errorEl = document.getElementById("dressGateError");
 
     function unlock() {
       gate.hidden = true;
-      layout.classList.remove('dress-locked');
+      layout.classList.remove("dress-locked");
     }
 
-    // Already unlocked this session? Skip the prompt.
-    if (sessionStorage.getItem(KEY) === '1') {
-      unlock();
-      return;
-    }
-
-    // Otherwise show the gate.
+    if (sessionStorage.getItem(KEY) === "1") { unlock(); return; }
     gate.hidden = false;
 
-    function tryUnlock() {
-      if (input.value.trim().toLowerCase() === PASSWORD) {
-        sessionStorage.setItem(KEY, '1');
+    async function sha256(str) {
+      var buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf))
+        .map(function (b) { return b.toString(16).padStart(2, "0"); }).join("");
+    }
+
+    async function tryUnlock() {
+      var typed = input.value.trim().toLowerCase();
+      var h = await sha256(typed);
+      if (h === HASH) {
+        sessionStorage.setItem(KEY, "1");
         unlock();
       } else {
         errorEl.hidden = false;
-        input.value = '';
+        input.value = "";
         input.focus();
       }
     }
 
-    btn.addEventListener('click', tryUnlock);
-    input.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') tryUnlock();
-    });
+    btn.addEventListener("click", tryUnlock);
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); });
     input.focus();
   })();
   </script>
