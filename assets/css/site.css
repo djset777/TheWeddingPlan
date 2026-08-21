@@ -2670,3 +2670,39 @@
 .sidebar__brand,
 .sidebar__brand:hover { text-decoration: none; }
 .sidebar__mark { border: none; }
+/* Match the content column's rhythm: even gap below the date. */
+.sidebar__brand { margin-bottom: 6.4px; }
+.sidebar__countdown { margin-top: 0; padding-top: 0; }
+
+/* One gold rule per page header. Controls carry no rules — the active tab
+   reads as active through colour and weight alone. */
+.viewtabs { border-bottom: none; }
+.viewtab.is-active {
+  border-bottom-color: transparent;
+  color: var(--anchor);
+  font-weight: 500;
+}
+.statusfilters {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: var(--space-4);
+}
+
+/* Filters read as pills so they don't look like the tabs above them. */
+.statchip {
+  font-size: 13px;
+  letter-spacing: 1.4px;
+  padding: 4px 12px;
+  border: 1px solid var(--linen-rule);
+  color: rgba(12, 52, 61, 0.5);
+}
+.statchip:hover { border-color: var(--accent); color: var(--anchor); }
+.statchip.is-active,
+.statchip--needs.is-active,
+.statchip--done.is-active {
+  background: var(--anchor);
+  border-color: var(--anchor);
+  color: var(--linen);
+}
+.statchip.is-active .statchip__n { color: var(--linen); opacity: .7; }
+.viewtab { font-size: 19px; }
