@@ -2706,3 +2706,7 @@
 }
 .statchip.is-active .statchip__n { color: var(--linen); opacity: .7; }
 .viewtab { font-size: 19px; }
+/* TBD — parked, pending a decision. */
+.statchip--tbd.is-active { background: rgba(12,52,61,.45); border-color: rgba(12,52,61,.45); }
+.msub__box--tbd { border-style: dashed; }
+.grouprow--tbd .grouprow__title { color: rgba(12,52,61,.5); font-style: italic; }

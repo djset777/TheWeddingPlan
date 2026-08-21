@@ -34,7 +34,7 @@
         parentId: parent.id,
         title: sub.title,
         parent: sub.parent,
-        category: (parent.tags && parent.tags[0]) || parent.moment || 'Uncategorized',
+        categories: (parent.tags && parent.tags.length) ? parent.tags.slice() : [parent.moment || 'Uncategorized'],
         timeframe: parent.timeframe,
         phase: parent.phase ? parent.phase.toLowerCase() : '',
         assignees: sub.assignees && sub.assignees.length ? sub.assignees : (parent.assignees || []),
@@ -53,6 +53,7 @@
   };
 
   const STATUS_COLS = [
+    { key: 'tbd',      label: 'TBD',         matches: ['tbd', 'on hold', 'paused'] },
     { key: 'not',      label: 'Not Started', matches: ['not started', ''] },
     { key: 'needs',    label: 'Needs Help',  matches: ['needs help'] },
     { key: 'progress', label: 'In Progress', matches: ['in progress'] },
@@ -66,13 +67,15 @@
 
   // ------------- View state -------------
   let activeView = 'timeline';   // timeline | person | category
-  let activeStatus = 'all';      // all | not | needs | progress | done
+  let activeStatus = 'all';
+  let activePerson = null;   // null = everyone      // all | not | needs | progress | done
   let activeTf = NOW_TF.code;    // used by timeline view
 
   // ------------- Orientation line -------------
   function statusCounts() {
-    const c = { all: subtasks.length, not: 0, needs: 0, progress: 0, done: 0 };
-    subtasks.forEach(s => { c[statusKeyOf(s.rawStatus)] += 1; });
+    const scope = applyPersonFilter(subtasks);
+    const c = { all: scope.length, tbd: 0, not: 0, needs: 0, progress: 0, done: 0 };
+    scope.forEach(s => { c[statusKeyOf(s.rawStatus)] += 1; });
     return c;
   }
 
@@ -82,6 +85,7 @@
     const c = statusCounts();
     const chips = [
       { key: 'all',      label: 'All' },
+      { key: 'tbd',      label: 'TBD' },
       { key: 'not',      label: 'Not Started' },
       { key: 'progress', label: 'In Progress' },
       { key: 'needs',    label: 'Needs Help' },
@@ -99,6 +103,29 @@
         renderView();
       });
     });
+  }
+
+  function renderPersonFilters() {
+    const mount = q('[data-person-filters]');
+    if (!mount) return;
+    const counts = {};
+    subtasks.forEach(t => (t.assignees || []).forEach(n => { counts[n] = (counts[n]||0)+1; }));
+    const opts = [{ name: null, label: 'Everyone', n: subtasks.length }]
+      .concat(rosterWithTasks().map(p => ({ name: p.name, label: p.name, n: counts[p.name]||0 })));
+    mount.innerHTML = opts.map(o =>
+      `<button class="statchip${o.name===activePerson?' is-active':''}" data-person="${o.name===null?'':o.name}">${o.label}<span class="statchip__n">${o.n}</span></button>`
+    ).join('');
+    qa('.statchip', mount).forEach(btn => {
+      btn.addEventListener('click', () => {
+        activePerson = btn.dataset.person || null;
+        renderPersonFilters(); renderStatusFilters(); renderView();
+      });
+    });
+  }
+
+  function applyPersonFilter(list) {
+    if (!activePerson) return list;
+    return list.filter(t => (t.assignees || []).includes(activePerson));
   }
 
   function applyStatusFilter(list) {
@@ -180,8 +207,21 @@
   }
 
   // ------------- Person view -------------
+  // Everyone who actually appears on a task — including names the people
+  // sheet hasn't caught up with yet.
+  function rosterWithTasks() {
+    const known = {};
+    (people || []).forEach(p => { known[p.name] = p; });
+    const names = new Set();
+    subtasks.forEach(s => (s.assignees || []).forEach(n => names.add(n)));
+    return Array.from(names).sort().map(name => known[name] || {
+      name: name,
+      initials: name.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase(),
+    });
+  }
+
   function renderPersonView() {
-    const order = (people || []);
+    const order = rosterWithTasks();
     const blocks = order.map(person => {
       const theirs = applyStatusFilter(subtasks.filter(s => (s.assignees || []).includes(person.name)));
       if (!theirs.length) return '';
@@ -198,12 +238,13 @@
   function renderCategoryView() {
     const byCat = {};
     applyStatusFilter(subtasks).forEach(s => {
-      const c = s.category || 'Uncategorized';
-      (byCat[c] = byCat[c] || []).push(s);
+      (s.categories || ['Uncategorized']).forEach(c => {
+        (byCat[c] = byCat[c] || []).push(s);
+      });
     });
     const cats = Object.keys(byCat).sort();
     const blocks = cats.map(cat => {
-      const items = applyStatusFilter(byCat[cat]);
+      const items = byCat[cat];
       if (!items.length) return '';
       const open = items.filter(t => t.status !== 'done');
       const done = items.filter(t => t.status === 'done');
@@ -241,7 +282,6 @@
     if (!mount) return;
     const tabs = [
       { key: 'timeline', label: 'Timeline' },
-      { key: 'person',   label: 'Person' },
       { key: 'category', label: 'Category' },
     ];
     mount.innerHTML = tabs.map(t =>
@@ -328,6 +368,7 @@
 
   // ---- Init ----
   renderTabs();
+  renderPersonFilters();
   renderStatusFilters();
   renderView();
 })();
