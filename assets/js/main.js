@@ -66,7 +66,7 @@
   }
 
   // ------------- View state -------------
-  let activeView = 'timeline';   // timeline | person | category
+  const activeView = 'timeline';  // tabs removed — timeline is the only view
   let activeStatus = 'all';
   let activePerson = null;   // null = everyone      // all | not | needs | progress | done
   let activeTf = NOW_TF.code;    // used by timeline view
@@ -277,26 +277,6 @@
   }
 
   // ------------- Tab bar -------------
-  function renderTabs() {
-    const mount = q('[data-view-tabs]');
-    if (!mount) return;
-    const tabs = [
-      { key: 'timeline', label: 'Timeline' },
-      { key: 'category', label: 'Category' },
-    ];
-    mount.innerHTML = tabs.map(t =>
-      `<button class="viewtab${t.key === activeView ? ' is-active' : ''}" data-view="${t.key}">${t.label}</button>`
-    ).join('');
-    qa('.viewtab', mount).forEach(btn => {
-      btn.addEventListener('click', () => {
-        activeView = btn.dataset.view;
-        if (activeView === 'timeline') activeTf = NOW_TF.code;
-        renderTabs();
-        renderView();
-      });
-    });
-  }
-
   // ------------- Modal (unchanged from original) -------------
   function openModal(parentId, selectedTaskId) {
     const parent = parentsById[parentId];
@@ -367,7 +347,6 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
   // ---- Init ----
-  renderTabs();
   renderPersonFilters();
   renderStatusFilters();
   renderView();
