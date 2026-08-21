@@ -2710,3 +2710,33 @@
 .statchip--tbd.is-active { background: rgba(12,52,61,.45); border-color: rgba(12,52,61,.45); }
 .msub__box--tbd { border-style: dashed; }
 .grouprow--tbd .grouprow__title { color: rgba(12,52,61,.5); font-style: italic; }
+
+/* --- Sidebar / content row alignment ------------------------------------- */
+/* Three rows must line up across both columns:
+   1  DJ Set        ↔ eyebrow
+   2  7 · 7 · 27    ↔ page title
+   3  countdown     ↔ subtitle
+   The date is sized to fit one line, with an explicit line-height matching
+   the title's box so row 3 starts at the same y on both sides. */
+.sidebar__mark {
+  margin-top: 22px;
+  margin-bottom: 0;
+  line-height: 23.56px;
+  height: 24px;
+}
+.sidebar__brand {
+  display: block;
+  white-space: nowrap;
+  font-size: 50px;
+  line-height: 64px;
+  height: 64px;
+  margin: 6px 0 4px;
+  padding: 0;
+}
+.sidebar__countdown {
+  margin-top: 0;
+  padding-top: 0;
+}
+/* Same gap under the title on every page, so row 3 lands identically. */
+.content__subtitle,
+.home-head__subtitle { margin-top: 4px; }
