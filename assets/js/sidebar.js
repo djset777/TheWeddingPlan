@@ -14,7 +14,7 @@
 
   mount.innerHTML = `
     <a class="sidebar__mark" href="${prefix}index.html">DJ Set</a>
-    <a class="sidebar__brand" href="${prefix}index.html">7 · 7 · 27</a>
+    <span class="sidebar__brand">7 · 7 · 27</span>
 
     <div class="sidebar__countdown" data-sidebar-countdown>
       <span data-cd-mo>—</span> MO<span class="sep">|</span><span data-cd-wk>—</span> WKS<span class="sep">|</span><span data-cd-day>—</span> DAYS<span class="sep">|</span><span data-cd-hr>—</span> HRS

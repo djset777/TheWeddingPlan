@@ -2740,3 +2740,30 @@
 /* Same gap under the title on every page, so row 3 lands identically. */
 .content__subtitle,
 .home-head__subtitle { margin-top: 4px; }
+
+/* ==========================================================================
+   Sidebar header spacing — consolidated override
+   Resolves conflicting .sidebar__mark / __brand / __countdown rules above.
+   Uses even, token-based vertical rhythm so gaps read consistently.
+   ========================================================================== */
+.sidebar__mark {
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-2);
+  line-height: 1.2;
+  height: auto;
+}
+.sidebar__brand {
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  line-height: 1;
+}
+.sidebar__countdown {
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.sidebar__rsvp {
+  padding: 0 0 var(--space-3);
+  margin-bottom: var(--space-3);
+}
