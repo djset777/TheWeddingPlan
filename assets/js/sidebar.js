@@ -43,7 +43,6 @@
 
       <h3>The Plans</h3>
       <ul>
-        <li><a href="${prefix}dashboard/party.html">The Team</a></li>
         <li><a href="${prefix}brief/the-journey.html">The Journey</a></li>
         <li><a href="${prefix}brief/the-logistics.html">The Logistics</a></li>
         <li><a href="${prefix}dashboard/day-of.html">The Day</a></li>
