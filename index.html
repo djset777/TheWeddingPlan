@@ -444,6 +444,52 @@ textarea.form-input{min-height:4.5em;resize:vertical;}
   color:var(--gold);letter-spacing:0.15em;
 }
 
+/* ── RSVP ROSTER (per-person) ── */
+.roster-intro{
+  font-family:'Cormorant SC',serif;
+  font-weight:600;font-size:14pt;
+  color:var(--teal);
+  letter-spacing:0.06em;
+  display:block;margin-bottom:0.9em;
+}
+.roster-row{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:0.6em;margin-bottom:1em;
+}
+.roster-name{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:600;font-size:13pt;
+  color:var(--teal);
+}
+.roster-toggle{display:flex;gap:0.4em;flex-shrink:0;}
+.roster-btn{
+  font-family:'Cormorant SC',serif;
+  font-weight:600;font-size:11pt;
+  letter-spacing:0.04em;
+  color:var(--teal);
+  background:transparent;
+  border:1.11px solid var(--gold);
+  padding:0.4em 0.9em;
+  border-radius:2px;cursor:pointer;
+  transition:all 0.2s;text-align:center;
+  min-width:3.2em;
+}
+.roster-btn:hover{background:var(--teal);color:var(--gold);border-color:var(--teal);}
+.roster-btn.selected{background:var(--teal);color:var(--gold);border-color:var(--teal);}
+.roster-diet{margin:0.2em 0 1.3em;}
+.roster-diet input{
+  width:100%;
+  font-family:'Cormorant Garamond',serif;
+  font-weight:500;font-size:11pt;
+  color:var(--teal);
+  background:transparent;
+  border:1px solid #00687a;
+  border-radius:2px;
+  padding:0.5em 0.7em;
+}
+.roster-diet input:focus{outline:none;border-color:var(--gold);}
+.roster-diet input::placeholder{color:rgba(0,107,117,0.45);font-style:italic;}
+
 /* ── REVEALS ── */
 .rv{opacity:0;transform:translateY(18px);transition:opacity 0.7s ease,transform 0.7s ease;}
 .rv.vis{opacity:1;transform:translateY(0);}
@@ -626,29 +672,24 @@ textarea.form-input{min-height:4.5em;resize:vertical;}
   <div class="rsvp-form rv" id="rsvpFormWrap">
 
     <div class="form-group">
-      <label class="form-label" data-en="Full Name" data-es="Nombre Completo">Full Name</label>
-      <input type="text" class="form-input" id="rsvpName" placeholder="First and Last Name" data-en-placeholder="First and Last Name" data-es-placeholder="Nombre y Apellido" required>
-    </div>
-
-    <div class="form-group">
       <label class="form-label" data-en="Phone Number" data-es="Número de Teléfono">Phone Number</label>
       <input type="tel" class="form-input" id="rsvpPhone" placeholder="(555) 123-4567" data-en-placeholder="(555) 123-4567" data-es-placeholder="(555) 123-4567" required>
       <p class="form-note" id="partyConfirm" style="margin-top:0.5rem;display:none;"></p>
     </div>
 
-    <div class="form-group">
-      <label class="form-label" data-en="Will you be joining us?" data-es="¿Nos acompañarás?">Will you be joining us?</label>
-      <div class="toggle-group" id="attendToggle">
-        <button type="button" class="toggle-btn" data-val="yes" data-en="Joyfully, yes" data-es="Con mucho gusto, sí">Joyfully, yes</button>
-        <button type="button" class="toggle-btn" data-val="no" data-en="Regretfully, I cannot" data-es="Con pesar, no podré">Regretfully, I cannot</button>
+    <!-- Roster: populated from phone lookup -->
+    <div id="rosterWrap" class="form-hidden">
+      <div class="form-group">
+        <span class="roster-intro" data-en="Who will be joining us?" data-es="¿Quiénes nos acompañarán?">Who will be joining us?</span>
+        <div id="rosterList"></div>
       </div>
     </div>
 
-    <!-- If attending -->
+    <!-- Party-level fields: shown if at least one person attends -->
     <div id="attendingFields" class="form-hidden">
 
       <div class="form-group">
-        <label class="form-label" data-en="Will you need transportation on the wedding day?" data-es="¿Necesitarás transporte el día de la boda?">Will you need transportation on the wedding day?</label>
+        <label class="form-label" data-en="Will your party need transportation on the wedding day?" data-es="¿Necesitará transporte su grupo el día de la boda?">Will your party need transportation on the wedding day?</label>
         <div class="toggle-group" id="transportToggle">
           <button type="button" class="toggle-btn" data-val="yes" data-en="Yes, please" data-es="Sí, por favor">Yes, please</button>
           <button type="button" class="toggle-btn" data-val="no" data-en="No, thank you" data-es="No, gracias">No, thank you</button>
@@ -660,37 +701,28 @@ textarea.form-input{min-height:4.5em;resize:vertical;}
         <input type="text" class="form-input" id="rsvpSong" placeholder="Artist — Song Title" data-en-placeholder="Artist — Song Title" data-es-placeholder="Artista — Título de la Canción">
       </div>
 
+    </div>
+
+    <!-- If whole party declines -->
+    <div id="decliningMsg" class="form-hidden">
+      <p class="decline-msg" data-en="We're sorry you can't join us. Please feel free to contribute to our honeymoon or housewarming fund on the Gifts page." data-es="Lamentamos que no puedan acompañarnos. Si lo desean, pueden contribuir a nuestro fondo de luna de miel o nuevo hogar en la página de Regalos.">We're sorry you can't join us. Please feel free to contribute to our honeymoon or housewarming fund on the Gifts page.</p>
+    </div>
+
+    <!-- Asked of everyone (once the roster is loaded) -->
+    <div id="closingFields" class="form-hidden">
       <div class="form-group">
-        <label class="form-label" data-en="Dietary Restrictions" data-es="Restricciones Alimentarias">Dietary Restrictions</label>
-        <div class="checkbox-row">
-          <input type="checkbox" id="dietaryCheck">
-          <label class="checkbox-label" for="dietaryCheck" data-en="I have dietary restrictions" data-es="Tengo restricciones alimentarias">I have dietary restrictions</label>
-        </div>
-        <div id="dietaryDetails" class="form-hidden" style="margin-top:0.8em;">
-          <input type="text" class="form-input" id="dietaryText" placeholder="Please describe" data-en-placeholder="Please describe" data-es-placeholder="Por favor describa">
-        </div>
+        <label class="form-label" data-en="Would you like to share a few words of love and well wishes?" data-es="¿Quisieras compartir unas palabras de amor y buenos deseos?">Would you like to share a few words of love and well wishes?</label>
+        <textarea class="form-input" id="rsvpWishes" placeholder="A few words for the couple..." data-en-placeholder="A few words for the couple..." data-es-placeholder="Unas palabras para la pareja..."></textarea>
       </div>
 
-    </div>
+      <div class="form-group">
+        <label class="form-label" data-en="Just for fun, where should we go on our honeymoon?" data-es="Solo por diversión, ¿a dónde deberíamos ir de luna de miel?">Just for fun, where should we go on our honeymoon?</label>
+        <input type="text" class="form-input" id="rsvpHoneymoon" placeholder="A city, a country, an adventure..." data-en-placeholder="A city, a country, an adventure..." data-es-placeholder="Una ciudad, un país, una aventura...">
+      </div>
 
-    <!-- If declining -->
-    <div id="decliningMsg" class="form-hidden">
-      <p class="decline-msg" data-en="We're sorry you can't join us. Please feel free to contribute to our honeymoon or housewarming fund on the Gifts page." data-es="Lamentamos que no puedas acompañarnos. Si lo deseas, puedes contribuir a nuestro fondo de luna de miel o nuevo hogar en la página de Regalos.">We're sorry you can't join us. Please feel free to contribute to our honeymoon or housewarming fund on the Gifts page.</p>
+      <button type="button" class="submit-btn" id="submitRsvp" data-en="Send RSVP" data-es="Enviar RSVP">Send RSVP</button>
+      <p class="form-note" id="formStatus"></p>
     </div>
-
-    <!-- Asked of everyone -->
-    <div class="form-group">
-      <label class="form-label" data-en="Would you like to share a few words of love and well wishes?" data-es="¿Quisieras compartir unas palabras de amor y buenos deseos?">Would you like to share a few words of love and well wishes?</label>
-      <textarea class="form-input" id="rsvpWishes" placeholder="A few words for the couple..." data-en-placeholder="A few words for the couple..." data-es-placeholder="Unas palabras para la pareja..."></textarea>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" data-en="Just for fun, where should we go on our honeymoon?" data-es="Solo por diversión, ¿a dónde deberíamos ir de luna de miel?">Just for fun, where should we go on our honeymoon?</label>
-      <input type="text" class="form-input" id="rsvpHoneymoon" placeholder="A city, a country, an adventure..." data-en-placeholder="A city, a country, an adventure..." data-es-placeholder="Una ciudad, un país, una aventura...">
-    </div>
-
-    <button type="button" class="submit-btn" id="submitRsvp" data-en="Send RSVP" data-es="Enviar RSVP">Send RSVP</button>
-    <p class="form-note" id="formStatus"></p>
 
   </div>
 </section>
@@ -772,31 +804,156 @@ textarea.form-input{min-height:4.5em;resize:vertical;}
       var ph = el.getAttribute('data-'+lang+'-placeholder');
       if(ph !== null) el.placeholder = ph;
     });
+
+    /* Roster is built dynamically — relabel its pieces on language switch */
+    document.querySelectorAll('.roster-btn').forEach(function(btn){
+      var t = btn.textContent.trim();
+      if(t === 'Yes' || t === 'Sí') btn.textContent = (lang === 'en') ? 'Yes' : 'Sí';
+    });
+    document.querySelectorAll('.roster-diet input').forEach(function(inp){
+      var ph = inp.getAttribute('data-'+lang+'-ph');
+      if(ph !== null) inp.placeholder = ph;
+    });
+    if(partyConfirm && partyConfirm.style.display !== 'none' && currentParty){
+      partyConfirm.textContent = (lang === 'en'
+        ? 'You\u2019re responding for: '
+        : 'Estás respondiendo por: ') + currentParty;
+    }
   });
 
-  /* === RSVP Form Logic === */
-  var attendToggle = document.getElementById('attendToggle');
+  /* === RSVP Form Logic (roster-driven) === */
+  var lookupUrl = 'https://script.google.com/macros/s/AKfycbwosDysXnI_U2t6CGVG7LHLgtj9nTPcpcIeFIuA2fBV623mbdEFtG4FAJFTLe5vA7p3JQ/exec';
+  var phoneInput = document.getElementById('rsvpPhone');
+  var partyConfirm = document.getElementById('partyConfirm');
+  var rosterWrap = document.getElementById('rosterWrap');
+  var rosterList = document.getElementById('rosterList');
   var attendingFields = document.getElementById('attendingFields');
   var decliningMsg = document.getElementById('decliningMsg');
-  var attending = null;
+  var closingFields = document.getElementById('closingFields');
+  var submitBtn = document.getElementById('submitRsvp');
+  var formStatus = document.getElementById('formStatus');
+  var transportToggle = document.getElementById('transportToggle');
+
+  var currentParty = '';
+  var currentPhone = '';
+  var people = [];       // [{name, attending:'yes'|'no'|null, diet:''}]
   var transport = null;
 
-  attendToggle.querySelectorAll('.toggle-btn').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      attendToggle.querySelectorAll('.toggle-btn').forEach(function(b){ b.classList.remove('selected'); });
-      btn.classList.add('selected');
-      attending = btn.getAttribute('data-val');
-      if(attending === 'yes'){
-        attendingFields.classList.remove('form-hidden');
-        decliningMsg.classList.add('form-hidden');
-      } else {
-        attendingFields.classList.add('form-hidden');
-        decliningMsg.classList.remove('form-hidden');
-      }
+  function cleanPhone(v){
+    var d = (v||'').replace(/\D/g,'');
+    if(d.length === 11 && d.charAt(0) === '1') d = d.substring(1);
+    return d;
+  }
+
+  /* Recompute which sections show based on roster answers */
+  function refreshSections(){
+    var anyYes = people.some(function(p){ return p.attending === 'yes'; });
+    var anyAnswered = people.some(function(p){ return p.attending !== null; });
+    if(anyYes){
+      attendingFields.classList.remove('form-hidden');
+      decliningMsg.classList.add('form-hidden');
+    } else {
+      attendingFields.classList.add('form-hidden');
+      // show the sorry message only once everyone present has been marked "no"
+      var allNo = people.length && people.every(function(p){ return p.attending === 'no'; });
+      decliningMsg.classList.toggle('form-hidden', !allNo);
+    }
+    if(anyAnswered) closingFields.classList.remove('form-hidden');
+  }
+
+  /* Build the roster rows from the returned members */
+  function renderRoster(members){
+    rosterList.innerHTML = '';
+    people = [];
+    members.forEach(function(m, i){
+      var person = { name: m.name, attending: null, diet: '' };
+      people.push(person);
+
+      var row = document.createElement('div');
+      row.className = 'roster-row';
+
+      var nm = document.createElement('div');
+      nm.className = 'roster-name';
+      nm.textContent = m.name;
+
+      var tog = document.createElement('div');
+      tog.className = 'roster-toggle';
+
+      var yes = document.createElement('button');
+      yes.type = 'button'; yes.className = 'roster-btn';
+      yes.textContent = lang === 'en' ? 'Yes' : 'Sí';
+      var no = document.createElement('button');
+      no.type = 'button'; no.className = 'roster-btn';
+      no.textContent = 'No';
+
+      var diet = document.createElement('div');
+      diet.className = 'roster-diet form-hidden';
+      var dietInput = document.createElement('input');
+      dietInput.type = 'text';
+      dietInput.placeholder = lang === 'en' ? 'Any dietary restrictions?' : '¿Alguna restricción alimentaria?';
+      dietInput.setAttribute('data-en-ph','Any dietary restrictions?');
+      dietInput.setAttribute('data-es-ph','¿Alguna restricción alimentaria?');
+      dietInput.addEventListener('input', function(){ person.diet = dietInput.value.trim(); });
+      diet.appendChild(dietInput);
+
+      yes.addEventListener('click', function(){
+        person.attending = 'yes';
+        yes.classList.add('selected'); no.classList.remove('selected');
+        diet.classList.remove('form-hidden');
+        refreshSections();
+      });
+      no.addEventListener('click', function(){
+        person.attending = 'no';
+        no.classList.add('selected'); yes.classList.remove('selected');
+        diet.classList.add('form-hidden');
+        person.diet = ''; dietInput.value = '';
+        refreshSections();
+      });
+
+      tog.appendChild(yes); tog.appendChild(no);
+      row.appendChild(nm); row.appendChild(tog);
+      rosterList.appendChild(row);
+      rosterList.appendChild(diet);
     });
+  }
+
+  /* Phone lookup on blur — returns party + members */
+  phoneInput.addEventListener('blur', function(){
+    var digits = cleanPhone(phoneInput.value);
+    if(digits.length !== 10){
+      partyConfirm.style.display = 'none';
+      rosterWrap.classList.add('form-hidden');
+      return;
+    }
+    fetch(lookupUrl + '?phone=' + digits)
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if(res && res.found && res.members && res.members.length){
+          currentParty = res.party || '';
+          currentPhone = digits;
+          partyConfirm.textContent = (lang === 'en'
+            ? 'You\u2019re responding for: '
+            : 'Estás respondiendo por: ') + currentParty;
+          partyConfirm.style.color = '#D4AF37';
+          partyConfirm.style.display = 'block';
+          renderRoster(res.members);
+          rosterWrap.classList.remove('form-hidden');
+        } else {
+          partyConfirm.textContent = (lang === 'en'
+            ? 'We couldn\u2019t find that number. Please check it, or reach out to us directly.'
+            : 'No encontramos ese número. Por favor verifíquelo, o contáctenos directamente.');
+          partyConfirm.style.color = '#006B75';
+          partyConfirm.style.display = 'block';
+          rosterWrap.classList.add('form-hidden');
+        }
+      })
+      .catch(function(){
+        partyConfirm.style.display = 'none';
+        rosterWrap.classList.add('form-hidden');
+      });
   });
 
-  var transportToggle = document.getElementById('transportToggle');
+  /* Transportation toggle */
   transportToggle.querySelectorAll('.toggle-btn').forEach(function(btn){
     btn.addEventListener('click', function(){
       transportToggle.querySelectorAll('.toggle-btn').forEach(function(b){ b.classList.remove('selected'); });
@@ -805,69 +962,26 @@ textarea.form-input{min-height:4.5em;resize:vertical;}
     });
   });
 
-  var dietaryCheck = document.getElementById('dietaryCheck');
-  var dietaryDetails = document.getElementById('dietaryDetails');
-  dietaryCheck.addEventListener('change', function(){
-    dietaryDetails.style.display = dietaryCheck.checked ? 'block' : 'none';
-  });
-
-  var submitBtn = document.getElementById('submitRsvp');
-  var formStatus = document.getElementById('formStatus');
-
-  /* === Live party lookup === */
-  var lookupUrl = 'https://script.google.com/macros/s/AKfycbwosDysXnI_U2t6CGVG7LHLgtj9nTPcpcIeFIuA2fBV623mbdEFtG4FAJFTLe5vA7p3JQ/exec';
-  var phoneInput = document.getElementById('rsvpPhone');
-  var partyConfirm = document.getElementById('partyConfirm');
-
-  phoneInput.addEventListener('blur', function(){
-    var digits = phoneInput.value.replace(/\D/g,'');
-    if(digits.length === 11 && digits.charAt(0) === '1') digits = digits.substring(1);
-    if(digits.length !== 10){ partyConfirm.style.display = 'none'; return; }
-
-    fetch(lookupUrl + '?phone=' + digits)
-      .then(function(r){ return r.json(); })
-      .then(function(res){
-        if(res && res.found && res.party){
-          partyConfirm.textContent = (lang === 'en'
-            ? 'You\u2019re responding for: '
-            : 'Estás respondiendo por: ') + res.party;
-          partyConfirm.style.color = '#D4AF37';
-          partyConfirm.style.display = 'block';
-        } else {
-          partyConfirm.style.display = 'none';
-        }
-      })
-      .catch(function(){ partyConfirm.style.display = 'none'; });
-  });
-
+  /* Submit — one entry per person */
   submitBtn.addEventListener('click', function(){
-    var name = document.getElementById('rsvpName').value.trim();
-    var phone = document.getElementById('rsvpPhone').value.replace(/\D/g,'');
-    if(phone.length === 11 && phone.charAt(0) === '1') phone = phone.substring(1);
-
-    if(!name || !phone){
-      formStatus.textContent = lang === 'en' ? 'Please fill in your name and phone number.' : 'Por favor complete su nombre y número de teléfono.';
+    if(currentPhone.length !== 10 || !people.length){
+      formStatus.textContent = lang === 'en' ? 'Please enter your phone number first.' : 'Por favor ingrese su número de teléfono primero.';
       formStatus.style.color = '#006B75';
       return;
     }
-    if(phone.length !== 10){
-      formStatus.textContent = lang === 'en' ? 'Please enter a valid 10-digit phone number.' : 'Por favor ingrese un número de teléfono válido de 10 dígitos.';
-      formStatus.style.color = '#006B75';
-      return;
-    }
-    if(attending === null){
-      formStatus.textContent = lang === 'en' ? 'Please let us know if you\'ll be joining us.' : 'Por favor indique si nos acompañará.';
+    var unanswered = people.some(function(p){ return p.attending === null; });
+    if(unanswered){
+      formStatus.textContent = lang === 'en' ? 'Please respond for each person in your party.' : 'Por favor responda por cada persona de su grupo.';
       formStatus.style.color = '#006B75';
       return;
     }
 
     var data = {
-      name: name,
-      phone: phone,
-      attending: attending,
+      party: currentParty,
+      phone: currentPhone,
+      people: people.map(function(p){ return { name: p.name, attending: p.attending, dietary: p.diet }; }),
       transport: transport || '',
       song: (document.getElementById('rsvpSong').value || '').trim(),
-      dietary: dietaryCheck.checked ? (document.getElementById('dietaryText').value || '').trim() : '',
       wishes: (document.getElementById('rsvpWishes').value || '').trim(),
       honeymoon: (document.getElementById('rsvpHoneymoon').value || '').trim(),
       language: lang
@@ -876,9 +990,7 @@ textarea.form-input{min-height:4.5em;resize:vertical;}
     submitBtn.disabled = true;
     submitBtn.textContent = lang === 'en' ? 'Sending...' : 'Enviando...';
 
-    var webhookUrl = 'https://script.google.com/macros/s/AKfycbwosDysXnI_U2t6CGVG7LHLgtj9nTPcpcIeFIuA2fBV623mbdEFtG4FAJFTLe5vA7p3JQ/exec';
-
-    fetch(webhookUrl, {
+    fetch(lookupUrl, {
       method: 'POST',
       mode: 'no-cors',
       headers: {'Content-Type':'application/json'},
