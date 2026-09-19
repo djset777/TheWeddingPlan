@@ -382,6 +382,8 @@
   }
 
   // ---- Modal -------------------------------------------------------------
+  const PIP_KEY = s => STATUS_KEY[(s.status || '').toLowerCase().trim()] || 'not';
+
   function openModal(id) {
     const sub = findSub(id);
     if (!sub) return;
@@ -393,93 +395,76 @@
     const parent = parents[sub.parentId] || { title: sub.parentTitle, phase: sub.phase, domain: sub.domain, moment: sub.moment };
     const siblings = subtasks.filter(s => s.parentId === sub.parentId);
     const doneCount = siblings.filter(isDone).length;
+    const owners = ownersOf(sub);
 
-    // Everyone carrying any part of this deliverable, once each.
-    const crew = [];
-    siblings.forEach(s => ownersOf(s).forEach(n => { if (crew.indexOf(n) === -1) crew.push(n); }));
+    const context = [parent.title, cap(parent.phase), parent.domain, parent.moment]
+      .filter(Boolean).join(' · ');
 
+    // The other subtasks, each carrying its own status, timing and owner.
     const rows = siblings.map(s => {
       const done = isDone(s);
       const here = s.id === sub.id;
+      const late = isLate(s);
       return `
-        <div class="twp-sub${done ? ' is-done' : ''}${here ? ' is-here' : ''}">
+        <div class="twp-sub${here ? ' is-here' : ''}">
           <button type="button" class="twp-sub__box" data-toggle="${esc(s.id)}" aria-label="${done ? 'Mark not started' : 'Mark complete'}">${done ? '&#10003;' : ''}</button>
           <button type="button" class="twp-sub__title" data-jump="${esc(s.id)}">${esc(s.title)}</button>
-          <span class="twp-sub__who">${bubbles(ownersOf(s))}</span>
+          <span class="twp-sub__state">
+            <span class="twp-pip twp-pip--${PIP_KEY(s)}"></span>
+            <span class="twp-sub__tf${late ? ' is-late' : ''}">${esc(TF_LABEL[s.timeframe] || '')}</span>
+          </span>
+          <span class="twp-sub__mark" title="${esc(ownersOf(s).join(', ') || 'Unassigned')}">${ownersOf(s).length ? esc(initialsOf(ownersOf(s)[0])) : '&ndash;'}</span>
         </div>`;
     }).join('');
 
-    const owners = ownersOf(sub);
-
     body.innerHTML = `
-      <span class="twp-modal__eyebrow">Deliverable</span>
-      <h2 class="twp-modal__title" id="twp-modal-title">${esc(parent.title)}</h2>
-
-      <div class="twp-facts">
-        <div class="twp-fact">
-          <span class="twp-fact__label">Phase</span>
-          <span class="twp-fact__value twp-fact__value--${parent.phase}">${esc((parent.phase || 'discover').toUpperCase())}</span>
-        </div>
-        <div class="twp-fact">
-          <span class="twp-fact__label">Progress</span>
-          <span class="twp-fact__value">${doneCount} OF ${siblings.length}</span>
-        </div>
-        <div class="twp-fact">
-          <span class="twp-fact__label">Where</span>
-          <span class="twp-fact__value">${esc((parent.domain || '').toUpperCase())}${parent.moment ? ' · ' + esc(parent.moment.toUpperCase()) : ''}</span>
-        </div>
-        <div class="twp-fact">
-          <span class="twp-fact__label">With</span>
-          <span class="twp-fact__bubbles">${crew.length ? bubbles(crew) : '<span class="twp-fact__none">Unassigned</span>'}</span>
-        </div>
+      <div class="twp-panel__head">
+        <span class="twp-panel__eyebrow">${esc(parent.title)}</span>
+        <h2 class="twp-panel__title" id="twp-modal-title">${esc(sub.title)}</h2>
       </div>
 
-      <div class="twp-subs">
-        <span class="twp-subs__label">All ${siblings.length} subtask${siblings.length === 1 ? '' : 's'}</span>
-        ${rows}
-      </div>
-
-      <div class="twp-editor">
-        <h3 class="twp-editor__title">${esc(sub.title)}</h3>
-
-        <div class="twp-fields">
-          <label class="twp-field">
-            <span class="twp-field__label">Status</span>
-            <select data-edit="Status">
-              ${STATUSES.map(s => `<option${s.toLowerCase() === (sub.status || '').toLowerCase() ? ' selected' : ''}>${s}</option>`).join('')}
-            </select>
-          </label>
-          <label class="twp-field">
-            <span class="twp-field__label">Milestone</span>
-            <select data-edit="Timeframe">
-              ${TF_ORDER.map(c => `<option value="${c}"${c === sub.timeframe ? ' selected' : ''}>${TF_LABEL[c]}</option>`).join('')}
-            </select>
-          </label>
-          <div class="twp-field twp-field--wide">
-            <span class="twp-field__label">Owners</span>
-            <div class="twp-picker" data-people>
-              ${people.map(p => `
-                <button type="button" class="twp-bub twp-bub--pick${owners.indexOf(p.name) !== -1 ? ' is-on' : ''}" data-person="${esc(p.name)}" title="${esc(p.name)}" aria-pressed="${owners.indexOf(p.name) !== -1}">${esc(p.initials)}</button>`).join('')}
-            </div>
+      <div class="twp-fields">
+        <label class="twp-field">
+          <span class="twp-field__label">Status</span>
+          <select data-edit="Status">
+            ${STATUSES.map(s => `<option${s.toLowerCase() === (sub.status || '').toLowerCase() ? ' selected' : ''}>${s}</option>`).join('')}
+          </select>
+        </label>
+        <label class="twp-field">
+          <span class="twp-field__label">Milestone</span>
+          <select data-edit="Timeframe">
+            ${TF_ORDER.map(c => `<option value="${c}"${c === sub.timeframe ? ' selected' : ''}>${TF_LABEL[c]}</option>`).join('')}
+          </select>
+        </label>
+        <div class="twp-field">
+          <span class="twp-field__label">Owners</span>
+          <div class="twp-picker" data-people>
+            ${people.map(p => `
+              <button type="button" class="twp-mark twp-mark--pick${owners.indexOf(p.name) !== -1 ? ' is-on' : ''}" data-person="${esc(p.name)}" title="${esc(p.name)}" aria-pressed="${owners.indexOf(p.name) !== -1}">${esc(p.initials)}</button>`).join('')}
           </div>
-          <label class="twp-field twp-field--wide">
-            <span class="twp-field__label">Notes</span>
-            <textarea data-edit="Notes" placeholder="Vendor, price, link, anything worth keeping">${esc(sub.notes)}</textarea>
-          </label>
         </div>
+        <label class="twp-field twp-field--wide">
+          <span class="twp-field__label">Notes</span>
+          <textarea data-edit="Notes" placeholder="Vendor, price, link, anything worth keeping">${esc(sub.notes)}</textarea>
+        </label>
+      </div>
+
+      <div class="twp-siblings">
+        <div class="twp-siblings__head">
+          <span class="twp-siblings__context">${esc(context)}</span>
+          <span class="twp-siblings__count">${doneCount} of ${siblings.length} done</span>
+        </div>
+        ${rows}
       </div>`;
 
-    // Jump between subtasks without closing
     qa('[data-jump]', body).forEach(b => b.addEventListener('click', () => openModal(b.dataset.jump)));
 
-    // The checkbox is the fast path: tick it, it is complete
     qa('[data-toggle]', body).forEach(b => b.addEventListener('click', () => {
       const s = findSub(b.dataset.toggle);
       if (!s) return;
       commit(s, 'Status', isDone(s) ? 'Not Started' : 'Complete', (x, val) => { x.status = val; });
     }));
 
-    // Owners: each mark toggles, and the whole list is written back
     qa('[data-person]', body).forEach(b => b.addEventListener('click', () => {
       const cur = ownersOf(sub).slice();
       const name = b.dataset.person;
@@ -502,6 +487,10 @@
 
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
+  }
+
+  function cap(s) {
+    return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
   }
 
   function closeModal() {
