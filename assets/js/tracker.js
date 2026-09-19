@@ -229,7 +229,7 @@
           <span class="twp-filter__label">Due By</span>
           <select data-f="tf">
             <option value="">Anytime</option>
-            ${TF_ORDER.map(c => `<option value="${c}"${c === tfFilter ? ' selected' : ''}>${esc(shortDate(anchorDate(c)))}</option>`).join('')}
+            ${TF_ORDER.map(c => `<option value="${c}"${c === tfFilter ? ' selected' : ''}>${esc(TF_LABEL[c])}</option>`).join('')}
           </select>
         </label>
         <label class="twp-filter">
@@ -293,7 +293,7 @@
     const n = late ? daysLate(s.due) : 0;
     const dueText = late
       ? `<span class="twp-card__late-n">${n}</span> day${n === 1 ? '' : 's'} late`
-      : esc(shortDate(s.due));
+      : esc(TF_LABEL[s.timeframe] || '');
     return `
       <button type="button" class="twp-card${done ? ' twp-card--done' : ''}" data-open="${esc(s.id)}">
         <span class="twp-card__top">
