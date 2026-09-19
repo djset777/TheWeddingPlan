@@ -26,12 +26,13 @@
   ];
   const PAGE = 12;
 
-  // The sheet thinks in countdown milestones, so the picker does too.
-  const TF_LABEL = {
-    '22mo': '22 MO out', '16mo': '16 MO out', '12mo': '12 MO out',
-    '7mo': '7 MO out', '3mo': '3 MO out', '1mo': '1 MO out', '1wk': '1 WK out',
-  };
+  // The labels are the spreadsheet's own values, verbatim. The sheet is
+  // the source of truth for vocabulary as well as data.
   const TF_ORDER = ['22mo', '16mo', '12mo', '7mo', '3mo', '1mo', '1wk'];
+  const TF_LABEL = {
+    '22mo': '22MO', '16mo': '16MO', '12mo': '12MO',
+    '7mo': '7MO', '3mo': '3MO', '1mo': '1MO', '1wk': '1WK',
+  };
 
   // ---- Dates -------------------------------------------------------------
   function anchorDate(code) {
@@ -57,9 +58,12 @@
   let parents = {};
   let people = [];
   let domains = [];
+  let moments = [];
   let domainFilter = null;
+  let momentFilter = null;
+  let tfFilter = null;
+  let statusFilter = null;
   let ownerFilter = null;
-  let doneView = false;
   let openId = null;
   let shown = { discover: PAGE, decide: PAGE, execute: PAGE, done: 24 };
   let loadedAt = null;
@@ -145,14 +149,23 @@
       });
     });
 
-    // Chips are ordered by how much open work each domain is carrying.
-    domains = Object.keys(seen).sort((a, b) => openIn(b) - openIn(a));
+    domains = Object.keys(seen).sort();
+    const mSeen = {};
+    subtasks.forEach(s => { if (s.moment) mSeen[s.moment] = true; });
+    moments = Object.keys(mSeen).sort();
     loadedAt = new Date();
   }
+
+  // Status "Complete" is how you reach finished work — it is a value in
+  // the sheet, not a separate mode.
+  const doneView = () => (statusFilter || '').toLowerCase() === 'complete';
 
   function visible() {
     return subtasks.filter(s => {
       if (domainFilter && s.domain !== domainFilter) return false;
+      if (momentFilter && s.moment !== momentFilter) return false;
+      if (tfFilter && s.timeframe !== tfFilter) return false;
+      if (statusFilter && (s.status || '').toLowerCase() !== statusFilter.toLowerCase()) return false;
       if (ownerFilter && (s.assignees || []).indexOf(ownerFilter) === -1) return false;
       return true;
     });
@@ -182,49 +195,62 @@
   }
 
   // ---- Toolbar -----------------------------------------------------------
-  // A chip carries its own count. Amber means that domain is running late,
-  // so the filter row diagnoses rather than merely listing.
-  function chipCount(d) {
-    const late = lateIn(d);
-    return late
-      ? `<span class="twp-chip__n twp-chip__n--late">${late}</span>`
-      : `<span class="twp-chip__n">${openIn(d)}</span>`;
+  // One control per sheet column: Tag, Moment, Timeframe, Status,
+  // Assignee. Nothing the sheet captures is unreachable from the page.
+  function optionList(values, current, labeller) {
+    return ['<option value="">All</option>'].concat(values.map(v =>
+      `<option value="${esc(v)}"${v === current ? ' selected' : ''}>${esc(labeller ? labeller(v) : v)}</option>`
+    )).join('');
   }
 
   function renderToolbar() {
     const mount = q('[data-toolbar]');
     if (!mount) return;
 
-    const allOpen = subtasks.filter(s => !isDone(s)).length;
-    const allDone = subtasks.filter(isDone).length;
-
-    const chips = [
-      `<button type="button" class="twp-chip${(domainFilter === null && !doneView) ? ' is-on' : ''}" data-domain="">All work <span class="twp-chip__n twp-chip__n--all">${allOpen}</span></button>`
-    ].concat(domains.map(d =>
-      `<button type="button" class="twp-chip${domainFilter === d ? ' is-on' : ''}" data-domain="${esc(d)}">${esc(d)} ${chipCount(d)}</button>`
-    )).concat([
-      `<button type="button" class="twp-chip twp-chip--done${doneView ? ' is-on' : ''}" data-done>Done <span class="twp-chip__n twp-chip__n--done">${allDone}</span></button>`
-    ]).join('');
+    const late = visible().filter(isLate).length;
 
     mount.innerHTML = `
-      <div class="twp-chips">${chips}</div>
+      <div class="twp-filters">
+        <label class="twp-filter">
+          <span class="twp-filter__label">Tag</span>
+          <select data-f="tag">${optionList(domains, domainFilter)}</select>
+        </label>
+        <label class="twp-filter">
+          <span class="twp-filter__label">Moment</span>
+          <select data-f="moment">${optionList(moments, momentFilter)}</select>
+        </label>
+        <label class="twp-filter">
+          <span class="twp-filter__label">Timeframe</span>
+          <select data-f="tf">${optionList(TF_ORDER, tfFilter, c => TF_LABEL[c])}</select>
+        </label>
+        <label class="twp-filter">
+          <span class="twp-filter__label">Status</span>
+          <select data-f="status">${optionList(STATUSES, statusFilter)}</select>
+        </label>
+        <label class="twp-filter">
+          <span class="twp-filter__label">Assignee</span>
+          <select data-f="owner">
+            <option value="">Everyone</option>
+            ${people.map(p => `<option${p.name === ownerFilter ? ' selected' : ''}>${esc(p.name)}</option>`).join('')}
+          </select>
+        </label>
+      </div>
       <div class="twp-bar__right">
-        <select id="twp-owner" data-owner aria-label="Show one person's tasks">
-          <option value="">Everyone</option>
-          ${people.map(p => `<option${p.name === ownerFilter ? ' selected' : ''}>${esc(p.name)}</option>`).join('')}
-        </select>
+        ${late ? `<span class="twp-bar__over">${late} overdue</span>` : ''}
         <button type="button" class="twp-bar__sync" data-refresh>${loadedAt ? 'Synced ' + shortTime(loadedAt) : 'Refresh'}</button>
       </div>`;
 
-    qa('[data-domain]', mount).forEach(b => b.addEventListener('click', () => {
-      domainFilter = b.dataset.domain || null;
-      doneView = false;
+    qa('[data-f]', mount).forEach(sel => sel.addEventListener('change', e => {
+      const v = e.target.value || null;
+      const which = sel.dataset.f;
+      if (which === 'tag')    domainFilter = v;
+      if (which === 'moment') momentFilter = v;
+      if (which === 'tf')     tfFilter = v;
+      if (which === 'status') statusFilter = v;
+      if (which === 'owner')  ownerFilter = v;
       resetPaging(); render();
     }));
-    const dn = q('[data-done]', mount);
-    if (dn) dn.addEventListener('click', () => { doneView = !doneView; resetPaging(); render(); });
-    const ow = q('[data-owner]', mount);
-    if (ow) ow.addEventListener('change', e => { ownerFilter = e.target.value || null; resetPaging(); render(); });
+
     const rf = q('[data-refresh]', mount);
     if (rf) rf.addEventListener('click', async () => { rf.textContent = 'Refreshing…'; await load(); render(); });
   }
@@ -263,13 +289,13 @@
       <button type="button" class="twp-card${done ? ' twp-card--done' : ''}" data-open="${esc(s.id)}">
         <span class="twp-card__top">
           <span class="twp-card__head">
-            <span class="twp-card__parent">${esc(s.parentTitle)}</span>
+            <span class="twp-card__status twp-card__status--${sKey}">${esc(sLabel)}</span>
             <span class="twp-card__who${owned ? '' : ' twp-card__who--none'}">${esc(ownersLabel(s))}</span>
           </span>
           <span class="twp-card__title">${esc(s.title)}</span>
         </span>
         <span class="twp-card__foot">
-          <span class="twp-card__status twp-card__status--${sKey}">${esc(sLabel)}</span>
+          <span class="twp-card__parent">${esc(s.parentTitle)}</span>
           <span class="twp-card__due${late ? ' twp-card__due--late' : ''}">${dueText}</span>
         </span>
       </button>`;
@@ -299,7 +325,7 @@
     const list = visible();
 
     // Done view: one wide list, kept off the working board.
-    if (doneView) {
+    if (doneView()) {
       const items = sortCards(list.filter(isDone), true);
       const cut = items.slice(0, shown.done);
       const left = items.length - cut.length;
@@ -405,7 +431,6 @@
       </div>
 
       <div class="twp-editor">
-        <span class="twp-editor__eyebrow">Editing</span>
         <h3 class="twp-editor__title">${esc(sub.title)}</h3>
 
         <div class="twp-fields">

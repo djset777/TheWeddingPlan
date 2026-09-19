@@ -2825,31 +2825,32 @@
   gap: 6px;
   flex: 1 1 60%;
 }
-.twp-chip {
+/* One control per sheet column, on a single line. */
+.twp-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  flex: 1 1 auto;
+}
+.twp-filter { display: flex; flex-direction: column; gap: 3px; }
+.twp-filter__label {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+.twp-filter select {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
   color: var(--anchor);
   background: none;
-  border: 1px solid rgba(1, 96, 95, 0.4);
+  border: none;
+  border-bottom: 1px solid var(--anchor);
   border-radius: 0;
-  padding: 5px 10px;
-  cursor: pointer;
+  padding: 3px 0;
+  min-width: 96px;
 }
-.twp-chip.is-on {
-  background: var(--anchor);
-  border-color: var(--anchor);
-  color: var(--linen);
-}
-.twp-chip__n { color: rgba(1, 96, 95, 0.55); margin-left: 2px; }
-.twp-chip__n--late { color: #A9521A; }
-.twp-chip__n--done { color: var(--deepest); }
-.twp-chip.is-on .twp-chip__n,
-.twp-chip.is-on .twp-chip__n--late,
-.twp-chip.is-on .twp-chip__n--done { color: var(--accent); }
-.twp-chip--done { border-color: rgba(212, 175, 55, 0.7); }
-/* The person picker and the sync note stack, right-aligned, so they read
-   as one small block instead of a wide strip. */
+
 .twp-bar__right {
   margin-left: auto;
   display: flex;
@@ -2878,7 +2879,7 @@
 .twp-bar select {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step--1);
-  color: var(--ink);
+  color: var(--anchor);
   background: none;
   border: none;
   border-bottom: 1px solid var(--anchor);
@@ -2931,11 +2932,12 @@
 }
 
 /* --- Card ----------------------------------------------------------------
-   TYPE COLOR RULE — the card reads top to bottom in three colors:
-     gold  (--accent)  the deliverable label, set as an eyebrow
-     teal  (--anchor)  the task itself, at full strength
-     teal  (#10706D)   the person, one step lighter, in italic
+   TYPE COLOR RULE — one family, two depths, plus gold and amber:
+     gold  (--accent)  labels and eyebrows
+     teal  (--anchor)  every piece of content, at full strength
+     teal  (#10706D)   the second tier: people, notes, finished items
      amber (#A9521A)   flags attention: late, or stuck
+   Abyss does not appear as type on this page. Nothing reads black.
    Forest, navy and abyss are FILL colors only. They never appear as type.
    -------------------------------------------------------------------------- */
 .twp-card {
@@ -2960,15 +2962,17 @@
   justify-content: space-between;
   gap: 8px;
 }
-.twp-card__head .twp-card__parent {
+/* Status leads, the task follows, the deliverable it belongs to sits
+   underneath beside the date. The person stays top right. */
+.twp-card__head .twp-card__status { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.twp-card__head .twp-card__who { flex-shrink: 0; }
+.twp-card__foot .twp-card__parent {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-/* The person rides at the top, opposite the eyebrow; the status moves
-   down to the footer beside the date. */
-.twp-card__head .twp-card__who { flex-shrink: 0; }
+.twp-card__foot .twp-card__due { flex-shrink: 0; }
 /* Status sits opposite the eyebrow: same small-caps register, palette
    colors only. Amber is still reserved for something needing attention. */
 .twp-card__status {
@@ -3122,7 +3126,7 @@
 .twp-modal__notes {
   font-style: italic;
   font-size: var(--step--1);
-  color: var(--ink);
+  color: var(--anchor);
   border-left: 2px solid var(--accent);
   padding-left: 10px;
   margin: 0 0 var(--space-3);
@@ -3144,7 +3148,7 @@
 .twp-field input {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step--1);
-  color: var(--ink);
+  color: var(--anchor);
   background: none;
   border: none;
   border-bottom: 1px solid var(--anchor);
@@ -3154,7 +3158,7 @@
 .twp-field textarea {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step--1);
-  color: var(--ink);
+  color: var(--anchor);
   background: none;
   border: 1px solid var(--anchor);
   border-radius: 0;
@@ -3214,7 +3218,7 @@
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step-0);
   letter-spacing: 0.06em;
-  color: var(--ink);
+  color: var(--anchor);
 }
 .twp-fact__value--discover { color: var(--anchor); }
 .twp-fact__value--decide   { color: var(--deeper); }
@@ -3262,14 +3266,14 @@
 .twp-sub__title {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step-0);
-  color: var(--ink);
+  color: var(--anchor);
   background: none;
   border: none;
   padding: 0;
   text-align: left;
   cursor: pointer;
 }
-.twp-sub.is-done .twp-sub__title { color: var(--anchor); }
+.twp-sub.is-done .twp-sub__title { color: #10706D; }
 .twp-sub__title:hover { color: var(--accent); }
 .twp-sub__who { display: flex; }
 
@@ -3288,7 +3292,7 @@
 .twp-editor__title {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step-1);
-  color: var(--ink);
+  color: var(--anchor);
   border: none;
   padding: 0;
   margin: 2px 0 var(--space-3);
