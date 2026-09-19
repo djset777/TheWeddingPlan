@@ -3083,7 +3083,7 @@
 .twp-modal__panel {
   position: relative;
   z-index: 1;
-  width: min(560px, 100%);
+  width: min(640px, 100%);
   max-height: 84vh;
   overflow-y: auto;
   background: var(--bg);
@@ -3109,13 +3109,15 @@
   color: var(--accent);
 }
 .twp-modal__title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: var(--step-1);
-  color: var(--ink);
-  border: none;
-  padding: 0;
-  margin: 4px 0 var(--space-3);
-  line-height: 1.25;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 400;
+  font-size: var(--step-2);
+  letter-spacing: 0.03em;
+  color: var(--anchor);
+  border-bottom: 1px solid var(--accent);
+  padding: 0 0 var(--space-2);
+  margin: 4px 0 0;
+  line-height: 1.1;
 }
 .twp-modal__notes {
   font-style: italic;
@@ -3160,24 +3162,138 @@
   min-height: 74px;
   resize: vertical;
 }
-/* Owners: a plain checkbox list, because a task can belong to more than
-   one person and a single-select quietly said otherwise. */
-.twp-people {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 18px;
-  padding-top: 4px;
-}
-.twp-person {
-  display: flex;
+/* A person as a mark. Small enough to sit in a row, legible enough to
+   read at a glance, with the full name on the title attribute. */
+.twp-bub {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: var(--step--1);
-  color: var(--ink);
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  margin-left: -4px;
+}
+.twp-bub:first-child { margin-left: 0; }
+
+/* The picker: the same marks, but each one toggles. */
+.twp-picker { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 6px; }
+.twp-bub--pick {
+  margin-left: 0;
+  width: 34px;
+  height: 34px;
+  font-size: 13px;
+  background: none;
+  color: var(--anchor);
+  border: 1px solid rgba(1, 96, 95, 0.45);
   cursor: pointer;
 }
-.twp-person input { accent-color: var(--anchor); width: 15px; height: 15px; }
+.twp-bub--pick.is-on { background: var(--anchor); color: var(--accent); border-color: var(--anchor); }
+.twp-bub--pick:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Facts row: what is true about this deliverable, not editable here. */
+.twp-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+}
+.twp-fact { display: flex; flex-direction: column; gap: 6px; }
+.twp-fact__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+.twp-fact__value {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-0);
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.twp-fact__value--discover { color: var(--anchor); }
+.twp-fact__value--decide   { color: var(--deeper); }
+.twp-fact__value--execute  { color: var(--deepest); }
+.twp-fact__bubbles { display: flex; }
+.twp-fact__none {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+/* The subtask list: the whole deliverable, with the one you opened marked. */
+.twp-subs { padding: var(--space-3) 0 0; }
+.twp-subs__label {
+  display: block;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-bottom: var(--space-2);
+}
+.twp-sub {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 8px;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+.twp-sub.is-here { background: var(--linen-shade); }
+.twp-sub__box {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--anchor);
+  background: none;
+  color: var(--anchor);
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+}
+.twp-sub.is-done .twp-sub__box { background: var(--anchor); color: var(--linen); }
+.twp-sub__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step-0);
+  color: var(--ink);
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.twp-sub.is-done .twp-sub__title { color: var(--anchor); }
+.twp-sub__title:hover { color: var(--accent); }
+.twp-sub__who { display: flex; }
+
+/* The editor for the one subtask in hand. */
+.twp-editor {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(212, 175, 55, 0.35);
+}
+.twp-editor__eyebrow {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+.twp-editor__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step-1);
+  color: var(--ink);
+  border: none;
+  padding: 0;
+  margin: 2px 0 var(--space-3);
+  line-height: 1.25;
+}
 
 .twp-modal__meta {
   font-family: 'Cormorant SC', Georgia, serif;
