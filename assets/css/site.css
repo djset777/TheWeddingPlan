@@ -2949,13 +2949,13 @@
 .twp-head,
 .twp-row {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) 118px 88px 52px;
+  grid-template-columns: 26px minmax(0, 1fr) 124px 84px 54px;
   align-items: center;
   column-gap: 8px;
 }
 .twp-head {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
+  font-size: 10px;
   letter-spacing: 0.16em;
   color: var(--anchor);
   padding-bottom: 9px;
@@ -2974,11 +2974,13 @@
 }
 .twp-rail__line--filled { bottom: auto; background: var(--accent); }
 
-.twp-row { padding: 12px 0; font-size: var(--step--1); color: var(--ink); }
+.twp-row { padding: 9px 0; font-size: 15px; color: var(--ink); }
+.twp-row__title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .twp-row.is-open {
   border-top: 1px solid var(--anchor);
   border-bottom: 1px solid var(--anchor);
 }
+.twp-row.is-open .twp-row__note { display: none; }
 .twp-row__circle {
   position: relative;
   z-index: 1;
@@ -3000,23 +3002,30 @@
   color: inherit;
   cursor: pointer;
 }
-.twp-row__parent,
+.twp-row__parent {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--anchor);
+  margin-left: 10px;
+  white-space: nowrap;
+}
 .twp-row__note {
   display: block;
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  letter-spacing: 0.12em;
-  color: var(--anchor);
-  margin-top: 3px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink);
+  margin-top: 2px;
 }
-.twp-row__note { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; letter-spacing: 0; }
 .twp-row__owner,
 .twp-row__due {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  letter-spacing: 0.12em;
+  font-size: 10px;
+  letter-spacing: 0.1em;
   color: var(--anchor);
   text-transform: uppercase;
+  white-space: nowrap;
 }
 .twp-row__due { text-align: right; }
 .twp-row__due.is-overdue { color: #A33; }
@@ -3025,9 +3034,10 @@
 .twp-tag {
   display: inline-block;
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  letter-spacing: 0.14em;
-  padding: 4px 9px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 4px 8px;
+  white-space: nowrap;
 }
 .twp-tag--not      { border: 1px solid var(--anchor); color: var(--anchor); padding: 3px 9px; }
 .twp-tag--tbd      { border: 1px solid var(--anchor); color: var(--anchor); padding: 3px 9px; font-style: italic; }
