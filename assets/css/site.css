@@ -2746,8 +2746,11 @@
    Resolves conflicting .sidebar__mark / __brand / __countdown rules above.
    Uses even, token-based vertical rhythm so gaps read consistently.
    ========================================================================== */
+/* The space above "DJ Set" is set once, here: the sidebar's own top
+   padding is zeroed so this margin is the whole measurement. */
+.sidebar { padding-top: 0; }
 .sidebar__mark {
-  margin-top: var(--space-3);
+  margin-top: 33px;
   margin-bottom: 8px;   /* pocket above the date */
   line-height: 1.2;
   height: auto;
