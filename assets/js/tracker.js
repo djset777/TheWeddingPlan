@@ -279,32 +279,32 @@
   // ---- Cards -------------------------------------------------------------
   const STATUS_KEY = {
     'not started': 'not',
+    'tbd':         'tbd',
     'in progress': 'progress',
     'needs help':  'needs',
     'complete':    'done',
   };
 
   function cardHtml(s) {
-    const owned = ownersOf(s).length > 0;
     const sKey = STATUS_KEY[(s.status || '').toLowerCase().trim()] || 'not';
     const sLabel = s.status || 'Not Started';
     const late = isLate(s);
     const done = isDone(s);
-    const n = late ? daysLate(s.due) : 0;
-    const dueText = late
-      ? `<span class="twp-card__late-n">${n}</span> day${n === 1 ? '' : 's'} late`
-      : esc(TF_LABEL[s.timeframe] || '');
+    // Always the range, never a date and never a day count. Lateness is
+    // carried by the colour of the same words, so the pattern holds.
+    const dueText = esc(TF_LABEL[s.timeframe] || '');
     return `
       <button type="button" class="twp-card${done ? ' twp-card--done' : ''}" data-open="${esc(s.id)}">
-        <span class="twp-card__top">
-          <span class="twp-card__head">
-            <span class="twp-card__status twp-card__status--${sKey}">${esc(sLabel)}</span>
-            <span class="twp-card__who${owned ? '' : ' twp-card__who--none'}">${esc(ownersLabel(s))}</span>
-          </span>
-          <span class="twp-card__title">${esc(s.title)}</span>
-        </span>
-        <span class="twp-card__foot">
+        <span class="twp-card__head">
           <span class="twp-card__parent">${esc(s.parentTitle)}</span>
+          <span class="twp-card__mark" title="${esc(ownersOf(s).join(', ') || 'Unassigned')}">${ownersOf(s).length ? esc(initialsOf(ownersOf(s)[0])) : '&ndash;'}</span>
+        </span>
+        <span class="twp-card__title">${esc(s.title)}</span>
+        <span class="twp-card__foot">
+          <span class="twp-card__state">
+            <span class="twp-pip twp-pip--${sKey}"></span>
+            <span class="twp-card__status twp-card__status--${sKey}">${esc(sLabel)}</span>
+          </span>
           <span class="twp-card__due${late ? ' twp-card__due--late' : ''}">${dueText}</span>
         </span>
       </button>`;

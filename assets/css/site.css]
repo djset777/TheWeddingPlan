@@ -1,0 +1,3319 @@
+/* ==========================================================================
+   The Wedding Plan — Site
+   Sidebar layout + main content. Cards. Moment-zone header bars.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap');
+
+/* --- Layout: sidebar + content ------------------------------------------ */
+.layout {
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--anchor);
+  color: var(--linen);
+  padding: var(--space-2) var(--space-3);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.sidebar__brand {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: var(--step-4);
+  color: var(--accent);
+  letter-spacing: 0.03em;
+  text-align: center;
+  border: none;
+  display: block;
+  margin: 0 calc(-1 * var(--space-3)) 0;
+  padding: 0 var(--space-2);
+  line-height: 1;
+}
+.sidebar__brand:hover { color: var(--linen); }
+
+.sidebar__countdown {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-0);
+  letter-spacing: 0.03em;
+  text-align: center;
+  color: var(--accent);
+  margin-top: 0;
+  padding-top: 17px;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  margin-bottom: var(--space-3);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.sidebar__countdown .sep {
+  opacity: 0.4;
+  margin: 0 0.07em;
+}
+
+.sidebar__nav { margin-top: var(--space-2); }
+.sidebar__nav h3 {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  opacity: 0.65;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-1);
+  border: none;
+  padding: 0;
+}
+.sidebar__nav h3:first-child { margin-top: var(--space-2); }
+
+.sidebar__nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sidebar__nav a {
+  display: block;
+  padding: 0.35rem 0;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--linen);
+  border: none;
+  letter-spacing: 0.06em;
+  opacity: 0.82;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+.sidebar__nav a:hover,
+.sidebar__nav a[aria-current="page"] {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.sidebar__home {
+  padding: 0.35rem 0;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-0);
+  color: var(--linen);
+  border: none;
+  letter-spacing: 0.06em;
+  opacity: 0.82;
+  display: block;
+}
+.sidebar__home:hover,
+.sidebar__home[aria-current="page"] {
+  opacity: 1;
+  color: var(--accent);
+}
+
+/* --- Main content -------------------------------------------------------- */
+.content {
+  padding: var(--space-4);
+  background: var(--bg);
+  min-width: 0; /* prevents grid overflow */
+  max-width: 1100px;
+  font-size: var(--step--1);
+}
+.content__head {
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--accent);
+  margin-bottom: var(--space-4);
+}
+.content__eyebrow { display: block; margin-bottom: var(--space-1); }
+.content__title {
+  font-size: var(--step-3);
+  line-height: 1.1;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+.content__subtitle {
+  margin-top: var(--space-1);
+  font-size: var(--step-0);
+}
+
+.wrap--narrow {
+  max-width: none;
+}
+
+/* --- Card grid ----------------------------------------------------------- */
+.card-grid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.card-grid--small {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  margin-bottom: var(--space-3);
+}
+
+.section {
+  margin-bottom: var(--space-3);
+}
+
+.card {
+  background: #FFFFFF;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--linen-rule);
+  display: flex;
+  flex-direction: column;
+}
+.card__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  margin-bottom: var(--space-2);
+}
+.card__body { flex: 1; }
+
+/* Chart card: square-ish, donut center, legend below */
+.card--chart {
+  aspect-ratio: 1 / 1;
+  justify-content: space-between;
+}
+
+/* Tasks card: two donuts side by side */
+.card--tasks {
+  aspect-ratio: auto;
+}
+.tasks-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+.tasks-split__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.tasks-split__caption {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--accent);
+  font-size: var(--step--1);
+  text-align: center;
+  padding-top: var(--space-2);
+}
+
+/* Donut SVG */
+.donut {
+  display: block;
+  width: 55%;
+  max-width: 8rem;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+.donut__ring {
+  stroke: var(--linen-shade);
+}
+.donut__seg {
+  transition: stroke-dasharray 0.6s ease;
+}
+.donut__center {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 0.28rem;
+  fill: var(--anchor);
+  letter-spacing: 0.08em;
+  text-anchor: middle;
+}
+.donut__center-num {
+  font-size: 0.32rem;
+  fill: var(--accent);
+  text-anchor: middle;
+}
+
+/* Legend rows beneath a chart */
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: var(--space-2);
+}
+.legend__row {
+  display: grid;
+  grid-template-columns: 0.6rem 1fr auto;
+  gap: 0.5rem;
+  align-items: baseline;
+  font-size: var(--step--2);
+  font-family: 'Cormorant SC', Georgia, serif;
+  letter-spacing: 0.06em;
+}
+.legend__dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  align-self: center;
+}
+.legend__label { color: var(--ink); }
+.legend__value { color: var(--anchor); }
+
+/* Big-number card (kept in case) */
+.card__number {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-4);
+  color: var(--anchor);
+  line-height: 1;
+}
+.card__caption {
+  font-style: italic;
+  color: var(--accent);
+  font-size: var(--step--1);
+  margin-top: var(--space-1);
+}
+
+/* Countdown quad (kept for reuse) */
+.card__countdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  text-align: center;
+}
+.card__countdown-num {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-3);
+  color: var(--anchor);
+  line-height: 1;
+}
+.card__countdown-label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  margin-top: var(--space-1);
+}
+
+/* Palette circles */
+.palette-circles {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.palette-circle {
+  text-align: center;
+  min-width: 4rem;
+}
+.palette-circle__dot {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  margin: 0 auto var(--space-1);
+  border: 1px solid var(--linen-rule);
+}
+.palette-circle__name {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.10em;
+  color: var(--ink);
+}
+
+/* Progress row (kept) */
+.progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-block: var(--space-1);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  font-size: var(--step--1);
+}
+.progress:last-child { border-bottom: none; }
+.progress__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+.progress__value {
+  font-family: 'Cormorant SC', Georgia, serif;
+  color: var(--anchor);
+  letter-spacing: 0.08em;
+}
+
+/* Upcoming list */
+.upcoming { margin: 0; }
+.upcoming__row {
+  padding-block: var(--space-1);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: var(--space-3);
+  align-items: baseline;
+  font-size: var(--step--1);
+}
+.upcoming__row:last-child { border-bottom: none; }
+.upcoming__task {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: var(--ink);
+}
+.upcoming__who {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--anchor);
+  letter-spacing: 0.08em;
+}
+.upcoming__due {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+
+/* Recent feed */
+.feed { margin: 0; }
+.feed__item {
+  padding-block: var(--space-1);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: var(--space-2);
+  align-items: baseline;
+  font-size: var(--step--1);
+}
+.feed__item:last-child { border-bottom: none; }
+.feed__when {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+.feed__what { color: var(--ink); }
+
+/* --- Interior page: reused blocks (brief chapters, etc) ---------------- */
+.zone {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+.zone__bar {
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-0);
+  letter-spacing: 0.10em;
+}
+.zone__bar--gold   { background: var(--accent);  color: var(--abyss); }
+.zone__bar--teal   { background: var(--anchor);  color: var(--linen); }
+.zone__bar--forest { background: var(--deeper);  color: var(--linen); }
+.zone__significance {
+  padding: var(--space-2) 0 var(--space-2);
+  font-style: italic;
+  color: var(--accent);
+}
+
+.block {
+  padding-block: var(--space-3);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+}
+.block:last-child { border-bottom: none; }
+.block__body { max-width: var(--measure); }
+.block__body > * + * { margin-top: var(--space-2); }
+
+.dash-list { list-style: none; padding: 0; }
+.dash-list li {
+  padding-left: 1.6em;
+  position: relative;
+  margin-top: var(--space-2);
+}
+.dash-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+/* Swatch grid (for The Look palette section) */
+.swatches {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  margin-top: var(--space-3);
+}
+.swatch {
+  padding: var(--space-3);
+  min-height: 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--linen-rule);
+}
+.swatch__name {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-0);
+  letter-spacing: 0.06em;
+}
+.swatch__hex {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  letter-spacing: 0.10em;
+  opacity: 0.8;
+}
+.swatch--dark { color: var(--linen); }
+.swatch--light { color: var(--abyss); }
+
+/* --- Placeholders / loading states -------------------------------------- */
+.state {
+  padding: var(--space-3);
+  text-align: center;
+  font-style: italic;
+  color: var(--accent);
+  opacity: 0.8;
+  font-size: var(--step--1);
+}
+
+/* --- Mobile: sidebar becomes a top bar --------------------------------- */
+@media (max-width: 820px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    padding: var(--space-3);
+    border-right: none;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  }
+  .sidebar__brand { font-size: var(--step-3); }
+  .sidebar__nav h3 { margin-top: var(--space-3); }
+  .content { padding: var(--space-3); }
+}
+
+
+/* ==========================================================================
+   The Brief — page patterns
+   Added Aug 2026. Thread (vertical gold line + anchored sections),
+   anchored bullets, flora cards, tier bars, state markers, moment dividers.
+   ========================================================================== */
+
+/* --- State markers ------------------------------------------------------ */
+.tbc { color: var(--accent); }
+.confirmed { color: var(--deeper); font-weight: 500; }
+
+/* --- Thread: vertical gold line with anchored sections ----------------- */
+.thread {
+  position: relative;
+  padding-left: var(--space-4);
+  padding-top: var(--space-2);
+  padding-bottom: var(--space-4);
+}
+.thread::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--accent);
+}
+
+.thread__section {
+  position: relative;
+  margin-bottom: var(--space-5);
+  padding-top: var(--space-1);
+}
+.thread__section:last-child { margin-bottom: 0; }
+.thread__section::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-4));
+  top: var(--space-2);
+  margin-left: 1px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--accent);
+}
+
+.thread__title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: var(--step-1);
+  letter-spacing: 0.16em;
+  margin: 0 0 var(--space-1);
+  line-height: 1.2;
+  border: none;
+  padding: 0;
+}
+
+.thread__significance {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--ink);
+  margin: 0 0 var(--space-2);
+  font-size: var(--step-0);
+}
+
+/* Sub-section inside a thread section (used for The Parents, Bride, etc.) */
+.thread__sub {
+  margin: var(--space-3) 0;
+}
+.thread__sub-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--deeper);
+  font-size: var(--step-0);
+  margin: 0 0 var(--space-1);
+  border: none;
+  padding: 0;
+}
+
+/* Interactive thread entry (used on the brief index landing) */
+.thread__entry {
+  position: relative;
+  display: block;
+  margin-bottom: var(--space-4);
+  padding-top: var(--space-1);
+  border: none;
+}
+.thread__entry:last-child { margin-bottom: 0; }
+.thread__entry::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-4));
+  top: var(--space-2);
+  margin-left: 1px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--accent);
+  transition: transform 0.2s ease;
+}
+.thread__entry:hover::before { transform: scale(1.15); }
+.thread__entry-title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  color: var(--accent);
+  font-weight: 500;
+  font-size: var(--step-1);
+  letter-spacing: 0.16em;
+  margin: 0 0 var(--space-1);
+  line-height: 1.2;
+  transition: color 0.2s ease;
+}
+.thread__entry:hover .thread__entry-title { color: var(--anchor); }
+.thread__entry-subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--ink);
+  margin: 0;
+  font-size: var(--step-0);
+}
+
+/* --- Anchored bullet list (proper bullets, not em-dashes) --------------- */
+.bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.bullets li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.55rem;
+  line-height: 1.5;
+}
+.bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 0.75em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.bullets strong {
+  color: var(--deeper);
+  font-weight: 500;
+}
+
+/* --- Tier bar (like zone__bar but progressive colors for Flora tiers) --- */
+.tier-bar {
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-0);
+  letter-spacing: 0.16em;
+  margin-top: var(--space-5);
+  margin-bottom: 0;
+}
+.tier-bar--gold   { background: var(--accent); color: var(--abyss); }
+.tier-bar--teal   { background: var(--anchor); color: var(--linen); }
+.tier-bar--forest { background: var(--deeper); color: var(--linen); }
+.tier-bar__sep {
+  opacity: 0.5;
+  margin: 0 0.6rem;
+}
+
+/* --- Moment divider inside a zone (Cocktail Hour / The Reception) ------ */
+.zone-moment {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  color: var(--deeper);
+  font-size: var(--step--1);
+  letter-spacing: 0.22em;
+  margin: var(--space-4) 0 var(--space-2);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+}
+.zone-moment:first-of-type { margin-top: var(--space-2); }
+
+
+/* ==========================================================================
+   Home page (Aug 2026 rebuild)
+   Header w/ RSVP donut · timeline strip · category pies · task list
+   ========================================================================== */
+
+/* --- Home header --------------------------------------------------------- */
+.home-head {
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--accent);
+  margin-bottom: var(--space-3);
+}
+.home-head--no-border {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+/* When the header needs a right-side element (like the person bubble on The Team) */
+.home-head--split {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-4);
+  align-items: center;
+}
+.home-head__title .eyebrow {
+  display: block;
+  margin-bottom: var(--space-1);
+}
+.home-head__h1 {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-3);
+  color: var(--anchor);
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+.home-head__subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--accent);
+  font-size: var(--step-0);
+  margin-top: 4px;
+}
+
+/* --- RSVP donut widget (header, top-right) ------------------------------- */
+.home-head__rsvp {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.rsvp-donut {
+  width: 68px;
+  height: 68px;
+  display: block;
+}
+.rsvp-donut__ring {
+  stroke: rgba(212, 175, 55, 0.18);
+}
+.rsvp-donut__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 2.6px;
+  fill: var(--anchor);
+  letter-spacing: 0.08em;
+  text-anchor: middle;
+}
+.rsvp-donut__num {
+  font-size: 3.5px;
+  fill: var(--accent);
+  text-anchor: middle;
+}
+.rsvp-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+}
+.rsvp-legend__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.rsvp-legend__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.rsvp-legend__value {
+  min-width: 1.8em;
+}
+.rsvp-legend__label {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0;
+  font-size: var(--step--2);
+}
+/* Row colors — text matches its dot */
+.rsvp-legend__row--confirmed { color: var(--deeper); }
+.rsvp-legend__row--confirmed .rsvp-legend__dot { background: var(--deeper); }
+.rsvp-legend__row--declined  { color: var(--deepest); }
+.rsvp-legend__row--declined  .rsvp-legend__dot { background: var(--deepest); }
+.rsvp-legend__row--awaiting  { color: rgba(212, 175, 55, 0.75); }
+.rsvp-legend__row--awaiting  .rsvp-legend__dot { background: rgba(212, 175, 55, 0.4); }
+
+/* --- Timeline strip ------------------------------------------------------ */
+/* The horizontal gold line runs THROUGH the dot centers.
+   This line IS the divider between the header and the content below —
+   there is no separate border above or below the timeline. */
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--space-2) var(--space-2);
+  position: relative;
+  margin-bottom: var(--space-2);
+  background: transparent;
+}
+.timeline__line {
+  position: absolute;
+  top: calc(var(--space-2) + 8px);
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--accent);
+  z-index: 0;
+}
+.timeline__stop {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0 4px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.timeline__dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #E8D68C;
+  box-shadow: 0 0 0 4px var(--bg);
+  transition: transform 0.2s ease, background 0.2s ease;
+  margin: 4px 0;
+}
+.timeline__stop:hover .timeline__dot {
+  transform: scale(1.2);
+}
+.timeline__dot--past {
+  background: #E8D68C;
+}
+.timeline__dot--future {
+  background: #8FAAA9;
+}
+.timeline__dot--now {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 5.5px var(--accent);
+}
+.timeline__dot--active:not(.timeline__dot--now) {
+  width: 12px;
+  height: 12px;
+  margin: 2px 0;
+  background: var(--anchor);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 5.5px var(--anchor);
+}
+.timeline__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--ink);
+  opacity: 0.4;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.timeline__label.is-active {
+  opacity: 1;
+  color: var(--anchor);
+  font-size: var(--step--1);
+  letter-spacing: 0.14em;
+}
+.timeline__label em {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  color: var(--accent);
+  margin-top: 2px;
+  letter-spacing: 0;
+}
+
+/* --- Assignee columns ---------------------------------------------------- */
+.assignees-card {
+  background: #FFFFFF;
+  padding: var(--space-3) var(--space-4);
+  border-radius: 8px;
+  border: 1px solid var(--linen-rule);
+  margin-bottom: var(--space-3);
+}
+.assignees-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--linen-rule);
+}
+.assignees-card__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--accent);
+  letter-spacing: 0.14em;
+}
+.assignees-card__meta {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  color: var(--accent);
+}
+
+.assignees {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 6px;
+  align-items: end;
+}
+.assignee-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  min-width: 0;
+}
+.assignee-col__count {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-1);
+  color: var(--anchor);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.assignee-col__bubble {
+  min-width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.04em;
+  padding: 0 5px;
+}
+.assignee-col__name {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--ink);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.assignee-col--idle {
+  opacity: 0.3;
+}
+
+@media (max-width: 900px) {
+  .assignees {
+    grid-template-columns: repeat(6, 1fr);
+    row-gap: var(--space-3);
+  }
+}
+@media (max-width: 480px) {
+  .assignees {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* --- Task list card ------------------------------------------------------ */
+.tasklist-card {
+  background: #FFFFFF;
+  padding: var(--space-3) var(--space-4);
+  border-radius: 8px;
+  border: 1px solid var(--linen-rule);
+}
+.tasklist-card__meta-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  margin-bottom: var(--space-3);
+}
+.tasklist-card__meta {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  color: var(--accent);
+}
+
+/* --- Kanban board ------------------------------------------------------- */
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.kanban__col { min-width: 0; }
+.kanban__head {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  padding-bottom: 6px;
+  border-bottom: 2px solid;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.kanban__head--needs   { color: #B85C1E;             border-color: #B85C1E; }
+.kanban__head--progress{ color: var(--anchor);       border-color: var(--anchor); }
+.kanban__head--not     { color: rgba(12, 52, 61, 0.5); border-color: rgba(212, 175, 55, 0.4); }
+.kanban__head--done    { color: rgba(1, 68, 33, 0.65); border-color: rgba(1, 68, 33, 0.3); }
+.kanban__count {
+  opacity: 0.6;
+  margin-left: 4px;
+}
+.kanban__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.kanban__empty {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  color: rgba(12, 52, 61, 0.3);
+  padding: 6px 4px;
+}
+
+/* Task card inside a kanban column */
+.kcard {
+  padding: 8px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease;
+  border: 1px solid transparent;
+}
+.kcard:hover {
+  transform: translateY(-1px);
+  border-color: rgba(212, 175, 55, 0.35);
+}
+.kcard--needs    { background: rgba(184, 92, 30, 0.06); }
+.kcard--progress { background: rgba(1, 96, 95, 0.06); }
+.kcard--not      { background: rgba(212, 175, 55, 0.05); }
+.kcard--done     { background: rgba(1, 68, 33, 0.05); opacity: 0.6; }
+.kcard__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.kcard--done .kcard__title {
+  text-decoration: line-through;
+  text-decoration-color: rgba(12, 52, 61, 0.3);
+}
+.kcard__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+.kcard__parent {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--anchor);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+.kcard__assignees {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.kcard__bubble {
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  letter-spacing: 0.04em;
+}
+
+/* --- Modal (parent task detail) ---------------------------------------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal[hidden] { display: none; }
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 52, 61, 0.5);
+  animation: modal-fade-in 0.2s ease;
+}
+.modal__panel {
+  position: relative;
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 28px 32px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  animation: modal-slide-in 0.2s ease;
+}
+.modal__close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 22px;
+  color: rgba(12, 52, 61, 0.4);
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+.modal__close:hover { color: var(--anchor); }
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modal-slide-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Modal body sections */
+.mtask__eyebrow {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  margin-bottom: 6px;
+}
+.mtask__title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-2);
+  color: var(--anchor);
+  letter-spacing: 0.04em;
+  margin: 0 0 10px;
+  line-height: 1.15;
+}
+.mtask__notes {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  color: rgba(12, 52, 61, 0.7);
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+.mtask__meta {
+  display: flex;
+  gap: 24px;
+  padding: 12px 0;
+  border-top: 0.5px solid rgba(212, 175, 55, 0.3);
+  border-bottom: 0.5px solid rgba(212, 175, 55, 0.3);
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.mtask__meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mtask__meta-label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 9px;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+}
+.mtask__meta-value {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  letter-spacing: 0.06em;
+}
+.mtask__meta-value--discover { color: var(--accent); }
+.mtask__meta-value--decide   { color: var(--anchor); }
+.mtask__meta-value--execute  { color: var(--deeper); }
+.mtask__meta-value--done     { color: var(--deepest); }
+.mtask__meta-value--needs    { color: #B85C1E; }
+.mtask__meta-value--progress { color: var(--anchor); }
+.mtask__meta-value--not      { color: rgba(12, 52, 61, 0.6); }
+.mtask__meta-value--complete { color: var(--deeper); }
+
+.mtask__section-title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 9px;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  margin-bottom: 10px;
+}
+.mtask__subs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.msub {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-size: var(--step--1);
+}
+.msub--selected {
+  background: rgba(212, 175, 55, 0.13);
+  font-weight: 500;
+}
+.msub--done {
+  opacity: 0.5;
+}
+.msub--done .msub__title {
+  text-decoration: line-through;
+  text-decoration-color: rgba(12, 52, 61, 0.3);
+}
+.msub__box {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1.5px solid rgba(212, 175, 55, 0.6);
+}
+.msub__box--progress {
+  border-color: var(--anchor);
+  background: rgba(1, 96, 95, 0.15);
+}
+.msub__box--needs {
+  border-color: #B85C1E;
+}
+.msub__box--done {
+  background: var(--deeper);
+  border-color: var(--deeper);
+  color: var(--linen);
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.msub__title {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.msub__bubbles {
+  display: flex;
+  gap: 2px;
+}
+
+/* Responsive kanban */
+@media (max-width: 820px) {
+  .kanban {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+@media (max-width: 480px) {
+  .kanban {
+    grid-template-columns: 1fr;
+  }
+  .modal__panel {
+    padding: 20px 22px;
+  }
+}
+
+/* ==========================================================================
+   The Team page
+   ========================================================================== */
+
+.team-hint {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--accent);
+  font-size: var(--step--1);
+  margin: 0 0 var(--space-3);
+  text-align: center;
+}
+
+.team-roster {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.team-bubble {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-2) var(--space-1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  border-radius: 6px;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.team-bubble:hover {
+  background: rgba(212, 175, 55, 0.08);
+  transform: translateY(-2px);
+}
+.team-bubble:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.team-bubble__circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.04em;
+  transition: transform 0.15s ease;
+}
+.team-bubble:hover .team-bubble__circle {
+  transform: scale(1.05);
+}
+.team-bubble__name {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--anchor);
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+}
+.team-bubble__role {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  color: var(--accent);
+  line-height: 1.25;
+}
+
+/* Personal view -------------------------------------------------------- */
+.team-back {
+  display: inline-block;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  border: none;
+  padding: 0;
+  margin-bottom: var(--space-3);
+  transition: color 0.15s ease;
+}
+.team-back:hover {
+  color: var(--anchor);
+}
+
+.team-person-bubble {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.team-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.team-section-label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--accent);
+  letter-spacing: 0.14em;
+}
+
+/* Person task cards (planning/done lists) */
+.ptask-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ptask {
+  padding: 10px 12px;
+  border-radius: 3px;
+  background: rgba(212, 175, 55, 0.05);
+}
+.ptask--progress { background: rgba(1, 96, 95, 0.06); }
+.ptask--needs    { background: rgba(184, 92, 30, 0.06); }
+.ptask--done     { background: rgba(1, 68, 33, 0.05); opacity: 0.7; }
+.ptask__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+.ptask--done .ptask__title {
+  text-decoration: line-through;
+  text-decoration-color: rgba(12, 52, 61, 0.3);
+}
+.ptask__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.ptask__parent {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--anchor);
+  letter-spacing: 0.08em;
+}
+.ptask__status {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.1em;
+}
+.ptask__status--not      { color: rgba(12, 52, 61, 0.5); }
+.ptask__status--needs    { color: #B85C1E; }
+.ptask__status--progress { color: var(--anchor); }
+.ptask__status--done     { color: var(--deeper); }
+
+/* Activity feed rows -------------------------------------------------- */
+.feed-row {
+  display: grid;
+  grid-template-columns: 24px 90px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 0.5px solid rgba(212, 175, 55, 0.2);
+  font-size: var(--step--1);
+}
+.feed-row:last-child { border-bottom: none; }
+.feed-row__bubble {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.04em;
+}
+.feed-row__who {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--anchor);
+  letter-spacing: 0.08em;
+}
+.feed-row__what {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: var(--ink);
+}
+.feed-row__when {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--accent);
+  font-size: var(--step--2);
+}
+
+/* Responsive: team page */
+@media (max-width: 900px) {
+  .team-roster {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .team-cols {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .team-roster {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .feed-row {
+    grid-template-columns: 24px 1fr;
+    row-gap: 4px;
+  }
+  .feed-row__what,
+  .feed-row__when {
+    grid-column: 2;
+  }
+}
+
+/* --- Sidebar RSVP block ------------------------------------------------- */
+.sidebar__rsvp {
+  padding: 0 0 var(--space-3);
+  margin-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+}
+.sidebar__rsvp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.sidebar__rsvp-label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  color: var(--accent);
+  letter-spacing: 0.18em;
+}
+.sidebar__rsvp-frac {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--linen);
+  letter-spacing: 0.04em;
+}
+.sidebar__rsvp-bar {
+  height: 5px;
+  background: rgba(212, 175, 55, 0.18);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.sidebar__rsvp-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.6s ease;
+}
+.sidebar__rsvp-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.08em;
+}
+.sidebar__rsvp-confirmed {
+  color: var(--accent);
+}
+.sidebar__rsvp-awaiting {
+  color: rgba(242, 237, 230, 0.6);
+}
+
+/* --- Timeline read-only marker (personal view) ------------------------ */
+.timeline--static .timeline__stop {
+  cursor: default;
+}
+.timeline--static .timeline__stop:hover .timeline__dot {
+  transform: none;
+}
+.timeline__dot--has-work {
+  background: var(--anchor);
+}
+/* Count number next to timeline label */
+.timeline__label em:last-child {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  color: var(--anchor);
+  margin-top: 2px;
+  letter-spacing: 0;
+}
+
+/* --- Personal kanban: overdue markers --------------------------------- */
+.kcard--overdue {
+  border-left: 3px solid #B85C1E;
+  padding-left: 8px;
+}
+.kcard__overdue {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: var(--step--2);
+  color: #B85C1E;
+  flex-shrink: 0;
+}
+
+/* --- Split kanban: 4 separate cards, one per status column ----------- */
+.kanban--split {
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.kanban__card {
+  padding: var(--space-3);
+  min-height: 120px;
+}
+.kanban__card .kanban__head {
+  margin-bottom: 12px;
+}
+/* Standalone meta row (used when meta sits above a set of cards, not inside one) */
+.tasklist-card__meta-row--standalone {
+  padding: 0 var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+
+/* ==========================================================================
+   Day-Of timeline (static) — dashboard/day-of.html
+   Phase bars (gold/teal/forest) + vertical timeline of moments
+   ========================================================================== */
+
+.timeline {
+  position: relative;
+  margin: var(--space-2) 0 var(--space-5);
+  padding-left: var(--space-4);
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: rgba(212, 175, 55, 0.35);
+}
+.timeline__item {
+  position: relative;
+  margin-bottom: var(--space-4);
+}
+.timeline__item:last-child { margin-bottom: 0; }
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-4) + 1px);
+  top: 7px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg);
+}
+.timeline__time {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step--1);
+  letter-spacing: 0.14em;
+  color: var(--anchor);
+}
+.timeline__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-1);
+  color: var(--deeper);
+  margin: 2px 0 4px;
+}
+.timeline__note {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step-0);
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+
+/* --- Day-of phase bars (teal / green / navy) --------------------------- */
+.phase-bar {
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-0);
+  letter-spacing: 0.16em;
+  margin-top: var(--space-5);
+  margin-bottom: 0;
+  color: var(--linen);
+}
+.phase-bar--teal  { background: var(--anchor); }
+.phase-bar--green { background: var(--deeper); }
+.phase-bar--navy  { background: var(--deepest); }
+.phase-bar__sep {
+  opacity: 0.5;
+  margin: 0 0.6rem;
+}
+
+
+/* ==========================================================================
+   Flora — Direction A grid (compact cards + Plant/Styled toggle)
+   Replaces the old full-width .flora-card row layout
+   ========================================================================== */
+.flora-intro {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: var(--step-0);
+  color: var(--ink);
+  margin-bottom: var(--space-4);
+}
+.flora-intro__sub {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: var(--step--1);
+  font-style: normal;
+  color: rgba(12, 52, 61, 0.65);
+}
+
+.flora-bar {
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-0);
+  letter-spacing: 0.14em;
+  color: var(--linen);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+.flora-bar:first-of-type { margin-top: 0; }
+.flora-bar--teal  { background: var(--anchor); }
+.flora-bar--green { background: var(--deeper); }
+.flora-bar--navy  { background: var(--deepest); }
+.flora-bar__sep   { opacity: 0.5; margin: 0 0.5rem; }
+
+.flora-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.flora-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--linen-rule);
+  overflow: hidden;
+}
+.flora-card__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 140px;
+  background: var(--linen-shade);
+  overflow: hidden;
+}
+.flora-card__img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.flora-card__img.is-on { opacity: 1; }
+
+.flora-card__toggle {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  background: var(--deeper);
+  border-radius: 999px;
+  padding: 2px;
+  box-shadow: 0 1px 6px rgba(12, 52, 61, 0.35);
+}
+.flora-card__tab {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  background: transparent;
+  border: none;
+  padding: 3px 9px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.flora-card__tab.is-on {
+  background: var(--accent);
+  color: var(--abyss);
+}
+
+.flora-card__meta {
+  padding: 11px var(--space-2) 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1px;
+}
+.flora-card__name {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-0);
+  letter-spacing: 0.03em;
+  color: var(--anchor);
+  line-height: 1.2;
+}
+.flora-card__latin {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  color: var(--accent);
+  margin-left: 0;
+  line-height: 1.2;
+}
+.flora-card__desc {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--ink);
+  line-height: 1.35;
+  margin-top: 3px;
+}
+
+@media (max-width: 1100px) {
+  .flora-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 820px) {
+  .flora-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .flora-grid { grid-template-columns: 1fr; }
+}
+
+/* Styled slot awaiting a photo — clearly marked so it's easy to spot/swap */
+.flora-card__img--tocome {
+  background: var(--linen-shade);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flora-card__img--tocome::after {
+  content: "Plant photo to come";
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  color: rgba(12, 52, 61, 0.45);
+}
+
+/* Flora page: tighten the gap between the header rule and the first tier bar */
+.content__head + .flora-bar { margin-top: 0; }
+
+/* Meta row with a label on the left and meta on the right (Team feed header) */
+.tasklist-card__meta-row--split {
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+/* --- The Dress ----------------------------------------------------------- */
+/* A gated brief page: image-beside-bullets reference cards + casual password
+   overlay. New classes only; palette + type tokens are the existing system. */
+
+.dress-section { margin-top: var(--space-4); }
+
+.dress-card {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) 1fr;
+  gap: var(--space-4);
+  align-items: start;
+  margin-bottom: var(--space-5);
+}
+.dress-card--flip .dress-card__media { order: 2; }
+.dress-card--flip .dress-card__body  { order: 1; }
+
+.dress-card__media {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--linen-shade);
+}
+.dress-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.dress-card__body { padding-top: var(--space-1); }
+.dress-card__name {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 400;
+  font-size: var(--step-2);
+  color: var(--deeper);
+  margin: 0;
+}
+.dress-card__ref {
+  display: inline-block;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: var(--step--1);
+  color: var(--accent);
+  margin: var(--space-1) 0 var(--space-2);
+}
+.dress-card__ref:hover { text-decoration: underline; }
+
+.dress-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.dress-card__list li {
+  position: relative;
+  padding-left: 1.4em;
+  margin-bottom: var(--space-1);
+  color: var(--ink);
+}
+.dress-card__list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+.dress-signoff {
+  border-top: 1px solid var(--accent);
+  padding-top: var(--space-3);
+  margin-top: var(--space-4);
+  text-align: center;
+}
+.dress-signoff .subtitle { margin-top: var(--space-1); }
+
+/* Casual gate overlay */
+.dress-locked { filter: blur(14px); pointer-events: none; user-select: none; }
+
+.dress-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--linen);
+  padding: var(--space-3);
+}
+.dress-gate__card {
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+}
+.dress-gate__title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 400;
+  font-size: var(--step-4);
+  color: var(--anchor);
+  border: none;
+  padding: 0;
+  margin: var(--space-1) 0 var(--space-1);
+}
+.dress-gate__note {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: var(--space-3);
+}
+.dress-gate__input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step-0);
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--accent);
+  outline: none;
+  margin-bottom: var(--space-2);
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+.dress-gate__input:focus { border-color: var(--anchor); }
+.dress-gate__btn {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: var(--step--1);
+  color: var(--linen);
+  background: var(--anchor);
+  border: none;
+  cursor: pointer;
+}
+.dress-gate__btn:hover { background: var(--deeper); }
+.dress-gate__error {
+  color: #B85C1E;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 640px) {
+  .dress-card,
+  .dress-card--flip {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+  .dress-card--flip .dress-card__media { order: 1; }
+  .dress-card--flip .dress-card__body  { order: 2; }
+  .dress-card__media { max-width: 300px; }
+}
+
+/* --- Home: view tabs + grouped task rows --------------------------------- */
+/* Three-view switcher (Timeline / Person / Category) and the checkable
+   list rows they render. New classes only; palette + type tokens are existing. */
+
+.viewtabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--linen-rule);
+  margin-bottom: var(--space-3);
+}
+.viewtab {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  font-size: var(--step--1);
+  color: rgba(12, 52, 61, 0.5);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: -1px;
+  cursor: pointer;
+}
+.viewtab:hover { color: var(--anchor); }
+.viewtab.is-active {
+  color: var(--anchor);
+  border-bottom-color: var(--accent);
+}
+
+.group-section { margin-bottom: var(--space-4); }
+.group-section__head {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  font-size: var(--step-0);
+  color: var(--deeper);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--linen-rule);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.group-section__count {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  color: rgba(12, 52, 61, 0.45);
+  letter-spacing: normal;
+}
+.group-section__list { display: flex; flex-direction: column; }
+
+.grouprow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--linen-rule);
+  cursor: pointer;
+}
+.grouprow:last-child { border-bottom: none; }
+.grouprow:hover { background: var(--linen-shade); }
+.grouprow__title {
+  flex: 1 1 auto;
+  color: var(--ink);
+  font-size: var(--step-0);
+}
+.grouprow--done .grouprow__title {
+  color: rgba(12, 52, 61, 0.45);
+  text-decoration: line-through;
+}
+.grouprow__parent {
+  flex: 0 0 auto;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  color: rgba(12, 52, 61, 0.5);
+  letter-spacing: 0.04em;
+}
+.grouprow__bubbles { flex: 0 0 auto; display: flex; gap: 2px; }
+.grouprow--overdue .grouprow__title { color: #B85C1E; }
+
+@media (max-width: 640px) {
+  .grouprow__parent { display: none; }
+  .viewtab { padding: var(--space-2); }
+}
+
+/* --- Refinements: countdown spacing · dress image sizing · page footer ---- */
+
+/* Countdown — spread across the full sidebar width, matching the 7·7·27 brand
+   above it, instead of bunching in the middle. */
+.sidebar__countdown {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  padding-left: 0;
+  padding-right: 0;
+}
+.sidebar__countdown .sep {
+  opacity: 0.35;
+  margin: 0;
+}
+
+/* Dress cards — lock every image to the same box so all seven render
+   identically regardless of source ratio. */
+.dress-card,
+.dress-card--flip {
+  grid-template-columns: 300px 1fr;
+  align-items: start;
+}
+.dress-card__media {
+  width: 300px;
+  height: 400px;
+  aspect-ratio: auto;
+  overflow: hidden;
+  background: var(--linen-shade);
+}
+.dress-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .dress-card,
+  .dress-card--flip { grid-template-columns: 1fr; }
+  .dress-card__media { width: 100%; max-width: 300px; height: 400px; }
+}
+
+/* Page footer — the couple mark, closing each page. */
+.page-footer {
+  border-top: 1px solid var(--accent);
+  margin-top: var(--space-5);
+  padding-top: var(--space-3);
+  text-align: center;
+}
+.page-footer__name {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  font-size: var(--step--1);
+  color: var(--accent);
+  display: block;
+}
+.page-footer__line {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: rgba(12, 52, 61, 0.55);
+  margin-top: var(--space-1);
+  font-size: var(--step--1);
+}
+
+/* --- Dress cards: single consistent column ------------------------------- */
+/* Every gown sits in the same left column with its details beside it.
+   Alternating layout removed — the zigzag broke the vertical rhythm. */
+.dress-card {
+  grid-template-columns: 300px 1fr;
+  gap: var(--space-4);
+  align-items: start;
+  margin-bottom: var(--space-5);
+}
+.dress-card__body { padding-top: 0; }
+.dress-card__name { margin-top: 0; line-height: 1.1; }
+
+/* --- Final refinements --------------------------------------------------- */
+
+/* Gate subtitle — gold, matching the two-register rule (italic Garamond
+   grounds emotionally; gold is its colour). */
+.dress-gate__note { color: var(--accent); }
+
+/* Dress images at 77% — smaller, less dominant on the page. */
+.dress-card {
+  grid-template-columns: 231px 1fr;
+}
+.dress-card__media {
+  width: 231px;
+  height: 308px;
+}
+@media (max-width: 640px) {
+  .dress-card { grid-template-columns: 1fr; }
+  .dress-card__media { width: 100%; max-width: 231px; height: 308px; }
+}
+
+/* Countdown — deliberate spacing instead of leaked letter-spacing.
+   Number sits tight to its unit letter; the · separators carry the gaps. */
+.sidebar__countdown {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  letter-spacing: 0;
+  gap: 0;
+}
+.sidebar__countdown .sep {
+  opacity: 0.35;
+  margin: 0 0.45em;
+}
+
+/* --- The Look: refinements ----------------------------------------------- */
+/* Navy zone bar — completes the teal → forest → navy sequence already used
+   on The Flora (tiers) and The Day (phases). */
+.zone__bar--navy { background: var(--deepest); color: var(--linen); }
+
+/* Palette grid — 3 across gives two clean rows of three instead of
+   orphaning Abyss and Linen on a second row. */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* Linen swatch reads as an empty box against the linen page background —
+   give it a definite edge so it registers as a deliberate colour. */
+.swatch--light[style*="F2EDE6"] {
+  border: 1px solid rgba(12, 52, 61, 0.25);
+}
+
+@media (max-width: 640px) {
+  .swatches { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --- The Look: palette with roles + mood board --------------------------- */
+
+/* Swatches now carry role and use, so they need more vertical room. */
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.swatch {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-3);
+}
+.swatch__role {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  opacity: 0.7;
+  margin-bottom: var(--space-1);
+}
+.swatch__use {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  opacity: 0.85;
+  margin-top: auto;
+  line-height: 1.35;
+}
+.swatch--primary { grid-row: span 1; }
+
+/* Mood board — a woven grid, not a uniform matrix. Two tiles break the
+   rhythm so it reads as a board rather than a spreadsheet. */
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 150px;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.mood-tile {
+  margin: 0;
+  overflow: hidden;
+  background: var(--linen-shade);
+}
+.mood-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.mood-tile--tall { grid-row: span 2; }
+.mood-tile--wide { grid-column: span 2; }
+
+@media (max-width: 640px) {
+  .swatches { grid-template-columns: repeat(2, 1fr); }
+  .mood-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 120px; }
+  .mood-tile--wide { grid-column: span 2; }
+}
+
+/* Footer is now a single gold line + the couple mark on every page. */
+.page-footer {
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+/* --- Home: timeline line alignment + status filters ---------------------- */
+/* Two legacy .timeline rules collide: one adds padding-left, but
+   .timeline__line sits at left:0, so the rule overhangs as a stray mark.
+   Inset the line to match the padding. */
+.timeline__line {
+  left: var(--space-4);
+  right: var(--space-2);
+}
+
+/* Status filters — replaces the cramped meta text in the corner.
+   Each is a clickable chip that filters the list. */
+.statusbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+.statuschip {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  font-size: var(--step--1);
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--linen-rule);
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45em;
+}
+.statuschip:hover { border-color: var(--accent); }
+.statuschip.is-active {
+  border-color: var(--anchor);
+  background: var(--linen-shade);
+  color: var(--anchor);
+}
+.statuschip__n {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  opacity: 0.7;
+}
+.statuschip--needs.is-active { border-color: #B85C1E; color: #B85C1E; }
+.statuschip--done.is-active  { border-color: var(--deeper); color: var(--deeper); }
+
+/* --- Home: status filter chips ------------------------------------------ */
+/* Replaces the cramped meta line. Each status is a tappable filter. */
+.statusfilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+}
+.statchip {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  font-size: var(--step--1);
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--linen-rule);
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45em;
+}
+.statchip:hover { border-color: var(--accent); }
+.statchip.is-active {
+  background: var(--anchor);
+  border-color: var(--anchor);
+  color: var(--linen);
+}
+.statchip__n {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  opacity: 0.7;
+}
+.statchip--needs.is-active    { background: #B85C1E; border-color: #B85C1E; }
+.statchip--done.is-active     { background: var(--deeper); border-color: var(--deeper); }
+
+/* Remove the stray vertical rule left of the timeline. */
+.timeline::before { display: none; }
+.timeline { padding-left: var(--space-2); }
+.timeline__line { left: var(--space-2); }
+
+/* --- Mood board: categorised grids --------------------------------------- */
+/* Six labelled sections, each a tight uniform grid — browsable, and a vendor
+   can go straight to the category they care about. */
+.moodboard { margin-top: var(--space-3); }
+
+.mb-cat { margin-bottom: var(--space-5); }
+.mb-cat__title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  font-size: var(--step-0);
+  color: var(--accent);
+  text-align: center;
+  margin: 0 0 var(--space-1);
+  border: none;
+  padding: 0;
+}
+.mb-cat__note {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  color: rgba(12, 52, 61, 0.6);
+  text-align: center;
+  margin: 0 0 var(--space-2);
+}
+.mb-cat__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-1);
+}
+.mb-tile {
+  margin: 0;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--linen-shade);
+}
+.mb-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .mb-cat__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --- The Look: single mood grid ------------------------------------------ */
+/* One ungrouped grid — general direction, not a catalogue. */
+.mood-plain {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+}
+@media (max-width: 640px) {
+  .mood-plain { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --- Cleanup: fewer rules, less boxing ----------------------------------- */
+/* One rule under the page header. The tab strip and filters are a single
+   control cluster — no dividers between them. */
+.viewtabs {
+  border-bottom: none;
+  margin-bottom: var(--space-2);
+  gap: var(--space-3);
+}
+.viewtab {
+  padding: var(--space-1) 0;
+  border-bottom: 2px solid transparent;
+}
+.viewtab.is-active { border-bottom-color: var(--accent); }
+
+/* Filter chips: text + count, no boxes. Active one is simply gold. */
+.statusfilters {
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding-bottom: 0;
+}
+.statchip {
+  border: none;
+  padding: var(--space-1) 0;
+  color: rgba(12, 52, 61, 0.55);
+  background: none;
+}
+.statchip:hover { color: var(--anchor); border: none; }
+.statchip.is-active,
+.statchip--needs.is-active,
+.statchip--done.is-active {
+  background: none;
+  border: none;
+  color: var(--accent);
+}
+.statchip__n { opacity: 0.55; }
+
+/* Section headings on The Look — no filled bars. */
+.section-head {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-1);
+  color: var(--anchor);
+  border: none;
+  padding: 0;
+  margin: var(--space-5) 0 var(--space-1);
+}
+.zone:first-of-type .section-head { margin-top: var(--space-3); }
+
+/* --- Cleanup: one rule, not four ----------------------------------------- */
+/* The tabs carry the only rule in this stack — gold, matching the header.
+   Filters sit beneath as plain text, so they read as a filter row rather
+   than five buttons competing with the tabs. */
+.viewtabs {
+  border-bottom: none;
+  margin-bottom: var(--space-2);
+}
+.viewtab {
+  border-bottom: 2px solid transparent;
+  padding: var(--space-1) var(--space-3) var(--space-2) 0;
+  margin-right: var(--space-3);
+}
+.viewtab.is-active { border-bottom-color: var(--accent); }
+
+.statusfilters {
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--accent);
+}
+.statchip {
+  border: none;
+  padding: 0;
+  color: rgba(12, 52, 61, 0.5);
+}
+.statchip:hover { color: var(--anchor); }
+.statchip.is-active,
+.statchip--needs.is-active,
+.statchip--done.is-active {
+  background: transparent;
+  color: var(--anchor);
+  border: none;
+}
+.statchip.is-active .statchip__n { color: var(--accent); opacity: 1; }
+
+/* Task rows: lighten the dividers so they recede. */
+.grouprow { border-bottom: 1px solid rgba(12, 52, 61, 0.07); }
+
+/* Mood tiles: smaller — these are reference, not feature images. */
+.mood-plain { grid-template-columns: repeat(4, 1fr); gap: var(--space-1); }
+.mood-plain .mb-tile { aspect-ratio: 1 / 1; }
+
+/* Section titles on The Look — sized as real headers, not body text. */
+.zone__bar {
+  font-size: var(--step-2);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  padding: var(--space-3);
+}
+
+/* Section titles on The Look — real header weight, with the gold rule
+   that marks section starts elsewhere on the site. */
+.section-head {
+  font-size: var(--step-3);
+  letter-spacing: 0.06em;
+  color: var(--anchor);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: var(--space-2);
+  margin: var(--space-5) 0 var(--space-3);
+}
+.content__head + .wrap--narrow .zone:first-child .section-head { margin-top: 0; }
+
+/* Swatches match the mood tiles exactly — same square, same gap, same columns. */
+.swatches {
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-1);
+}
+.swatch {
+  min-height: 0;
+  aspect-ratio: 1 / 1;
+  padding: var(--space-3);
+  justify-content: flex-start;
+}
+.swatch__use { margin-top: auto; }
+
+/* Palette boxes keep the grid width but sit shorter than the photo tiles. */
+.swatch { aspect-ratio: 4 / 3; }
+
+/* --- Type corrections ---------------------------------------------------- */
+/* Sizes and tracking set explicitly per role. */
+
+.content__title,
+.home-head__h1 { font-size: 44px; }
+
+.section-head { font-size: 33px; }
+
+.dress-card__name { font-size: 33px; }
+
+.page-footer__name {
+  font-size: 17px;
+  letter-spacing: 2.12px;
+}
+
+.flora-bar { letter-spacing: 2.48px; }
+.phase-bar { letter-spacing: 2.48px; }
+
+/* --- Titles: larger and lighter; sections bracketed by two rules --------- */
+/* Page title — big and light, as in the document. */
+.content__title,
+.home-head__h1 {
+  font-size: 64px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  line-height: 1.05;
+}
+
+/* Section heads — lighter, and framed by rules above AND below so they
+   read differently from the page title's single rule. */
+.section-head {
+  font-weight: 300;
+  border-top: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+  padding: var(--space-2) 0;
+  margin: var(--space-5) 0 var(--space-3);
+}
+
+/* The section's top rule now closes the header, so the header drops its own. */
+.content__head { border-bottom: none; padding-bottom: var(--space-2); }
+
+/* --- The Look: title anchored to 7·7·27, sections as gold labels --------- */
+/* Title matches the brand mark's size and weight so the two feel linked. */
+.content__title,
+.home-head__h1 {
+  font-size: 60.6px;
+  font-weight: 300;
+  letter-spacing: 1.82px;
+}
+
+/* Section heads drop to the eyebrow register — a label on the content,
+   not a smaller version of the page title. No rule needed. */
+.section-head {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 3.4px;
+  color: var(--accent);
+  border: none;
+  padding: 0;
+  margin: var(--space-5) 0 var(--space-2);
+}
+
+/* Restore the gold rule under the page header (an earlier override removed it). */
+.content__head,
+.home-head {
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+/* Section heads — 27px, light weight, gold. */
+.section-head {
+  font-size: 27px;
+  font-weight: 300;
+  letter-spacing: 3.4px;
+}
+
+/* DJ mark above the date — aligns the sidebar with the content eyebrow. */
+.sidebar__mark {
+  display: block;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: 15.2px;
+  letter-spacing: 2.13px;
+  color: var(--accent);
+  text-align: center;
+  text-decoration: none;
+  margin-top: 22px;
+  margin-bottom: var(--space-1);
+}
+.sidebar__mark:hover { color: var(--linen); }
+
+/* Countdown — parallel totals with pipe separators. */
+.sidebar__countdown {
+  display: block;
+  text-align: center;
+  white-space: normal;
+  letter-spacing: 0.06em;
+  font-size: 15.2px;
+  line-height: 1.7;
+}
+.sidebar__countdown .sep {
+  opacity: 0.4;
+  margin: 0 0.5em;
+}
+
+/* Countdown fits one line in the sidebar width. */
+.sidebar__countdown {
+  font-size: 11.5px;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+.sidebar__countdown .sep { margin: 0 0.35em; }
+
+/* No underline on the sidebar marks, hover included. */
+.sidebar__mark,
+.sidebar__mark:hover,
+.sidebar__brand,
+.sidebar__brand:hover { text-decoration: none; }
+.sidebar__mark { border: none; }
+/* Match the content column's rhythm: even gap below the date. */
+.sidebar__brand { margin-bottom: 6.4px; }
+.sidebar__countdown { margin-top: 0; padding-top: 0; }
+
+/* One gold rule per page header. Controls carry no rules — the active tab
+   reads as active through colour and weight alone. */
+.viewtabs { border-bottom: none; }
+.viewtab.is-active {
+  border-bottom-color: transparent;
+  color: var(--anchor);
+  font-weight: 500;
+}
+.statusfilters {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: var(--space-4);
+}
+
+/* Filters read as pills so they don't look like the tabs above them. */
+.statchip {
+  font-size: 13px;
+  letter-spacing: 1.4px;
+  padding: 4px 12px;
+  border: 1px solid var(--linen-rule);
+  color: rgba(12, 52, 61, 0.5);
+}
+.statchip:hover { border-color: var(--accent); color: var(--anchor); }
+.statchip.is-active,
+.statchip--needs.is-active,
+.statchip--done.is-active {
+  background: var(--anchor);
+  border-color: var(--anchor);
+  color: var(--linen);
+}
+.statchip.is-active .statchip__n { color: var(--linen); opacity: .7; }
+.viewtab { font-size: 19px; }
+/* TBD — parked, pending a decision. */
+.statchip--tbd.is-active { background: rgba(12,52,61,.45); border-color: rgba(12,52,61,.45); }
+.msub__box--tbd { border-style: dashed; }
+.grouprow--tbd .grouprow__title { color: rgba(12,52,61,.5); font-style: italic; }
+
+/* --- Sidebar / content row alignment ------------------------------------- */
+/* Three rows must line up across both columns:
+   1  DJ Set        ↔ eyebrow
+   2  7 · 7 · 27    ↔ page title
+   3  countdown     ↔ subtitle
+   The date is sized to fit one line, with an explicit line-height matching
+   the title's box so row 3 starts at the same y on both sides. */
+.sidebar__mark {
+  margin-top: 22px;
+  margin-bottom: 0;
+  line-height: 23.56px;
+  height: 24px;
+}
+.sidebar__brand {
+  display: block;
+  white-space: nowrap;
+  font-size: 50px;
+  line-height: 64px;
+  height: 64px;
+  margin: 6px 0 4px;
+  padding: 0;
+}
+.sidebar__countdown {
+  margin-top: 0;
+  padding-top: 0;
+}
+/* Same gap under the title on every page, so row 3 lands identically. */
+.content__subtitle,
+.home-head__subtitle { margin-top: 4px; }
+
+/* ==========================================================================
+   Sidebar header spacing — consolidated override
+   Resolves conflicting .sidebar__mark / __brand / __countdown rules above.
+   Uses even, token-based vertical rhythm so gaps read consistently.
+   ========================================================================== */
+/* The space above "DJ Set" is set once, here: the sidebar's own top
+   padding is zeroed so this margin is the whole measurement. */
+.sidebar { padding-top: 0; }
+.sidebar__mark {
+  margin-top: 33px;
+  margin-bottom: 8px;   /* pocket above the date */
+  line-height: 1.2;
+  height: auto;
+}
+.sidebar__brand {
+  margin: 0 0 8px;      /* pocket below the date */
+  padding: 0;
+  line-height: 1;
+}
+.sidebar__countdown {
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.sidebar__rsvp {
+  padding: 0 0 var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+
+/* ==========================================================================
+   Tracker v6 (Sept 2026) — the phase board
+   Four columns: Discover (gold) · Decide (teal) · Execute (forest) · Done (navy).
+   Gold means open/unconfirmed everywhere, as it does on the brief pages.
+   Navy carries Complete. Amber (#A9521A) is the only alert color.
+   ========================================================================== */
+
+/* --- Masthead ------------------------------------------------------------ */
+/* Matches .content__head and .home-head exactly: same paddings, same gold
+   rule. The masthead on this page is not a special case. */
+.twp-head {
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--accent);
+  margin-bottom: var(--space-4);
+}
+.twp-head .eyebrow { display: block; margin-bottom: 8px; }  /* pocket above the title */
+.twp-head__h1 {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 400;
+  font-size: var(--step-3);
+  line-height: 1.04;
+  letter-spacing: 0.02em;
+  color: var(--anchor);
+  border: none;
+  padding: 0;
+  margin: 0 0 8px;      /* pocket below the title */
+}
+.twp-head__sub { font-size: var(--step-0); margin: 0; }
+
+.twp-flash {
+  background: #A9521A;
+  color: var(--linen);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  padding: 9px 13px;
+  margin-bottom: var(--space-3);
+}
+
+/* --- Toolbar ------------------------------------------------------------- */
+.twp-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.twp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1 1 60%;
+}
+/* One control per sheet column, on a single line. */
+.twp-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  flex: 1 1 auto;
+}
+.twp-filter { display: flex; flex-direction: column; gap: 3px; }
+.twp-filter__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+.twp-filter select {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--anchor);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--anchor);
+  border-radius: 0;
+  padding: 3px 0;
+  min-width: 96px;
+}
+
+.twp-bar__right {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+.twp-bar__right select { text-align: right; }
+.twp-bar__over {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  color: #A9521A;
+}
+.twp-bar__sync {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  color: var(--anchor);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.twp-bar__sync:hover { color: var(--accent); }
+.twp-bar select {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--anchor);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--anchor);
+  border-radius: 0;
+  padding: 4px 0;
+}
+
+/* --- Board --------------------------------------------------------------- */
+.twp-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  align-items: start;
+}
+/* Done is an outcome, not a phase — it gets its own wide view, reached
+   from the filter row, so the board stays live work only. */
+.twp-board--done { display: block; }
+.twp-board--message { display: block; }
+.twp-donegrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: 10px;
+}
+.twp-col { display: flex; flex-direction: column; gap: 12px; }
+.twp-col__bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  letter-spacing: 0.16em;
+}
+/* The three bars deepen as the work advances: teal, then forest, then
+   navy. Gold is an accent elsewhere on the page, not a column. Done,
+   which lives off the board, takes abyss. */
+.twp-col__bar--discover { background: var(--anchor);  color: var(--linen); }
+.twp-col__bar--decide   { background: var(--deeper);  color: var(--linen); }
+.twp-col__bar--execute  { background: var(--deepest); color: var(--linen); }
+.twp-col__bar--done     { background: var(--abyss);   color: var(--linen); }
+/* The count is the same color as the label beside it. One color per bar. */
+.twp-col__n {
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  color: inherit;
+}
+
+/* --- Card ----------------------------------------------------------------
+   TYPE COLOR RULE — one family, two depths, plus gold and amber:
+     gold  (--accent)  labels and eyebrows
+     teal  (--anchor)  every piece of content, at full strength
+     teal  (#10706D)   the second tier: people, notes, finished items
+     amber (#A9521A)   flags attention: late, or stuck
+   Abyss does not appear as type on this page. Nothing reads black.
+   Forest, navy and abyss are FILL colors only. They never appear as type.
+   -------------------------------------------------------------------------- */
+.twp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 0;
+  padding: 4px 0 12px;
+  cursor: pointer;
+  font: inherit;
+}
+.twp-card:hover .twp-card__title { color: var(--accent); }
+.twp-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.twp-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+/* The deliverable: a gold eyebrow, sitting above the task it names. */
+.twp-card__parent {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* A person as a mark, full names on the title attribute. */
+.twp-card__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 11px;
+}
+
+.twp-card__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step-0);
+  line-height: 1.2;
+  color: var(--anchor);
+}
+
+.twp-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+/* Pip and word travel together: status is one unit, flush left. */
+.twp-card__state { display: flex; align-items: center; gap: 7px; }
+.twp-pip {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.twp-pip--not      { border: 1.5px solid var(--anchor); }
+.twp-pip--tbd      { border: 1.5px solid rgba(1, 96, 95, 0.35); }
+.twp-pip--progress { background: var(--anchor); }
+.twp-pip--needs    { background: #A9521A; }
+.twp-pip--done     { background: #10706D; }
+
+.twp-card__status {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.twp-card__status--not      { color: rgba(1, 96, 95, 0.55); }
+.twp-card__status--tbd      { color: rgba(1, 96, 95, 0.35); }
+.twp-card__status--progress { color: var(--anchor); }
+.twp-card__status--needs    { color: #A9521A; }
+.twp-card__status--done     { color: #10706D; }
+
+/* Timing is always the range. Lateness is the same words in amber. */
+.twp-card__due {
+  flex-shrink: 0;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--anchor);
+  white-space: nowrap;
+}
+.twp-card__due--late { color: #A9521A; }
+
+.twp-col__empty,
+.twp-empty {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  color: var(--anchor);
+  padding: var(--space-2) 0;
+}
+.twp-col__more {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  color: var(--anchor);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--accent);
+  padding: 6px 0;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+/* --- Modal --------------------------------------------------------------- */
+.twp-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+}
+.twp-modal[hidden] { display: none; }
+.twp-modal__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 52, 61, 0.55);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.twp-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(640px, 100%);
+  max-height: 84vh;
+  overflow-y: auto;
+  background: var(--bg);
+  border-top: 3px solid var(--accent);
+  padding: var(--space-4);
+}
+.twp-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-0);
+  color: var(--anchor);
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+}
+.twp-modal__eyebrow {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+.twp-modal__title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 400;
+  font-size: var(--step-2);
+  letter-spacing: 0.03em;
+  color: var(--anchor);
+  border-bottom: 1px solid var(--accent);
+  padding: 0 0 var(--space-2);
+  margin: 4px 0 0;
+  line-height: 1.1;
+}
+.twp-modal__notes {
+  font-style: italic;
+  font-size: var(--step--1);
+  color: var(--anchor);
+  border-left: 2px solid var(--accent);
+  padding-left: 10px;
+  margin: 0 0 var(--space-3);
+}
+.twp-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+}
+.twp-field { display: flex; flex-direction: column; gap: 3px; }
+.twp-field--wide { flex: 1 1 100%; }
+.twp-field__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  color: var(--anchor);
+}
+.twp-field select,
+.twp-field input {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--anchor);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--anchor);
+  border-radius: 0;
+  padding: 4px 0;
+}
+.twp-field textarea {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step--1);
+  color: var(--anchor);
+  background: none;
+  border: 1px solid var(--anchor);
+  border-radius: 0;
+  padding: 8px;
+  min-height: 74px;
+  resize: vertical;
+}
+/* A person as a mark. Small enough to sit in a row, legible enough to
+   read at a glance, with the full name on the title attribute. */
+.twp-bub {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  margin-left: -4px;
+}
+.twp-bub:first-child { margin-left: 0; }
+
+/* The picker: the same marks, but each one toggles. */
+.twp-picker { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 6px; }
+.twp-bub--pick {
+  margin-left: 0;
+  width: 34px;
+  height: 34px;
+  font-size: 13px;
+  background: none;
+  color: var(--anchor);
+  border: 1px solid rgba(1, 96, 95, 0.45);
+  cursor: pointer;
+}
+.twp-bub--pick.is-on { background: var(--anchor); color: var(--accent); border-color: var(--anchor); }
+.twp-bub--pick:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Facts row: what is true about this deliverable, not editable here. */
+.twp-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+}
+.twp-fact { display: flex; flex-direction: column; gap: 6px; }
+.twp-fact__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+.twp-fact__value {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-0);
+  letter-spacing: 0.06em;
+  color: var(--anchor);
+}
+.twp-fact__value--discover { color: var(--anchor); }
+.twp-fact__value--decide   { color: var(--deeper); }
+.twp-fact__value--execute  { color: var(--deepest); }
+.twp-fact__bubbles { display: flex; }
+.twp-fact__none {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+/* The subtask list: the whole deliverable, with the one you opened marked. */
+.twp-subs { padding: var(--space-3) 0 0; }
+.twp-subs__label {
+  display: block;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-bottom: var(--space-2);
+}
+.twp-sub {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 8px;
+  margin-left: -8px;
+  margin-right: -8px;
+}
+.twp-sub.is-here { background: var(--linen-shade); }
+.twp-sub__box {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid var(--anchor);
+  background: none;
+  color: var(--anchor);
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+}
+.twp-sub.is-done .twp-sub__box { background: var(--anchor); color: var(--linen); }
+.twp-sub__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step-0);
+  color: var(--anchor);
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.twp-sub.is-done .twp-sub__title { color: #10706D; }
+.twp-sub__title:hover { color: var(--accent); }
+.twp-sub__who { display: flex; }
+
+/* The editor for the one subtask in hand. */
+.twp-editor {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(212, 175, 55, 0.35);
+}
+.twp-editor__eyebrow {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+.twp-editor__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step-1);
+  color: var(--anchor);
+  border: none;
+  padding: 0;
+  margin: 2px 0 var(--space-3);
+  line-height: 1.25;
+}
+
+.twp-modal__meta {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  color: var(--anchor);
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+/* --- Narrow -------------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .twp-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .twp-donegrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .twp-board { grid-template-columns: 1fr; }
+  .twp-donegrid { grid-template-columns: 1fr; }
+  .twp-col__bar { position: static; }
+  .twp-bar__right { margin-left: 0; width: 100%; }
+  .twp-card { padding: 14px; }
+}
