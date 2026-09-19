@@ -2845,12 +2845,16 @@
 .twp-chip.is-on .twp-chip__n--late,
 .twp-chip.is-on .twp-chip__n--done { color: var(--accent); }
 .twp-chip--done { border-color: rgba(212, 175, 55, 0.7); }
+/* The person picker and the sync note stack, right-aligned, so they read
+   as one small block instead of a wide strip. */
 .twp-bar__right {
   margin-left: auto;
   display: flex;
-  align-items: center;
-  gap: var(--space-3);
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
 }
+.twp-bar__right select { text-align: right; }
 .twp-bar__over {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
@@ -2933,7 +2937,7 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 10px;
-  min-height: 96px;
+  min-height: 104px;
   width: 100%;
   text-align: left;
   background: var(--linen-shade);
@@ -2944,6 +2948,31 @@
   font: inherit;
 }
 .twp-card__top { display: flex; flex-direction: column; gap: 4px; }
+.twp-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.twp-card__head .twp-card__parent {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Status sits opposite the eyebrow: same small-caps register, palette
+   colors only. Amber is still reserved for something needing attention. */
+.twp-card__status {
+  flex-shrink: 0;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+.twp-card__status--not      { color: rgba(1, 96, 95, 0.55); }
+.twp-card__status--progress { color: var(--anchor); }
+.twp-card__status--needs    { color: #A9521A; }
+.twp-card__status--done     { color: var(--deepest); }
 .twp-card:hover { outline: 1px solid var(--accent); }
 /* Done cards recede through contrast on the same two colors, never a
    third hue: the ground lightens, the type stays put. */

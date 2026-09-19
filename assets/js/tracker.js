@@ -168,8 +168,7 @@
     mount.innerHTML = `
       <div class="twp-chips">${chips}</div>
       <div class="twp-bar__right">
-        <label class="twp-field__label" for="twp-owner">Showing</label>
-        <select id="twp-owner" data-owner>
+        <select id="twp-owner" data-owner aria-label="Show one person's tasks">
           <option value="">Everyone</option>
           ${people.map(n => `<option${n === ownerFilter ? ' selected' : ''}>${esc(n)}</option>`).join('')}
         </select>
@@ -202,8 +201,17 @@
   }
 
   // ---- Cards -------------------------------------------------------------
+  const STATUS_KEY = {
+    'not started': 'not',
+    'in progress': 'progress',
+    'needs help':  'needs',
+    'complete':    'done',
+  };
+
   function cardHtml(s) {
     const owner = ownerOf(s);
+    const sKey = STATUS_KEY[(s.status || '').toLowerCase().trim()] || 'not';
+    const sLabel = s.status || 'Not Started';
     const late = isLate(s);
     const done = isDone(s);
     const n = late ? daysLate(s.due) : 0;
@@ -213,11 +221,14 @@
     return `
       <button type="button" class="twp-card${done ? ' twp-card--done' : ''}" data-open="${esc(s.id)}">
         <span class="twp-card__top">
-          <span class="twp-card__parent">${esc(s.parentTitle)}</span>
+          <span class="twp-card__head">
+            <span class="twp-card__parent">${esc(s.parentTitle)}</span>
+            <span class="twp-card__status twp-card__status--${sKey}">${esc(sLabel)}</span>
+          </span>
           <span class="twp-card__title">${esc(s.title)}</span>
         </span>
         <span class="twp-card__foot">
-          <span class="twp-card__who${owner ? '' : ' twp-card__who--none'}">${esc(owner || 'Unassigned')}${needsHelp(s) ? ' <em class="twp-card__help">needs help</em>' : ''}</span>
+          <span class="twp-card__who${owner ? '' : ' twp-card__who--none'}">${esc(owner || 'Unassigned')}</span>
           <span class="twp-card__due${late ? ' twp-card__due--late' : ''}">${dueText}</span>
         </span>
       </button>`;
