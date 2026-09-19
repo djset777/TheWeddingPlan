@@ -1,10 +1,10 @@
 /* ==========================================================================
-   The Wedding Plan — Tracker (v4)
-   Left: a permanent index of deliverables, grouped by category.
-   Right: the queue by default, or one deliverable's subtasks.
-   A subtask row is read-only until clicked; clicking expands it in place
-   with editable owner, status, timeframe and notes. The circle toggles
-   complete without opening anything. Every write posts to the sheet.
+   The Wedding Plan — Tracker (v5)
+   Left: permanent index of deliverables. Right: the queue, or one deliverable.
+   Rules: hierarchy from typeface, size and case — never opacity.
+   Two text colors at full strength (teal for structure, abyss for content).
+   Color only where it carries state: gold = complete/progress,
+   teal fill = active, red = needs help / overdue.
    ========================================================================== */
 
 (async function tracker() {
@@ -17,7 +17,6 @@
 
   const WEDDING = new Date('2027-07-07T16:00:00-04:00');
 
-  // ------------- Load -------------
   const [people, timeframes, tasks] = await Promise.all([
     window.TWP.api.get('people'),
     window.TWP.api.get('timeframes'),
@@ -27,12 +26,18 @@
   const PEOPLE = (people || []).map(p => p.name);
   const TFS = (timeframes || []);
   const NOW_TF = TFS.find(t => t.isNow) || TFS[0] || { code: '', order: 0, label: '' };
+  const TF_MONTHS = { '22mo': 22, '16mo': 16, '12mo': 12, '7mo': 7, '3mo': 3, '1mo': 1, '1wk': 0.25 };
 
   const STATUSES = ['Not Started', 'In Progress', 'Needs Help', 'TBD', 'Complete'];
   const isDone = s => (s || '').toLowerCase().trim() === 'complete';
-
-  // Months each timeframe sits before the wedding — used to place NOW truthfully.
-  const TF_MONTHS = { '22mo': 22, '16mo': 16, '12mo': 12, '7mo': 7, '3mo': 3, '1mo': 1, '1wk': 0.25 };
+  const statusKey = s => {
+    const v = (s || '').toLowerCase().trim();
+    if (v === 'complete') return 'done';
+    if (v === 'in progress') return 'progress';
+    if (v === 'needs help') return 'needs';
+    if (v === 'tbd' || v === 'on hold' || v === 'paused') return 'tbd';
+    return 'not';
+  };
 
   const deliverables = (tasks || []).map(p => ({
     id: p.id,
@@ -40,7 +45,6 @@
     category: (p.tags && p.tags.length) ? p.tags[0] : (p.moment || 'Uncategorized'),
     moment: p.moment || '',
     timeframe: p.timeframe,
-    phase: p.phase || '',
     notes: p.notes || '',
     assignees: p.assignees || [],
     subtasks: (p.subtasks || []).map(s => ({
@@ -57,41 +61,26 @@
   const byId = {};
   deliverables.forEach(d => { byId[d.id] = d; });
 
-  function tfLabel(code) {
-    const tf = TFS.find(t => t.code === code);
-    return tf ? tf.label : String(code || '').toUpperCase();
-  }
-  function tfOrder(code) {
-    const tf = TFS.find(t => t.code === code);
-    return tf ? tf.order : 99;
-  }
-  function isOverdue(sub) {
-    return tfOrder(sub.timeframe) < NOW_TF.order && !isDone(sub.status);
-  }
+  const tfLabel = code => { const t = TFS.find(x => x.code === code); return t ? t.label : String(code || '').toUpperCase(); };
+  const tfOrder = code => { const t = TFS.find(x => x.code === code); return t ? t.order : 99; };
+  const isOverdue = s => tfOrder(s.timeframe) < NOW_TF.order && !isDone(s.status);
   function progressOf(d) {
     const total = d.subtasks.length;
     const done = d.subtasks.filter(s => isDone(s.status)).length;
     return { done, total, pct: total ? (done / total) * 100 : 0 };
   }
 
-  // ------------- State -------------
-  let selectedId = null;    // null = the queue
-  let openTaskId = null;    // the one expanded subtask
+  let selectedId = null;
+  let openTaskId = null;
   let personFilter = null;
   let search = '';
-
-  // ------------- Saving -------------
-  async function save(sub, field, value) {
-    const res = await window.TWP.api.post({ action: 'updateTask', id: sub.id, field: field, value: value });
-    return res && res.ok !== false;
-  }
 
   async function commit(sub, field, value, apply) {
     const before = JSON.parse(JSON.stringify(sub));
     apply(sub, value);
     render();
-    const ok = await save(sub, field, value);
-    if (!ok) {
+    const res = await window.TWP.api.post({ action: 'updateTask', id: sub.id, field: field, value: value });
+    if (!res || res.ok === false) {
       Object.assign(sub, before);
       render();
       flash('Could not save. The change was undone.');
@@ -106,7 +95,7 @@
     setTimeout(() => { el.hidden = true; }, 4000);
   }
 
-  // ------------- Index pane -------------
+  // ------------- Index -------------
   function renderIndex() {
     const mount = q('[data-index]');
     if (!mount) return;
@@ -134,9 +123,9 @@
     }).join('');
 
     mount.innerHTML = `
-      <button class="twp-idx__item twp-idx__item--queue${selectedId === null ? ' is-active' : ''}" data-select="">Everything due</button>
+      <button class="twp-idx__queue${selectedId === null ? ' is-active' : ''}" data-select="">Everything due</button>
       <input class="twp-idx__search" type="search" placeholder="Search" value="${esc(search)}" data-search>
-      ${groups || '<div class="twp-idx__empty">No matches.</div>'}
+      ${groups || '<div class="twp-idx__cat">No matches</div>'}
     `;
 
     qa('[data-select]', mount).forEach(btn => {
@@ -147,13 +136,12 @@
       });
     });
     const s = q('[data-search]', mount);
-    if (s) {
-      s.addEventListener('input', e => {
-        search = e.target.value.trim().toLowerCase();
-        renderIndex();
-        q('[data-search]').focus();
-      });
-    }
+    if (s) s.addEventListener('input', e => {
+      search = e.target.value.trim().toLowerCase();
+      renderIndex();
+      const again = q('[data-search]');
+      if (again) { again.focus(); again.setSelectionRange(again.value.length, again.value.length); }
+    });
   }
 
   // ------------- Timeline -------------
@@ -166,12 +154,11 @@
     for (let i = 0; i < codes.length - 1; i++) {
       const a = TF_MONTHS[codes[i]], b = TF_MONTHS[codes[i + 1]];
       if (monthsOut <= a && monthsOut >= b) {
-        const within = (a - monthsOut) / (a - b);
-        pct = ((i + within) / (codes.length - 1)) * 100;
+        pct = ((i + (a - monthsOut) / (a - b)) / (codes.length - 1)) * 100;
         break;
       }
-      if (monthsOut < TF_MONTHS[codes[codes.length - 1]]) pct = 100;
     }
+    if (monthsOut < TF_MONTHS[codes[codes.length - 1]]) pct = 100;
     pct = Math.max(0, Math.min(100, pct));
 
     const stops = TFS.map((tf, i) => {
@@ -183,8 +170,7 @@
         </span>`;
     }).join('');
 
-    return `
-      <div class="twp-tl">
+    return `<div class="twp-tl">
         <span class="twp-tl__line"></span>
         <span class="twp-tl__line twp-tl__line--filled" style="width:${pct}%"></span>
         <span class="twp-tl__head" style="left:${pct}%"><span class="twp-tl__head-dot"></span><span class="twp-tl__head-label">${days} days</span></span>
@@ -193,12 +179,18 @@
   }
 
   // ------------- Rows -------------
-  function rowHtml(sub) {
+  function statusBlock(status) {
+    const key = statusKey(status);
+    const label = (status || 'Not Started').toUpperCase();
+    return `<span class="twp-tag twp-tag--${key}">${esc(label)}</span>`;
+  }
+
+  function rowHtml(sub, showParent) {
     const done = isDone(sub.status);
     const over = isOverdue(sub);
     const owner = (sub.assignees && sub.assignees.length) ? sub.assignees[0] : 'Unassigned';
     const open = sub.id === openTaskId;
-
+    const parent = showParent ? `<span class="twp-row__parent">${esc(byId[sub.parentId] ? byId[sub.parentId].title : '')}</span>` : '';
     const note = sub.notes ? `<span class="twp-row__note">${esc(sub.notes)}</span>` : '';
 
     const editor = open ? `
@@ -224,7 +216,7 @@
         </label>
         <label class="twp-edit__field twp-edit__field--wide">
           <span class="twp-edit__label">Notes</span>
-          <textarea rows="2" data-edit="notes" data-id="${sub.id}">${esc(sub.notes)}</textarea>
+          <input type="text" placeholder="Add a note" value="${esc(sub.notes)}" data-edit="notes" data-id="${sub.id}">
         </label>
       </div>` : '';
 
@@ -233,23 +225,22 @@
         <button class="twp-row__circle" data-toggle="${sub.id}" aria-label="Mark complete"></button>
         <button class="twp-row__main" data-open="${sub.id}">
           <span class="twp-row__title">${esc(sub.title)}</span>
-          ${note}
+          ${parent}${note}
         </button>
+        <span class="twp-row__status">${statusBlock(sub.status)}</span>
         <span class="twp-row__owner">${esc(owner)}</span>
         <span class="twp-row__due${over ? ' is-overdue' : ''}">${tfLabel(sub.timeframe)}</span>
         ${editor}
       </div>`;
   }
 
-  function rowsHead() {
+  function headHtml() {
     return `<div class="twp-head">
-        <span class="twp-head__task">Task</span>
-        <span class="twp-head__owner">Owner</span>
-        <span class="twp-head__due">Due</span>
+        <span></span><span>Task</span><span>Status</span><span>Owner</span><span class="twp-head__due">Due</span>
       </div>`;
   }
 
-  // ------------- Workspace: the queue -------------
+  // ------------- Queue -------------
   function queueHtml() {
     let subs = [];
     deliverables.forEach(d => d.subtasks.forEach(s => subs.push(s)));
@@ -258,40 +249,41 @@
     const overdue = subs.filter(isOverdue);
     const dueNow = subs.filter(s => s.timeframe === NOW_TF.code && !isDone(s.status));
     const done = subs.filter(s => isDone(s.status));
-
     const list = [...overdue, ...dueNow];
 
-    const peopleOpts = ['<option value="">Everyone</option>']
+    const opts = ['<option value="">Everyone</option>']
       .concat(PEOPLE.map(n => `<option${n === personFilter ? ' selected' : ''}>${esc(n)}</option>`)).join('');
 
     return `
       <div class="twp-stats">
-        <div class="twp-stat"><span class="twp-stat__n twp-stat__n--over">${overdue.length}</span><span class="twp-stat__label">Overdue</span></div>
-        <div class="twp-stat"><span class="twp-stat__n">${dueNow.length}</span><span class="twp-stat__label">Due now</span></div>
-        <div class="twp-stat"><span class="twp-stat__n twp-stat__n--done">${done.length}</span><span class="twp-stat__label">Done</span></div>
-        <label class="twp-stats__filter"><select data-person>${peopleOpts}</select></label>
+        <span class="twp-stat"><span class="twp-stat__n twp-stat__n--over">${overdue.length}</span><span class="twp-stat__label">Overdue</span></span>
+        <span class="twp-stat"><span class="twp-stat__n">${dueNow.length}</span><span class="twp-stat__label">Due now</span></span>
+        <span class="twp-stat"><span class="twp-stat__n twp-stat__n--done">${done.length}</span><span class="twp-stat__label">Done</span></span>
+        <label class="twp-stats__filter"><select data-person>${opts}</select></label>
       </div>
       ${timelineHtml()}
-      ${rowsHead()}
-      ${list.length ? list.map(rowHtml).join('') : '<div class="state">Nothing due right now.</div>'}
-    `;
+      ${headHtml()}
+      <div class="twp-rail">
+        <span class="twp-rail__line"></span>
+        ${list.length ? list.map(s => rowHtml(s, true)).join('') : '<div class="twp-empty">Nothing due right now.</div>'}
+      </div>`;
   }
 
-  // ------------- Workspace: one deliverable -------------
+  // ------------- One deliverable -------------
   function deliverableHtml(d) {
     const pr = progressOf(d);
-    const meta = [tfLabel(d.timeframe), d.moment, (d.assignees || []).join(' & ')].filter(Boolean).join(' · ');
+    const meta = [`${pr.done} of ${pr.total} complete`, tfLabel(d.timeframe), d.moment].filter(Boolean).join(' · ');
     return `
-      <div class="twp-deliv">
-        <h2 class="twp-deliv__title">${esc(d.title)}</h2>
-        <div class="twp-deliv__meta">${esc(meta)}</div>
-        <div class="twp-deliv__bar"><span style="width:${pr.pct}%"></span></div>
-        <div class="twp-deliv__count">${pr.done} of ${pr.total} complete</div>
-        ${d.notes ? `<p class="twp-deliv__notes">${esc(d.notes)}</p>` : ''}
-      </div>
-      ${rowsHead()}
-      ${d.subtasks.map(rowHtml).join('')}
-    `;
+      <h2 class="twp-deliv__title">${esc(d.title)}</h2>
+      <div class="twp-deliv__bar"><span style="width:${pr.pct}%"></span></div>
+      <div class="twp-deliv__meta">${esc(meta.toUpperCase())}</div>
+      ${d.notes ? `<p class="twp-deliv__notes">${esc(d.notes)}</p>` : ''}
+      ${headHtml()}
+      <div class="twp-rail">
+        <span class="twp-rail__line"></span>
+        <span class="twp-rail__line twp-rail__line--filled" style="height:${pr.pct}%"></span>
+        ${d.subtasks.map(s => rowHtml(s, false)).join('')}
+      </div>`;
   }
 
   // ------------- Render -------------
@@ -301,7 +293,7 @@
     if (!mount) return;
     const d = selectedId ? byId[selectedId] : null;
     mount.innerHTML = d ? deliverableHtml(d) : queueHtml();
-    wireWorkspace(mount);
+    wire(mount);
   }
 
   function findSub(id) {
@@ -312,36 +304,27 @@
     return null;
   }
 
-  function wireWorkspace(mount) {
+  function wire(mount) {
     const person = q('[data-person]', mount);
-    if (person) person.addEventListener('change', e => {
-      personFilter = e.target.value || null;
+    if (person) person.addEventListener('change', e => { personFilter = e.target.value || null; render(); });
+
+    qa('[data-toggle]', mount).forEach(btn => btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const sub = findSub(btn.dataset.toggle);
+      if (!sub) return;
+      commit(sub, 'Status', isDone(sub.status) ? 'Not Started' : 'Complete', (s, v) => { s.status = v; });
+    }));
+
+    qa('[data-open]', mount).forEach(btn => btn.addEventListener('click', () => {
+      openTaskId = (openTaskId === btn.dataset.open) ? null : btn.dataset.open;
       render();
-    });
-
-    qa('[data-toggle]', mount).forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.stopPropagation();
-        const sub = findSub(btn.dataset.toggle);
-        if (!sub) return;
-        const next = isDone(sub.status) ? 'Not Started' : 'Complete';
-        commit(sub, 'Status', next, (s, v) => { s.status = v; });
-      });
-    });
-
-    qa('[data-open]', mount).forEach(btn => {
-      btn.addEventListener('click', () => {
-        openTaskId = (openTaskId === btn.dataset.open) ? null : btn.dataset.open;
-        render();
-      });
-    });
+    }));
 
     qa('[data-edit]', mount).forEach(el => {
       const sub = findSub(el.dataset.id);
       if (!sub) return;
       const field = el.dataset.edit;
-      const evt = el.tagName === 'TEXTAREA' ? 'change' : 'change';
-      el.addEventListener(evt, e => {
+      el.addEventListener('change', e => {
         const v = e.target.value;
         if (field === 'owner') commit(sub, 'Assignee', v, (s, val) => { s.assignees = val ? [val] : []; });
         if (field === 'status') commit(sub, 'Status', v, (s, val) => { s.status = val; });

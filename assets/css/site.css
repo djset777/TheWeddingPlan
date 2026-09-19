@@ -2770,43 +2770,69 @@
 
 
 /* ==========================================================================
-   Tracker v4 (Sept 2026)
-   Index pane + workspace. Gold means progress and completion only.
-   Text ladder: teal (structure) · teal 70% (metadata) · abyss (open work)
+   Tracker v5 (Sept 2026) — approved spec
+   Hierarchy from typeface, size and case. Never opacity.
+   Two text colors at full strength: teal (structure) · abyss (content).
+   Color only where it carries state.
    ========================================================================== */
 
 .twp-app {
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
+  grid-template-columns: 200px minmax(0, 1fr);
   gap: var(--space-4);
   align-items: start;
 }
 
+.twp-flash {
+  background: #A33;
+  color: var(--linen);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  padding: 8px 12px;
+  margin-bottom: var(--space-3);
+}
+
 /* --- Index --------------------------------------------------------------- */
 .twp-idx {
-  border-right: 1px solid rgba(12, 52, 61, 0.14);
+  border-right: 1px solid var(--anchor);
   padding-right: var(--space-3);
   position: sticky;
   top: var(--space-3);
 }
+.twp-idx__queue {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--anchor);
+  background: none;
+  color: var(--anchor);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.twp-idx__queue.is-active { background: var(--anchor); color: var(--linen); }
 .twp-idx__search {
   width: 100%;
   margin: var(--space-2) 0 var(--space-3);
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step--1);
   color: var(--ink);
-  background: #fff;
-  border: 1px solid rgba(12, 52, 61, 0.2);
-  border-radius: 3px;
-  padding: 5px 8px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--anchor);
+  border-radius: 0;
+  padding: 4px 0;
 }
 .twp-idx__group { margin-bottom: var(--space-3); }
 .twp-idx__cat {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
   letter-spacing: 0.16em;
-  color: rgba(1, 96, 95, 0.75);
-  margin-bottom: 5px;
+  color: var(--anchor);
+  margin-bottom: 6px;
 }
 .twp-idx__item {
   display: flex;
@@ -2815,41 +2841,34 @@
   align-items: baseline;
   background: none;
   border: none;
-  border-radius: 3px;
-  padding: 5px 8px;
+  padding: 3px 0;
   text-align: left;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step--1);
-  color: rgba(12, 52, 61, 0.85);
+  color: var(--ink);
   cursor: pointer;
 }
-.twp-idx__item:hover { background: rgba(1, 96, 95, 0.06); }
-.twp-idx__item.is-active { background: rgba(1, 96, 95, 0.12); color: var(--anchor); }
-.twp-idx__item.is-complete .twp-idx__name { color: #8A7420; }
-.twp-idx__item--queue { margin-bottom: 2px; }
+.twp-idx__item:hover .twp-idx__name { color: var(--anchor); }
+.twp-idx__item.is-active .twp-idx__name { color: var(--anchor); }
+.twp-idx__item.is-complete .twp-idx__name,
+.twp-idx__item.is-complete .twp-idx__n { color: #8A7420; }
 .twp-idx__name { flex: 1; }
-.twp-idx__n { font-size: var(--step--2); color: rgba(1, 96, 95, 0.7); }
+.twp-idx__n {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.06em;
+  color: var(--anchor);
+}
 .twp-idx__n.is-overdue { color: #A33; }
-.twp-idx__empty { font-size: var(--step--2); color: rgba(1, 96, 95, 0.7); }
 
 /* --- Workspace ----------------------------------------------------------- */
-.twp-work { max-width: 640px; }
+.twp-work { max-width: 680px; }
 
-.twp-flash {
-  background: rgba(163, 51, 51, 0.1);
-  color: #A33;
-  font-size: var(--step--1);
-  padding: 8px 12px;
-  border-radius: 3px;
-  margin-bottom: var(--space-3);
-}
-
-/* --- Queue stats --------------------------------------------------------- */
 .twp-stats {
   display: flex;
   align-items: flex-end;
   gap: var(--space-4);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
 }
 .twp-stat { display: flex; flex-direction: column; }
 .twp-stat__n {
@@ -2863,66 +2882,52 @@
 .twp-stat__label {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
-  letter-spacing: 0.14em;
-  color: rgba(1, 96, 95, 0.75);
+  letter-spacing: 0.16em;
+  color: var(--anchor);
   margin-top: 4px;
 }
 .twp-stats__filter { margin-left: auto; }
 .twp-stats__filter select,
 .twp-edit select,
-.twp-edit textarea {
+.twp-edit input {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step--1);
   color: var(--ink);
-  background: #fff;
-  border: 1px solid rgba(12, 52, 61, 0.2);
-  border-radius: 3px;
-  padding: 4px 7px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--anchor);
+  border-radius: 0;
+  padding: 3px 0;
 }
 
 /* --- Timeline ------------------------------------------------------------ */
-.twp-tl {
-  position: relative;
-  height: 46px;
-  margin: var(--space-4) 0 var(--space-4);
-}
+.twp-tl { position: relative; height: 46px; margin: var(--space-4) 0; }
 .twp-tl__line {
   position: absolute;
   top: 6px;
   left: 0;
   right: 0;
   height: 2px;
-  background: rgba(1, 96, 95, 0.2);
+  background: rgba(1, 96, 95, 0.25);
 }
 .twp-tl__line--filled { right: auto; background: var(--accent); }
-.twp-tl__stop {
-  position: absolute;
-  top: 0;
-  transform: translateX(-50%);
-  text-align: center;
-}
+.twp-tl__stop { position: absolute; top: 0; transform: translateX(-50%); text-align: center; }
 .twp-tl__dot {
   display: block;
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  margin: 3px auto 6px;
-  background: rgba(1, 96, 95, 0.28);
+  margin: 3px auto 7px;
+  background: rgba(1, 96, 95, 0.35);
 }
 .twp-tl__dot.is-past { background: var(--accent); }
 .twp-tl__label {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
-  letter-spacing: 0.08em;
-  color: rgba(1, 96, 95, 0.7);
+  letter-spacing: 0.1em;
+  color: var(--anchor);
 }
-.twp-tl__head {
-  position: absolute;
-  top: 0;
-  transform: translateX(-50%);
-  text-align: center;
-  z-index: 2;
-}
+.twp-tl__head { position: absolute; top: 0; transform: translateX(-50%); text-align: center; z-index: 2; }
 .twp-tl__head-dot {
   display: block;
   width: 12px;
@@ -2940,37 +2945,47 @@
   white-space: nowrap;
 }
 
-/* --- Row grid ------------------------------------------------------------ */
+/* --- Grid ---------------------------------------------------------------- */
 .twp-head,
 .twp-row {
   display: grid;
-  grid-template-columns: 24px minmax(0, 1fr) 104px 58px;
-  align-items: start;
+  grid-template-columns: 28px minmax(0, 1fr) 118px 88px 52px;
+  align-items: center;
   column-gap: 8px;
 }
 .twp-head {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
-  letter-spacing: 0.14em;
-  color: rgba(1, 96, 95, 0.65);
-  padding-bottom: 6px;
+  letter-spacing: 0.16em;
+  color: var(--anchor);
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--anchor);
 }
-.twp-head__task { grid-column: 2; }
 .twp-head__due { text-align: right; }
 
-.twp-row {
-  padding: 9px 0;
-  border-top: 1px solid rgba(12, 52, 61, 0.12);
-  font-size: var(--step--1);
-  color: var(--ink);
+.twp-rail { position: relative; }
+.twp-rail__line {
+  position: absolute;
+  left: 6px;
+  top: 20px;
+  bottom: 20px;
+  width: 1px;
+  background: rgba(1, 96, 95, 0.35);
 }
-.twp-row.is-open { background: rgba(1, 96, 95, 0.05); }
+.twp-rail__line--filled { bottom: auto; background: var(--accent); }
+
+.twp-row { padding: 12px 0; font-size: var(--step--1); color: var(--ink); }
+.twp-row.is-open {
+  border-top: 1px solid var(--anchor);
+  border-bottom: 1px solid var(--anchor);
+}
 .twp-row__circle {
+  position: relative;
+  z-index: 1;
   width: 13px;
   height: 13px;
-  margin-top: 4px;
   border-radius: 50%;
-  border: 1.5px solid rgba(1, 96, 95, 0.7);
+  border: 2px solid var(--anchor);
   background: var(--bg);
   padding: 0;
   cursor: pointer;
@@ -2985,44 +3000,60 @@
   color: inherit;
   cursor: pointer;
 }
-.twp-row.is-done .twp-row__title { color: #8A7420; }
+.twp-row__parent,
 .twp-row__note {
   display: block;
-  font-style: italic;
+  font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
-  color: rgba(1, 96, 95, 0.78);
-  margin-top: 2px;
+  letter-spacing: 0.12em;
+  color: var(--anchor);
+  margin-top: 3px;
 }
+.twp-row__note { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; letter-spacing: 0; }
 .twp-row__owner,
 .twp-row__due {
+  font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
-  color: rgba(1, 96, 95, 0.78);
-  padding-top: 3px;
+  letter-spacing: 0.12em;
+  color: var(--anchor);
+  text-transform: uppercase;
 }
 .twp-row__due { text-align: right; }
 .twp-row__due.is-overdue { color: #A33; }
 
-/* --- Inline editor ------------------------------------------------------- */
-.twp-edit {
-  grid-column: 2 / -1;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-2);
-  margin-top: var(--space-2);
-  padding-bottom: 4px;
-}
-.twp-edit__field { display: flex; flex-direction: column; gap: 3px; }
-.twp-edit__field--wide { grid-column: 1 / -1; }
-.twp-edit__label {
+/* --- Status blocks ------------------------------------------------------- */
+.twp-tag {
+  display: inline-block;
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
   letter-spacing: 0.14em;
-  color: rgba(1, 96, 95, 0.7);
+  padding: 4px 9px;
 }
-.twp-edit textarea { resize: vertical; }
+.twp-tag--not      { border: 1px solid var(--anchor); color: var(--anchor); padding: 3px 9px; }
+.twp-tag--tbd      { border: 1px solid var(--anchor); color: var(--anchor); padding: 3px 9px; font-style: italic; }
+.twp-tag--progress { background: var(--anchor); color: var(--linen); }
+.twp-tag--needs    { background: #A33; color: var(--linen); }
+.twp-tag--done     { background: var(--accent); color: var(--ink); }
+
+/* --- Inline editor ------------------------------------------------------- */
+.twp-edit {
+  grid-column: 2 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  padding-bottom: 4px;
+}
+.twp-edit__field { display: flex; flex-direction: column; gap: 3px; }
+.twp-edit__field--wide { flex: 1 1 100%; }
+.twp-edit__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  color: var(--anchor);
+}
 
 /* --- Deliverable head ---------------------------------------------------- */
-.twp-deliv { margin-bottom: var(--space-3); }
 .twp-deliv__title {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step-1);
@@ -3031,28 +3062,35 @@
   padding: 0;
   margin: 0;
 }
+.twp-deliv__bar { height: 5px; background: rgba(1, 96, 95, 0.2); margin: 11px 0 7px; }
+.twp-deliv__bar span { display: block; height: 5px; background: var(--accent); }
 .twp-deliv__meta {
+  font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
-  color: rgba(1, 96, 95, 0.78);
-  margin: 4px 0 10px;
+  letter-spacing: 0.14em;
+  color: var(--anchor);
+  margin-bottom: var(--space-4);
 }
-.twp-deliv__bar { height: 4px; background: rgba(1, 96, 95, 0.18); border-radius: 2px; }
-.twp-deliv__bar span { display: block; height: 4px; background: var(--accent); border-radius: 2px; }
-.twp-deliv__count { font-size: var(--step--2); color: rgba(1, 96, 95, 0.78); margin-top: 4px; }
 .twp-deliv__notes {
   font-style: italic;
   font-size: var(--step--1);
-  color: rgba(1, 96, 95, 0.82);
+  color: var(--ink);
   border-left: 2px solid var(--accent);
   padding-left: 10px;
-  margin-top: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.twp-empty {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  color: var(--anchor);
+  padding: var(--space-3) 0;
 }
 
 @media (max-width: 860px) {
   .twp-app { grid-template-columns: 1fr; }
-  .twp-idx { border-right: none; border-bottom: 1px solid rgba(12,52,61,0.14); padding: 0 0 var(--space-3); position: static; }
-  .twp-head, .twp-row { grid-template-columns: 24px minmax(0, 1fr) 58px; }
-  .twp-row__owner { display: none; }
-  .twp-head__owner { display: none; }
-  .twp-edit { grid-template-columns: 1fr; }
+  .twp-idx { border-right: none; border-bottom: 1px solid var(--anchor); padding: 0 0 var(--space-3); position: static; }
+  .twp-head, .twp-row { grid-template-columns: 28px minmax(0, 1fr) 100px 52px; }
+  .twp-row__owner, .twp-head span:nth-child(4) { display: none; }
+  .twp-edit { gap: var(--space-3); }
 }
