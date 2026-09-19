@@ -2913,10 +2913,13 @@
   font-size: var(--step--1);
   letter-spacing: 0.16em;
 }
-.twp-col__bar--discover { background: var(--accent);  color: var(--abyss); }
-.twp-col__bar--decide   { background: var(--anchor);  color: var(--linen); }
-.twp-col__bar--execute  { background: var(--deeper);  color: var(--linen); }
-.twp-col__bar--done     { background: var(--deepest); color: var(--linen); }
+/* The three bars deepen as the work advances: teal, then forest, then
+   navy. Gold is an accent elsewhere on the page, not a column. Done,
+   which lives off the board, takes abyss. */
+.twp-col__bar--discover { background: var(--anchor);  color: var(--linen); }
+.twp-col__bar--decide   { background: var(--deeper);  color: var(--linen); }
+.twp-col__bar--execute  { background: var(--deepest); color: var(--linen); }
+.twp-col__bar--done     { background: var(--abyss);   color: var(--linen); }
 /* The count is the same color as the label beside it. One color per bar. */
 .twp-col__n {
   font-size: var(--step--2);
