@@ -2838,6 +2838,13 @@
   border-color: var(--anchor);
   color: var(--linen);
 }
+.twp-chip__n { color: rgba(1, 96, 95, 0.55); margin-left: 2px; }
+.twp-chip__n--late { color: #A9521A; }
+.twp-chip__n--done { color: var(--deepest); }
+.twp-chip.is-on .twp-chip__n,
+.twp-chip.is-on .twp-chip__n--late,
+.twp-chip.is-on .twp-chip__n--done { color: var(--accent); }
+.twp-chip--done { border-color: rgba(212, 175, 55, 0.7); }
 .twp-bar__right {
   margin-left: auto;
   display: flex;
@@ -2875,12 +2882,25 @@
 /* --- Board --------------------------------------------------------------- */
 .twp-board {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-3);
   align-items: start;
 }
+/* Done is an outcome, not a phase — it gets its own wide view, reached
+   from the filter row, so the board stays live work only. */
+.twp-board--done { display: block; }
+.twp-board--message { display: block; }
+.twp-donegrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: 10px;
+}
 .twp-col { display: flex; flex-direction: column; gap: 10px; }
 .twp-col__bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2911,7 +2931,9 @@
 .twp-card {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 96px;
   width: 100%;
   text-align: left;
   background: var(--linen-shade);
@@ -2921,6 +2943,7 @@
   cursor: pointer;
   font: inherit;
 }
+.twp-card__top { display: flex; flex-direction: column; gap: 4px; }
 .twp-card:hover { outline: 1px solid var(--accent); }
 /* Done cards recede through contrast on the same two colors, never a
    third hue: the ground lightens, the type stays put. */
@@ -2969,8 +2992,9 @@
 .twp-card__due--late { color: #A9521A; }
 .twp-card__help {
   font-family: 'Cormorant SC', Georgia, serif;
+  font-style: normal;
   font-size: 10px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   color: #A9521A;
 }
 /* Thirty-two late items in amber at full strength is a wall of alarm.
@@ -3111,9 +3135,12 @@
 /* --- Narrow -------------------------------------------------------------- */
 @media (max-width: 1100px) {
   .twp-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .twp-donegrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 700px) {
   .twp-board { grid-template-columns: 1fr; }
+  .twp-donegrid { grid-template-columns: 1fr; }
+  .twp-col__bar { position: static; }
   .twp-bar__right { margin-left: 0; width: 100%; }
   .twp-card { padding: 14px; }
 }

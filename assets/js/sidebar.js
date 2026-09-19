@@ -21,7 +21,7 @@ const GUEST_SITE_URL = 'https://djset777.github.io/djset/';
     <a class="sidebar__brand" href="${GUEST_SITE_URL}" target="_blank" rel="noopener" title="The wedding site guests see">7 · 7 · 27</a>
 
     <div class="sidebar__countdown" data-sidebar-countdown>
-      <span data-cd-mo>—</span> MO<span class="sep">|</span><span data-cd-wk>—</span> WKS<span class="sep">|</span><span data-cd-day>—</span> DAYS<span class="sep">|</span><span data-cd-hr>—</span> HRS
+      <span data-cd-mo>—</span> MO<span class="sep">|</span><span data-cd-wk>—</span> WKS<span class="sep">|</span><span data-cd-day>—</span> DAYS
     </div>
 
     <div class="sidebar__rsvp">
