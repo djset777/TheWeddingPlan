@@ -2898,17 +2898,19 @@
 }
 
 /* --- Card ----------------------------------------------------------------
-   TYPE COLOR RULE — only three colors are ever used for text on this board:
-     teal  (--anchor)  organizes: labels, deliverables, dates, counts, chips
-     abyss (--ink)     carries content: the task itself, the person's name
+   TYPE COLOR RULE — the card reads top to bottom in three colors:
+     gold  (#7A6210)   the deliverable label, set as an eyebrow
+     teal  (--anchor)  the task itself, at full strength
+     teal  (#10706D)   the person, one step lighter, in italic
      amber (#A9521A)   flags attention: late, or stuck
-   Forest and navy are FILL colors only. They never appear as type — at
-   10px they are indistinguishable from teal and read as noise.
+   The golds and teals here are deepened from the palette values so they
+   clear 4.5:1 on linen at 10px. Forest, navy and abyss are FILL colors
+   only. They never appear as type.
    -------------------------------------------------------------------------- */
 .twp-card {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 5px;
   width: 100%;
   text-align: left;
   background: var(--linen-shade);
@@ -2927,13 +2929,14 @@
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step-0);
   line-height: 1.3;
-  color: var(--ink);
+  color: var(--anchor);
 }
+/* The eyebrow: gold, deepened so it stays legible at 10px on linen. */
 .twp-card__parent {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: 10px;
   letter-spacing: 0.18em;
-  color: var(--anchor);
+  color: #7A6210;
 }
 .twp-card__foot {
   display: flex;
@@ -2948,7 +2951,7 @@
   font-style: italic;
   font-size: var(--step--1);
   letter-spacing: 0;
-  color: var(--ink);
+  color: #10706D;
 }
 /* Gold means unresolved — here, nobody owns it yet. */
 .twp-card__who--none { color: var(--accent); }

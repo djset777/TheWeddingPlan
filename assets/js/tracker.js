@@ -212,8 +212,8 @@
       : esc(shortDate(s.due));
     return `
       <button type="button" class="twp-card${done ? ' twp-card--done' : ''}" data-open="${esc(s.id)}">
-        <span class="twp-card__title">${esc(s.title)}</span>
         <span class="twp-card__parent">${esc(s.parentTitle)}</span>
+        <span class="twp-card__title">${esc(s.title)}</span>
         ${needsHelp(s) ? '<span class="twp-card__help">Needs help</span>' : ''}
         <span class="twp-card__foot">
           <span class="twp-card__who${owner ? '' : ' twp-card__who--none'}">${esc(owner || 'Unassigned')}</span>
