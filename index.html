@@ -25,11 +25,11 @@
         </div>
       </header>
 
-      <div class="statusfilters" data-status-filters></div>
-
-      <div class="statusfilters statusfilters--person" data-person-filters></div>
-
-      <div class="statusbar" data-statusbar></div>
+      <div class="trk-bar">
+        <div class="trk-bar__chips" data-status-filters></div>
+        <div class="trk-bar__spacer" data-assignee-select></div>
+        <div data-category-select></div>
+      </div>
 
       <div data-tasklist>
         <div class="state">Loading…</div>
@@ -42,7 +42,7 @@
     </main>
   </div>
 
-  <!-- Parent task modal (hidden until a card is clicked) -->
+  <!-- Parent task detail (hidden until a deliverable is clicked) -->
   <div class="modal" data-modal hidden>
     <div class="modal__backdrop" data-modal-close></div>
     <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
