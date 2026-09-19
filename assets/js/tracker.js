@@ -30,8 +30,8 @@
   // the source of truth for vocabulary as well as data.
   const TF_ORDER = ['22mo', '16mo', '12mo', '7mo', '3mo', '1mo', '1wk'];
   const TF_LABEL = {
-    '22mo': '22MO', '16mo': '16MO', '12mo': '12MO',
-    '7mo': '7MO', '3mo': '3MO', '1mo': '1MO', '1wk': '1WK',
+    '22mo': '22 Months', '16mo': '16 Months', '12mo': '12 Months',
+    '7mo': '7 Months', '3mo': '3 Months', '1mo': '1 Month', '1wk': '1 Week',
   };
 
   // ---- Dates -------------------------------------------------------------
@@ -45,11 +45,12 @@
     return d;
   }
 
-  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November', 'December'];
   function shortDate(d) {
     if (!d) return '';
     const sameYear = d.getFullYear() === new Date().getFullYear();
-    return `${MONTHS[d.getMonth()]} ${d.getDate()}${sameYear ? '' : " '" + String(d.getFullYear()).slice(2)}`;
+    return `${MONTHS[d.getMonth()]} ${d.getDate()}${sameYear ? '' : ', ' + d.getFullYear()}`;
   }
   const daysLate = d => d ? Math.floor((Date.now() - d.getTime()) / DAY) : 0;
 
