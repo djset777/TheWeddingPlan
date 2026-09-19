@@ -2748,12 +2748,12 @@
    ========================================================================== */
 .sidebar__mark {
   margin-top: var(--space-3);
-  margin-bottom: var(--space-2);
+  margin-bottom: 8px;   /* pocket above the date */
   line-height: 1.2;
   height: auto;
 }
 .sidebar__brand {
-  margin: 0 0 var(--space-2);
+  margin: 0 0 8px;      /* pocket below the date */
   padding: 0;
   line-height: 1;
 }
@@ -2784,7 +2784,7 @@
   border-bottom: 1px solid var(--accent);
   margin-bottom: var(--space-4);
 }
-.twp-head .eyebrow { display: block; margin-bottom: var(--space-1); }
+.twp-head .eyebrow { display: block; margin-bottom: 8px; }  /* pocket above the title */
 .twp-head__h1 {
   font-family: 'Cormorant SC', Georgia, serif;
   font-weight: 400;
@@ -2794,9 +2794,9 @@
   color: var(--anchor);
   border: none;
   padding: 0;
-  margin: 2px 0 0;
+  margin: 0 0 8px;      /* pocket below the title */
 }
-.twp-head__sub { font-size: var(--step-0); }
+.twp-head__sub { font-size: var(--step-0); margin: 0; }
 
 .twp-flash {
   background: #A9521A;
