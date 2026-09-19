@@ -223,12 +223,12 @@
         <span class="twp-card__top">
           <span class="twp-card__head">
             <span class="twp-card__parent">${esc(s.parentTitle)}</span>
-            <span class="twp-card__status twp-card__status--${sKey}">${esc(sLabel)}</span>
+            <span class="twp-card__who${owner ? '' : ' twp-card__who--none'}">${esc(owner || 'Unassigned')}</span>
           </span>
           <span class="twp-card__title">${esc(s.title)}</span>
         </span>
         <span class="twp-card__foot">
-          <span class="twp-card__who${owner ? '' : ' twp-card__who--none'}">${esc(owner || 'Unassigned')}</span>
+          <span class="twp-card__status twp-card__status--${sKey}">${esc(sLabel)}</span>
           <span class="twp-card__due${late ? ' twp-card__due--late' : ''}">${dueText}</span>
         </span>
       </button>`;

@@ -2966,6 +2966,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* The person rides at the top, opposite the eyebrow; the status moves
+   down to the footer beside the date. */
+.twp-card__head .twp-card__who { flex-shrink: 0; }
 /* Status sits opposite the eyebrow: same small-caps register, palette
    colors only. Amber is still reserved for something needing attention. */
 .twp-card__status {
