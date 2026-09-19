@@ -165,7 +165,12 @@
     return subtasks.filter(s => {
       if (domainFilter && s.domain !== domainFilter) return false;
       if (momentFilter && s.moment !== momentFilter) return false;
-      if (tfFilter && s.timeframe !== tfFilter) return false;
+      // Due By asks "what is due on or before this", which is the question
+      // you would actually ask. Matching one bucket exactly is not.
+      if (tfFilter) {
+        const cut = anchorDate(tfFilter);
+        if (!s.due || !cut || s.due.getTime() > cut.getTime()) return false;
+      }
       if (statusFilter && (s.status || '').toLowerCase() !== statusFilter.toLowerCase()) return false;
       if (ownerFilter && (s.assignees || []).indexOf(ownerFilter) === -1) return false;
       return true;
@@ -221,8 +226,11 @@
           <select data-f="moment">${optionList(moments, momentFilter)}</select>
         </label>
         <label class="twp-filter">
-          <span class="twp-filter__label">Timeframe</span>
-          <select data-f="tf">${optionList(TF_ORDER, tfFilter, c => TF_LABEL[c])}</select>
+          <span class="twp-filter__label">Due By</span>
+          <select data-f="tf">
+            <option value="">Anytime</option>
+            ${TF_ORDER.map(c => `<option value="${c}"${c === tfFilter ? ' selected' : ''}>${esc(shortDate(anchorDate(c)))}</option>`).join('')}
+          </select>
         </label>
         <label class="twp-filter">
           <span class="twp-filter__label">Status</span>
