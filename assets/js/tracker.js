@@ -207,7 +207,9 @@
     const done = isDone(s);
     const n = late ? daysLate(s.due) : 0;
     const dueCls = done ? 'twp-card__due--done' : (late ? 'twp-card__due--late' : '');
-    const dueText = late ? `${n} day${n === 1 ? '' : 's'} late` : shortDate(s.due);
+    const dueText = late
+      ? `<span class="twp-card__late-n">${n}</span> day${n === 1 ? '' : 's'} late`
+      : esc(shortDate(s.due));
     return `
       <button type="button" class="twp-card${done ? ' twp-card--done' : ''}" data-open="${esc(s.id)}">
         <span class="twp-card__title">${esc(s.title)}</span>
@@ -215,7 +217,7 @@
         ${needsHelp(s) ? '<span class="twp-card__help">Needs help</span>' : ''}
         <span class="twp-card__foot">
           <span class="twp-card__who${owner ? '' : ' twp-card__who--none'}">${esc(owner || 'Unassigned')}</span>
-          <span class="twp-card__due ${dueCls}">${esc(dueText)}</span>
+          <span class="twp-card__due ${dueCls}">${dueText}</span>
         </span>
       </button>`;
   }
