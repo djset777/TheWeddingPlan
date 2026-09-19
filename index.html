@@ -25,14 +25,13 @@
         </div>
       </header>
 
-      <div class="trk-bar">
-        <div class="trk-bar__chips" data-status-filters></div>
-        <div class="trk-bar__spacer" data-assignee-select></div>
-        <div data-category-select></div>
-      </div>
+      <div class="twp-flash" data-flash hidden></div>
 
-      <div data-tasklist>
-        <div class="state">Loading…</div>
+      <div class="twp-app">
+        <nav class="twp-idx" data-index aria-label="Deliverables"></nav>
+        <section class="twp-work" data-workspace>
+          <div class="state">Loading…</div>
+        </section>
       </div>
 
       <footer class="page-footer">
@@ -42,17 +41,8 @@
     </main>
   </div>
 
-  <!-- Parent task detail (hidden until a deliverable is clicked) -->
-  <div class="modal" data-modal hidden>
-    <div class="modal__backdrop" data-modal-close></div>
-    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <button class="modal__close" data-modal-close aria-label="Close">×</button>
-      <div data-modal-body></div>
-    </div>
-  </div>
-
   <script src="assets/js/sidebar.js"></script>
   <script src="assets/js/api.js"></script>
-  <script src="assets/js/main.js"></script>
+  <script src="assets/js/tracker.js"></script>
 </body>
 </html>
