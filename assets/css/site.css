@@ -2770,53 +2770,95 @@
 
 
 /* ==========================================================================
-   Tracker v5 (Sept 2026) — approved spec
-   Hierarchy from typeface, size and case. Never opacity.
-   Two text colors at full strength: teal (structure) · abyss (content).
-   Color only where it carries state.
+   Tracker v6 (Sept 2026) — the phase board
+   Four columns: Discover (gold) · Decide (teal) · Execute (forest) · Done (navy).
+   Gold means open/unconfirmed everywhere, as it does on the brief pages.
+   Navy carries Complete. Amber (#A9521A) is the only alert color.
    ========================================================================== */
 
-.twp-app {
-  display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
-  gap: var(--space-4);
-  align-items: start;
+/* --- Masthead ------------------------------------------------------------ */
+.twp-head {
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--anchor);
+  margin-bottom: var(--space-3);
 }
+.twp-head__h1 {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 400;
+  font-size: var(--step-3);
+  line-height: 1.04;
+  letter-spacing: 0.02em;
+  color: var(--anchor);
+  border: none;
+  padding: 0;
+  margin: 2px 0 0;
+}
+.twp-head__sub { font-size: var(--step-0); }
 
 .twp-flash {
-  background: #A33;
+  background: #A9521A;
   color: var(--linen);
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
   letter-spacing: 0.14em;
-  padding: 8px 12px;
+  padding: 9px 13px;
   margin-bottom: var(--space-3);
 }
 
-/* --- Index --------------------------------------------------------------- */
-.twp-idx {
-  border-right: 1px solid var(--anchor);
-  padding-right: var(--space-3);
-  position: sticky;
-  top: var(--space-3);
+/* --- Toolbar ------------------------------------------------------------- */
+.twp-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-4);
 }
-.twp-idx__queue {
-  display: block;
-  width: 100%;
-  text-align: left;
-  border: 1px solid var(--anchor);
-  background: none;
-  color: var(--anchor);
+.twp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1 1 60%;
+}
+.twp-chip {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
-  letter-spacing: 0.16em;
-  padding: 6px 10px;
+  letter-spacing: 0.14em;
+  color: var(--anchor);
+  background: none;
+  border: 1px solid rgba(1, 96, 95, 0.4);
+  border-radius: 0;
+  padding: 5px 10px;
   cursor: pointer;
 }
-.twp-idx__queue.is-active { background: var(--anchor); color: var(--linen); }
-.twp-idx__search {
-  width: 100%;
-  margin: var(--space-2) 0 var(--space-3);
+.twp-chip.is-on {
+  background: var(--anchor);
+  border-color: var(--anchor);
+  color: var(--linen);
+}
+.twp-bar__right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.twp-bar__over {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  color: #A9521A;
+}
+.twp-bar__sync {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  color: var(--anchor);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.twp-bar__sync:hover { color: var(--accent); }
+.twp-bar select {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step--1);
   color: var(--ink);
@@ -2826,70 +2868,210 @@
   border-radius: 0;
   padding: 4px 0;
 }
-.twp-idx__group { margin-bottom: var(--space-3); }
-.twp-idx__cat {
+
+/* --- Board --------------------------------------------------------------- */
+.twp-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  align-items: start;
+}
+.twp-col { display: flex; flex-direction: column; gap: 10px; }
+.twp-col__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--1);
+  letter-spacing: 0.16em;
+}
+.twp-col__bar--discover { background: var(--accent);  color: var(--abyss); }
+.twp-col__bar--decide   { background: var(--anchor);  color: var(--linen); }
+.twp-col__bar--execute  { background: var(--deeper);  color: var(--linen); }
+.twp-col__bar--done     { background: var(--deepest); color: var(--linen); }
+/* The count is the same color as the label beside it. One color per bar. */
+.twp-col__n {
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  color: inherit;
+}
+
+/* --- Card ----------------------------------------------------------------
+   TYPE COLOR RULE — only three colors are ever used for text on this board:
+     teal  (--anchor)  organizes: labels, deliverables, dates, counts, chips
+     abyss (--ink)     carries content: the task itself, the person's name
+     amber (#A9521A)   flags attention: late, or stuck
+   Forest and navy are FILL colors only. They never appear as type — at
+   10px they are indistinguishable from teal and read as noise.
+   -------------------------------------------------------------------------- */
+.twp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+  text-align: left;
+  background: var(--linen-shade);
+  border: none;
+  border-radius: 0;
+  padding: 12px;
+  cursor: pointer;
+  font: inherit;
+}
+.twp-card:hover { outline: 1px solid var(--accent); }
+/* Done cards recede through contrast on the same two colors, never a
+   third hue: the ground lightens, the type stays put. */
+.twp-card--done { background: rgba(234, 227, 215, 0.55); }
+.twp-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.twp-card__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: var(--step-0);
+  line-height: 1.3;
+  color: var(--ink);
+}
+.twp-card__parent {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--anchor);
+}
+.twp-card__foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding-top: 4px;
+}
+/* A person breathes: italic body face. */
+.twp-card__who {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  letter-spacing: 0;
+  color: var(--ink);
+}
+/* Gold means unresolved — here, nobody owns it yet. */
+.twp-card__who--none { color: var(--accent); }
+/* A date organizes: small caps, letterspaced, right-aligned. */
+.twp-card__due {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.1em;
+  color: var(--anchor);
+  white-space: nowrap;
+}
+.twp-card__due--late { color: #A9521A; }
+.twp-card__help {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: #A9521A;
+}
+/* Thirty-two late items in amber at full strength is a wall of alarm.
+   The count stays amber; the word "late" drops back to teal so the eye
+   lands on the number. */
+.twp-card__late-n { color: #A9521A; }
+.twp-card__due--late { color: var(--anchor); }
+.twp-col__empty,
+.twp-empty {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
   letter-spacing: 0.16em;
   color: var(--anchor);
-  margin-bottom: 6px;
+  padding: var(--space-2) 0;
 }
-.twp-idx__item {
-  display: flex;
-  width: 100%;
-  gap: 8px;
-  align-items: baseline;
+.twp-col__more {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  color: var(--anchor);
   background: none;
   border: none;
-  padding: 3px 0;
-  text-align: left;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: var(--step--1);
-  color: var(--ink);
+  border-bottom: 1px solid var(--accent);
+  padding: 6px 0;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+/* --- Modal --------------------------------------------------------------- */
+.twp-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+}
+.twp-modal[hidden] { display: none; }
+.twp-modal__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 52, 61, 0.55);
+  border: none;
+  padding: 0;
   cursor: pointer;
 }
-.twp-idx__item:hover .twp-idx__name { color: var(--anchor); }
-.twp-idx__item.is-active .twp-idx__name { color: var(--anchor); }
-.twp-idx__item.is-complete .twp-idx__name,
-.twp-idx__item.is-complete .twp-idx__n { color: #8A7420; }
-.twp-idx__name { flex: 1; }
-.twp-idx__n {
+.twp-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  max-height: 84vh;
+  overflow-y: auto;
+  background: var(--bg);
+  border-top: 3px solid var(--accent);
+  padding: var(--space-4);
+}
+.twp-modal__close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: var(--step-0);
+  color: var(--anchor);
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+}
+.twp-modal__eyebrow {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
-  letter-spacing: 0.06em;
-  color: var(--anchor);
+  letter-spacing: 0.18em;
+  color: var(--accent);
 }
-.twp-idx__n.is-overdue { color: #A33; }
-
-/* --- Workspace ----------------------------------------------------------- */
-.twp-work { max-width: 680px; }
-
-.twp-stats {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--space-4);
-  margin-bottom: var(--space-2);
-}
-.twp-stat { display: flex; flex-direction: column; }
-.twp-stat__n {
+.twp-modal__title {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: var(--step-2);
-  line-height: 1;
-  color: var(--anchor);
+  font-size: var(--step-1);
+  color: var(--ink);
+  border: none;
+  padding: 0;
+  margin: 4px 0 var(--space-3);
+  line-height: 1.25;
 }
-.twp-stat__n--over { color: #A33; }
-.twp-stat__n--done { color: #8A7420; }
-.twp-stat__label {
+.twp-modal__notes {
+  font-style: italic;
+  font-size: var(--step--1);
+  color: var(--ink);
+  border-left: 2px solid var(--accent);
+  padding-left: 10px;
+  margin: 0 0 var(--space-3);
+}
+.twp-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+}
+.twp-field { display: flex; flex-direction: column; gap: 3px; }
+.twp-field--wide { flex: 1 1 100%; }
+.twp-field__label {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
   letter-spacing: 0.16em;
   color: var(--anchor);
-  margin-top: 4px;
 }
-.twp-stats__filter { margin-left: auto; }
-.twp-stats__filter select,
-.twp-edit select,
-.twp-edit input {
+.twp-field select,
+.twp-field input {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step--1);
   color: var(--ink);
@@ -2897,210 +3079,35 @@
   border: none;
   border-bottom: 1px solid var(--anchor);
   border-radius: 0;
-  padding: 3px 0;
+  padding: 4px 0;
 }
-
-/* --- Timeline ------------------------------------------------------------ */
-.twp-tl { position: relative; height: 46px; margin: var(--space-4) 0; }
-.twp-tl__line {
-  position: absolute;
-  top: 6px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: rgba(1, 96, 95, 0.25);
-}
-.twp-tl__line--filled { right: auto; background: var(--accent); }
-.twp-tl__stop { position: absolute; top: 0; transform: translateX(-50%); text-align: center; }
-.twp-tl__dot {
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  margin: 3px auto 7px;
-  background: rgba(1, 96, 95, 0.35);
-}
-.twp-tl__dot.is-past { background: var(--accent); }
-.twp-tl__label {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  letter-spacing: 0.1em;
-  color: var(--anchor);
-}
-.twp-tl__head { position: absolute; top: 0; transform: translateX(-50%); text-align: center; z-index: 2; }
-.twp-tl__head-dot {
-  display: block;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--accent);
-  margin: 1px auto 0;
-}
-.twp-tl__head-label {
-  display: block;
-  margin-top: 20px;
-  font-style: italic;
-  font-size: var(--step--2);
-  color: var(--anchor);
-  white-space: nowrap;
-}
-
-/* --- Grid ---------------------------------------------------------------- */
-.twp-head,
-.twp-row {
-  display: grid;
-  grid-template-columns: 26px minmax(0, 1fr) 124px 84px 54px;
-  align-items: center;
-  column-gap: 8px;
-}
-.twp-head {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  color: var(--anchor);
-  padding-bottom: 9px;
-  border-bottom: 1px solid var(--anchor);
-}
-.twp-head__due { text-align: right; }
-
-.twp-rail { position: relative; }
-.twp-rail__line {
-  position: absolute;
-  left: 6px;
-  top: 20px;
-  bottom: 20px;
-  width: 1px;
-  background: rgba(1, 96, 95, 0.35);
-}
-.twp-rail__line--filled { bottom: auto; background: var(--accent); }
-
-.twp-row { padding: 9px 0; font-size: 15px; color: var(--ink); }
-.twp-row__title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.twp-row.is-open {
-  border-top: 1px solid var(--anchor);
-  border-bottom: 1px solid var(--anchor);
-}
-.twp-row.is-open .twp-row__note { display: none; }
-.twp-row__circle {
-  position: relative;
-  z-index: 1;
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  border: 2px solid var(--anchor);
-  background: var(--bg);
-  padding: 0;
-  cursor: pointer;
-}
-.twp-row.is-done .twp-row__circle { background: var(--accent); border-color: var(--accent); }
-.twp-row__main {
-  background: none;
-  border: none;
-  padding: 0;
-  text-align: left;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-}
-.twp-row__parent {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--anchor);
-  margin-left: 10px;
-  white-space: nowrap;
-}
-.twp-row__note {
-  display: block;
+.twp-field textarea {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 13px;
+  font-size: var(--step--1);
   color: var(--ink);
-  margin-top: 2px;
+  background: none;
+  border: 1px solid var(--anchor);
+  border-radius: 0;
+  padding: 8px;
+  min-height: 74px;
+  resize: vertical;
 }
-.twp-row__owner,
-.twp-row__due {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--anchor);
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.twp-row__due { text-align: right; }
-.twp-row__due.is-overdue { color: #A33; }
-
-/* --- Status blocks ------------------------------------------------------- */
-.twp-tag {
-  display: inline-block;
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  padding: 4px 8px;
-  white-space: nowrap;
-}
-.twp-tag--not      { border: 1px solid var(--anchor); color: var(--anchor); padding: 3px 9px; }
-.twp-tag--tbd      { border: 1px solid var(--anchor); color: var(--anchor); padding: 3px 9px; font-style: italic; }
-.twp-tag--progress { background: var(--anchor); color: var(--linen); }
-.twp-tag--needs    { background: #A33; color: var(--linen); }
-.twp-tag--done     { background: var(--accent); color: var(--ink); }
-
-/* --- Inline editor ------------------------------------------------------- */
-.twp-edit {
-  grid-column: 2 / -1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  margin-top: var(--space-3);
-  padding-bottom: 4px;
-}
-.twp-edit__field { display: flex; flex-direction: column; gap: 3px; }
-.twp-edit__field--wide { flex: 1 1 100%; }
-.twp-edit__label {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  letter-spacing: 0.16em;
-  color: var(--anchor);
-}
-
-/* --- Deliverable head ---------------------------------------------------- */
-.twp-deliv__title {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step-1);
-  color: var(--anchor);
-  border: none;
-  padding: 0;
-  margin: 0;
-}
-.twp-deliv__bar { height: 5px; background: rgba(1, 96, 95, 0.2); margin: 11px 0 7px; }
-.twp-deliv__bar span { display: block; height: 5px; background: var(--accent); }
-.twp-deliv__meta {
+.twp-modal__meta {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
   letter-spacing: 0.14em;
   color: var(--anchor);
-  margin-bottom: var(--space-4);
-}
-.twp-deliv__notes {
-  font-style: italic;
-  font-size: var(--step--1);
-  color: var(--ink);
-  border-left: 2px solid var(--accent);
-  padding-left: 10px;
-  margin-bottom: var(--space-3);
-}
-.twp-empty {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  letter-spacing: 0.16em;
-  color: var(--anchor);
-  padding: var(--space-3) 0;
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(212, 175, 55, 0.35);
 }
 
-@media (max-width: 860px) {
-  .twp-app { grid-template-columns: 1fr; }
-  .twp-idx { border-right: none; border-bottom: 1px solid var(--anchor); padding: 0 0 var(--space-3); position: static; }
-  .twp-head, .twp-row { grid-template-columns: 28px minmax(0, 1fr) 100px 52px; }
-  .twp-row__owner, .twp-head span:nth-child(4) { display: none; }
-  .twp-edit { gap: var(--space-3); }
+/* --- Narrow -------------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .twp-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .twp-board { grid-template-columns: 1fr; }
+  .twp-bar__right { margin-left: 0; width: 100%; }
+  .twp-card { padding: 14px; }
 }
