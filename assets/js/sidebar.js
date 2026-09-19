@@ -4,6 +4,10 @@
    and it updates everywhere. Countdown ticks every second.
    ========================================================================== */
 
+// --- Guest site address (the date links out to it) ------------------------
+// Change this one line if the guest site lives at a different address.
+const GUEST_SITE_URL = 'https://djset777.github.io/djset/';
+
 (function renderSidebar() {
   const mount = document.getElementById('sidebar');
   if (!mount) return;
@@ -14,7 +18,7 @@
 
   mount.innerHTML = `
     <a class="sidebar__mark" href="${prefix}index.html">DJ Set</a>
-    <span class="sidebar__brand">7 · 7 · 27</span>
+    <a class="sidebar__brand" href="${GUEST_SITE_URL}" target="_blank" rel="noopener" title="The wedding site guests see">7 · 7 · 27</a>
 
     <div class="sidebar__countdown" data-sidebar-countdown>
       <span data-cd-mo>—</span> MO<span class="sep">|</span><span data-cd-wk>—</span> WKS<span class="sep">|</span><span data-cd-day>—</span> DAYS<span class="sep">|</span><span data-cd-hr>—</span> HRS
