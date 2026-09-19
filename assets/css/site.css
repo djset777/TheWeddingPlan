@@ -2904,7 +2904,7 @@
   gap: var(--space-3);
   margin-top: 10px;
 }
-.twp-col { display: flex; flex-direction: column; gap: 10px; }
+.twp-col { display: flex; flex-direction: column; gap: 12px; }
 .twp-col__bar {
   position: sticky;
   top: 0;
@@ -2943,107 +2943,103 @@
 .twp-card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 10px;
-  min-height: 104px;
+  gap: 6px;
   width: 100%;
   text-align: left;
-  background: var(--linen-shade);
+  background: none;
   border: none;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.45);
   border-radius: 0;
-  padding: 12px;
+  padding: 4px 0 12px;
   cursor: pointer;
   font: inherit;
 }
-.twp-card__top { display: flex; flex-direction: column; gap: 4px; }
+.twp-card:hover .twp-card__title { color: var(--accent); }
+.twp-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
 .twp-card__head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
-/* Status leads, the task follows, the deliverable it belongs to sits
-   underneath beside the date. The person stays top right. */
-.twp-card__head .twp-card__status { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-.twp-card__head .twp-card__who { flex-shrink: 0; }
-.twp-card__foot .twp-card__parent {
+/* The deliverable: a gold eyebrow, sitting above the task it names. */
+.twp-card__parent {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.twp-card__foot .twp-card__due { flex-shrink: 0; }
-/* Status sits opposite the eyebrow: same small-caps register, palette
-   colors only. Amber is still reserved for something needing attention. */
-.twp-card__status {
+/* A person as a mark, full names on the title attribute. */
+.twp-card__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  white-space: nowrap;
+  font-size: 11px;
 }
-.twp-card__status--not      { color: rgba(1, 96, 95, 0.55); }
-.twp-card__status--progress { color: var(--anchor); }
-.twp-card__status--needs    { color: #A9521A; }
-.twp-card__status--done     { color: var(--deepest); }
-.twp-card:hover { outline: 1px solid var(--accent); }
-/* Done cards recede through contrast on the same two colors, never a
-   third hue: the ground lightens, the type stays put. */
-.twp-card--done { background: rgba(234, 227, 215, 0.55); }
-.twp-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
 .twp-card__title {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: var(--step-0);
-  line-height: 1.3;
+  line-height: 1.2;
   color: var(--anchor);
 }
-/* The eyebrow: palette gold, same as the brief pages. Carried at 11px
-   and medium weight so it holds on linen without darkening the hue. */
-.twp-card__parent {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-weight: 600;
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  color: var(--accent);
-}
+
 .twp-card__foot {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: baseline;
   gap: 8px;
-  padding-top: 4px;
 }
-/* A person breathes: italic body face. */
-.twp-card__who {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: var(--step--1);
-  letter-spacing: 0;
-  color: #10706D;
+/* Pip and word travel together: status is one unit, flush left. */
+.twp-card__state { display: flex; align-items: center; gap: 7px; }
+.twp-pip {
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
 }
-/* Gold means unresolved — here, nobody owns it yet. */
-.twp-card__who--none { color: var(--accent); }
-/* A date organizes: small caps, letterspaced, right-aligned. */
-.twp-card__due {
+.twp-pip--not      { border: 1.5px solid var(--anchor); }
+.twp-pip--tbd      { border: 1.5px solid rgba(1, 96, 95, 0.35); }
+.twp-pip--progress { background: var(--anchor); }
+.twp-pip--needs    { background: #A9521A; }
+.twp-pip--done     { background: #10706D; }
+
+.twp-card__status {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.twp-card__status--not      { color: rgba(1, 96, 95, 0.55); }
+.twp-card__status--tbd      { color: rgba(1, 96, 95, 0.35); }
+.twp-card__status--progress { color: var(--anchor); }
+.twp-card__status--needs    { color: #A9521A; }
+.twp-card__status--done     { color: #10706D; }
+
+/* Timing is always the range. Lateness is the same words in amber. */
+.twp-card__due {
+  flex-shrink: 0;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 10px;
   letter-spacing: 0.1em;
   color: var(--anchor);
   white-space: nowrap;
 }
 .twp-card__due--late { color: #A9521A; }
-.twp-card__help {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-style: normal;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  color: #A9521A;
-}
-/* Thirty-two late items in amber at full strength is a wall of alarm.
-   The count stays amber; the word "late" drops back to teal so the eye
-   lands on the number. */
-.twp-card__late-n { color: #A9521A; }
-.twp-card__due--late { color: var(--anchor); }
+
 .twp-col__empty,
 .twp-empty {
   font-family: 'Cormorant SC', Georgia, serif;
