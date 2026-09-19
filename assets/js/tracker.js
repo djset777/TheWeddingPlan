@@ -26,6 +26,13 @@
   ];
   const PAGE = 12;
 
+  // The sheet thinks in countdown milestones, so the picker does too.
+  const TF_LABEL = {
+    '22mo': '22 MO out', '16mo': '16 MO out', '12mo': '12 MO out',
+    '7mo': '7 MO out', '3mo': '3 MO out', '1mo': '1 MO out', '1wk': '1 WK out',
+  };
+  const TF_ORDER = ['22mo', '16mo', '12mo', '7mo', '3mo', '1mo', '1wk'];
+
   // ---- Dates -------------------------------------------------------------
   function anchorDate(code) {
     const months = { '22mo': 22, '16mo': 16, '12mo': 12, '7mo': 7, '3mo': 3, '1mo': 1 };
@@ -61,7 +68,15 @@
   const isDone = s => (s.status || '').toLowerCase().trim() === 'complete';
   const needsHelp = s => (s.status || '').toLowerCase().trim() === 'needs help';
   const isLate = s => !isDone(s) && s.due && s.due.getTime() < Date.now();
-  const ownerOf = s => (s.assignees && s.assignees.length) ? s.assignees[0] : null;
+  const ownersOf = s => (s.assignees || []).filter(Boolean);
+  // Two names fit a card; beyond that the count carries it.
+  function ownersLabel(s) {
+    const n = ownersOf(s);
+    if (!n.length) return 'Unassigned';
+    if (n.length === 1) return n[0];
+    if (n.length === 2) return n[0] + ' & ' + n[1];
+    return n[0] + ' +' + (n.length - 1);
+  }
   const openIn = d => subtasks.filter(s => s.domain === d && !isDone(s)).length;
   const lateIn = d => subtasks.filter(s => s.domain === d && isLate(s)).length;
 
@@ -209,7 +224,7 @@
   };
 
   function cardHtml(s) {
-    const owner = ownerOf(s);
+    const owned = ownersOf(s).length > 0;
     const sKey = STATUS_KEY[(s.status || '').toLowerCase().trim()] || 'not';
     const sLabel = s.status || 'Not Started';
     const late = isLate(s);
@@ -223,7 +238,7 @@
         <span class="twp-card__top">
           <span class="twp-card__head">
             <span class="twp-card__parent">${esc(s.parentTitle)}</span>
-            <span class="twp-card__who${owner ? '' : ' twp-card__who--none'}">${esc(owner || 'Unassigned')}</span>
+            <span class="twp-card__who${owned ? '' : ' twp-card__who--none'}">${esc(ownersLabel(s))}</span>
           </span>
           <span class="twp-card__title">${esc(s.title)}</span>
         </span>
@@ -314,7 +329,7 @@
     const body = q('[data-modal-body]');
     if (!modal || !body) return;
 
-    const owner = ownerOf(sub) || '';
+    const owners = ownersOf(sub);
     const siblings = subtasks.filter(s => s.parentId === sub.parentId);
     const doneCount = siblings.filter(isDone).length;
 
@@ -322,13 +337,16 @@
       <span class="twp-modal__eyebrow">${esc(sub.parentTitle)}</span>
       <h2 class="twp-modal__title" id="twp-modal-title">${esc(sub.title)}</h2>
       <div class="twp-fields">
-        <label class="twp-field">
-          <span class="twp-field__label">Owner</span>
-          <select data-edit="Assignee">
-            <option value=""${owner ? '' : ' selected'}>Unassigned</option>
-            ${people.map(n => `<option${n === owner ? ' selected' : ''}>${esc(n)}</option>`).join('')}
-          </select>
-        </label>
+        <div class="twp-field twp-field--wide">
+          <span class="twp-field__label">Owners</span>
+          <div class="twp-people" data-people>
+            ${people.map(n => `
+              <label class="twp-person">
+                <input type="checkbox" value="${esc(n)}"${owners.indexOf(n) !== -1 ? ' checked' : ''}>
+                <span>${esc(n)}</span>
+              </label>`).join('')}
+          </div>
+        </div>
         <label class="twp-field">
           <span class="twp-field__label">Status</span>
           <select data-edit="Status">
@@ -336,10 +354,10 @@
           </select>
         </label>
         <label class="twp-field">
-          <span class="twp-field__label">Due</span>
+          <span class="twp-field__label">Milestone</span>
           <select data-edit="Timeframe">
-            ${['22mo', '16mo', '12mo', '7mo', '3mo', '1mo', '1wk'].map(c =>
-              `<option value="${c}"${c === sub.timeframe ? ' selected' : ''}>${shortDate(anchorDate(c))}</option>`).join('')}
+            ${TF_ORDER.map(c =>
+              `<option value="${c}"${c === sub.timeframe ? ' selected' : ''}>${TF_LABEL[c]}</option>`).join('')}
           </select>
         </label>
         <label class="twp-field twp-field--wide">
@@ -351,11 +369,19 @@
         ${esc(sub.domain)}${sub.moment ? ' · ' + esc(sub.moment) : ''} · ${doneCount} of ${siblings.length} in this deliverable complete
       </div>`;
 
+    qa('[data-people] input', body).forEach(box => {
+      box.addEventListener('change', () => {
+        const picked = qa('[data-people] input', body).filter(b => b.checked).map(b => b.value);
+        commit(sub, 'Assignee', picked.join(', '), (s, val) => {
+          s.assignees = val ? val.split(',').map(x => x.trim()).filter(Boolean) : [];
+        });
+      });
+    });
+
     qa('[data-edit]', body).forEach(el => {
       el.addEventListener('change', e => {
         const field = el.dataset.edit;
         const v = e.target.value;
-        if (field === 'Assignee')  commit(sub, 'Assignee',  v, (s, val) => { s.assignees = val ? [val] : []; });
         if (field === 'Status')    commit(sub, 'Status',    v, (s, val) => { s.status = val; });
         if (field === 'Notes')     commit(sub, 'Notes',     v, (s, val) => { s.notes = val; });
         if (field === 'Timeframe') commit(sub, 'Timeframe', v, (s, val) => { s.timeframe = val; s.due = anchorDate(val); });
