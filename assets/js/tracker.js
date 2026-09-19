@@ -59,7 +59,6 @@
   let domains = [];
   let domainFilter = null;
   let ownerFilter = null;
-  let openOnly = false;
   let openId = null;
   let shown = { discover: PAGE, decide: PAGE, execute: PAGE, done: PAGE };
   let loadedAt = null;
@@ -121,7 +120,6 @@
     return subtasks.filter(s => {
       if (domainFilter && s.domain !== domainFilter) return false;
       if (ownerFilter && !(s.assignees || []).includes(ownerFilter)) return false;
-      if (openOnly && isDone(s)) return false;
       return true;
     });
   }
@@ -157,28 +155,16 @@
     const mount = q('[data-toolbar]');
     if (!mount) return;
 
-    const shortlist = domains.slice(0, 5);
-    const rest = domains.slice(5);
     const late = subtasks.filter(isLate).length;
 
+    // Every tag gets a chip. Nothing hides behind a dropdown.
     const chips = [`<button type="button" class="twp-chip${domainFilter === null ? ' is-on' : ''}" data-domain="">All work</button>`]
-      .concat(shortlist.map(d =>
+      .concat(domains.map(d =>
         `<button type="button" class="twp-chip${domainFilter === d ? ' is-on' : ''}" data-domain="${esc(d)}">${esc(d)}</button>`))
       .join('');
 
-    const moreOpts = rest.length
-      ? `<label class="twp-chip" style="cursor:default;">More
-           <select data-domain-more>
-             <option value="">…</option>
-             ${rest.map(d => `<option${domainFilter === d ? ' selected' : ''}>${esc(d)}</option>`).join('')}
-           </select>
-         </label>`
-      : '';
-
     mount.innerHTML = `
-      ${chips}
-      ${moreOpts}
-      <button type="button" class="twp-chip${openOnly ? ' is-on' : ''}" data-openonly>Open only</button>
+      <div class="twp-chips">${chips}</div>
       <div class="twp-bar__right">
         <label class="twp-field__label" for="twp-owner">Showing</label>
         <select id="twp-owner" data-owner>
@@ -189,14 +175,9 @@
         <button type="button" class="twp-bar__sync" data-refresh>${loadedAt ? 'Synced ' + shortTime(loadedAt) : 'Refresh'}</button>
       </div>`;
 
-    const dm = q('[data-domain-more]', mount);
-    if (dm) dm.addEventListener('change', e => { domainFilter = e.target.value || null; resetPaging(); render(); });
-
     qa('[data-domain]', mount).forEach(b => b.addEventListener('click', () => {
       domainFilter = b.dataset.domain || null; resetPaging(); render();
     }));
-    const oo = q('[data-openonly]', mount);
-    if (oo) oo.addEventListener('click', () => { openOnly = !openOnly; resetPaging(); render(); });
     const ow = q('[data-owner]', mount);
     if (ow) ow.addEventListener('change', e => { ownerFilter = e.target.value || null; resetPaging(); render(); });
     const rf = q('[data-refresh]', mount);
@@ -233,8 +214,8 @@
         <span class="twp-card__parent">${esc(s.parentTitle)}</span>
         ${needsHelp(s) ? '<span class="twp-card__help">Needs help</span>' : ''}
         <span class="twp-card__foot">
-          <span class="${owner ? '' : 'twp-card__who--none'}">${esc(owner || 'Unassigned')}</span>
-          <span class="${dueCls}">${esc(dueText)}</span>
+          <span class="twp-card__who${owner ? '' : ' twp-card__who--none'}">${esc(owner || 'Unassigned')}</span>
+          <span class="twp-card__due ${dueCls}">${esc(dueText)}</span>
         </span>
       </button>`;
   }

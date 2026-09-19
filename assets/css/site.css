@@ -2809,9 +2809,15 @@
 .twp-bar {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  gap: var(--space-2) var(--space-3);
   margin-bottom: var(--space-4);
+}
+.twp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  flex: 1 1 60%;
 }
 .twp-chip {
   font-family: 'Cormorant SC', Georgia, serif;
@@ -2821,7 +2827,7 @@
   background: none;
   border: 1px solid rgba(1, 96, 95, 0.4);
   border-radius: 0;
-  padding: 6px 12px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 .twp-chip.is-on {
@@ -2884,11 +2890,12 @@
 .twp-col__bar--decide   { background: var(--anchor);  color: var(--linen); }
 .twp-col__bar--execute  { background: var(--deeper);  color: var(--linen); }
 .twp-col__bar--done     { background: var(--deepest); color: var(--linen); }
-.twp-col__n { font-size: var(--step--2); letter-spacing: 0.12em; }
-.twp-col__bar--discover .twp-col__n { color: var(--abyss); }
-.twp-col__bar--decide .twp-col__n,
-.twp-col__bar--execute .twp-col__n,
-.twp-col__bar--done .twp-col__n { color: var(--accent); }
+/* The count is the same color as the label beside it. One color per bar. */
+.twp-col__n {
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  color: inherit;
+}
 
 /* --- Card ---------------------------------------------------------------- */
 .twp-card {
@@ -2915,8 +2922,8 @@
 .twp-card--done .twp-card__title { color: var(--deepest); }
 .twp-card__parent {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: var(--step--2);
-  letter-spacing: 0.12em;
+  font-size: 10px;
+  letter-spacing: 0.18em;
   color: var(--anchor);
 }
 .twp-card__foot {
@@ -2924,13 +2931,26 @@
   justify-content: space-between;
   align-items: baseline;
   gap: 8px;
-  padding-top: 2px;
+  padding-top: 4px;
+}
+/* A person breathes: italic body face. */
+.twp-card__who {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: var(--step--1);
+  letter-spacing: 0;
+  color: var(--ink);
+}
+/* Gold means unresolved — here, nobody owns it yet. */
+.twp-card__who--none { color: var(--accent); }
+/* A date organizes: small caps, letterspaced, right-aligned. */
+.twp-card__due {
   font-family: 'Cormorant SC', Georgia, serif;
   font-size: var(--step--2);
   letter-spacing: 0.1em;
   color: var(--anchor);
+  white-space: nowrap;
 }
-.twp-card__who--none { color: var(--accent); }
 .twp-card__due--late { color: #A9521A; }
 .twp-card__due--done { color: var(--deepest); }
 .twp-card__help {
