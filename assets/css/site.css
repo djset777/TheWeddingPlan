@@ -2899,13 +2899,11 @@
 
 /* --- Card ----------------------------------------------------------------
    TYPE COLOR RULE — the card reads top to bottom in three colors:
-     gold  (#7A6210)   the deliverable label, set as an eyebrow
+     gold  (--accent)  the deliverable label, set as an eyebrow
      teal  (--anchor)  the task itself, at full strength
      teal  (#10706D)   the person, one step lighter, in italic
      amber (#A9521A)   flags attention: late, or stuck
-   The golds and teals here are deepened from the palette values so they
-   clear 4.5:1 on linen at 10px. Forest, navy and abyss are FILL colors
-   only. They never appear as type.
+   Forest, navy and abyss are FILL colors only. They never appear as type.
    -------------------------------------------------------------------------- */
 .twp-card {
   display: flex;
@@ -2931,12 +2929,14 @@
   line-height: 1.3;
   color: var(--anchor);
 }
-/* The eyebrow: gold, deepened so it stays legible at 10px on linen. */
+/* The eyebrow: palette gold, same as the brief pages. Carried at 11px
+   and medium weight so it holds on linen without darkening the hue. */
 .twp-card__parent {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-size: 10px;
+  font-weight: 500;
+  font-size: 11px;
   letter-spacing: 0.18em;
-  color: #7A6210;
+  color: var(--accent);
 }
 .twp-card__foot {
   display: flex;
