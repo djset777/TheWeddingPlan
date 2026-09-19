@@ -15,11 +15,34 @@ const PEOPLE = [
   {name:'Melonie',initials:'M'},{name:'Neisha',initials:'N'},{name:'Kailey',initials:'K'},
   {name:'Guaroa',initials:'G'},{name:'Mane',initials:'MN'}
 ];
-const TIMEFRAMES = [
-  {code:'22mo',label:'22MO',order:0},{code:'16mo',label:'16MO',order:1},
-  {code:'12mo',label:'12MO',order:2,isNow:true},{code:'7mo',label:'7MO',order:3},
-  {code:'3mo',label:'3MO',order:4},{code:'1mo',label:'1MO',order:5},{code:'1wk',label:'1WK',order:6}
-];
+// The timeframes are countdown markers, not labels: "7mo" is seven months
+// before the wedding. isNow is COMPUTED from today's date, never hardcoded —
+// a frozen marker silently hides everything in the buckets after it.
+const WEDDING_DATE = new Date('2027-07-07T16:00:00-04:00');
+
+function markerDate(code) {
+  const months = {'22mo':22,'16mo':16,'12mo':12,'7mo':7,'3mo':3,'1mo':1};
+  const d = new Date(WEDDING_DATE.getTime());
+  if (code === '1wk') { d.setDate(d.getDate() - 7); return d; }
+  d.setMonth(d.getMonth() - months[code]);
+  return d;
+}
+
+const TIMEFRAMES = (function buildTimeframes() {
+  const codes = ['22mo','16mo','12mo','7mo','3mo','1mo','1wk'];
+  const now = Date.now();
+  const rows = codes.map((code, i) => ({
+    code: code,
+    label: code.toUpperCase(),
+    order: i,
+    date: markerDate(code),
+  }));
+  // "Now" is the earliest marker still ahead of us; if all have passed,
+  // the last one holds.
+  const next = rows.find(r => r.date.getTime() >= now) || rows[rows.length - 1];
+  next.isNow = true;
+  return rows;
+})();
 
 // In-memory cache so we hit the network once per session per path.
 const _cache = {};

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Wedding Plan</title>
+  <title>The Plans — The Wedding Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@300;400;500&display=swap" rel="stylesheet">
@@ -17,21 +17,26 @@
 
     <main class="content">
 
-      <header class="home-head">
-        <div class="home-head__title">
-          <span class="eyebrow">Danisa &amp; Julian</span>
-          <h1 class="home-head__h1">The Wedding Plan</h1>
-          <p class="home-head__subtitle">Jarabacoa · La Vega · Dominican Republic</p>
-        </div>
+      <header class="twp-head">
+        <span class="eyebrow">The Plans</span>
+        <h1 class="twp-head__h1">Where Everything Stands</h1>
+        <p class="subtitle twp-head__sub">From wondering, to deciding, to done.</p>
       </header>
 
       <div class="twp-flash" data-flash hidden></div>
 
-      <div class="twp-app">
-        <nav class="twp-idx" data-index aria-label="Deliverables"></nav>
-        <section class="twp-work" data-workspace>
-          <div class="state">Loading…</div>
-        </section>
+      <div class="twp-bar" data-toolbar></div>
+
+      <section class="twp-board" data-board aria-label="Tasks by phase">
+        <div class="state">Loading…</div>
+      </section>
+
+      <div class="twp-modal" data-modal hidden role="dialog" aria-modal="true" aria-labelledby="twp-modal-title">
+        <button type="button" class="twp-modal__scrim" data-modal-close aria-label="Close"></button>
+        <div class="twp-modal__panel">
+          <button type="button" class="twp-modal__close" data-modal-close aria-label="Close">×</button>
+          <div data-modal-body></div>
+        </div>
       </div>
 
       <footer class="page-footer">
