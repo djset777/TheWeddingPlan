@@ -2777,11 +2777,14 @@
    ========================================================================== */
 
 /* --- Masthead ------------------------------------------------------------ */
+/* Matches .content__head and .home-head exactly: same paddings, same gold
+   rule. The masthead on this page is not a special case. */
 .twp-head {
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--anchor);
-  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--accent);
+  margin-bottom: var(--space-4);
 }
+.twp-head .eyebrow { display: block; margin-bottom: var(--space-1); }
 .twp-head__h1 {
   font-family: 'Cormorant SC', Georgia, serif;
   font-weight: 400;
@@ -2933,9 +2936,9 @@
    and medium weight so it holds on linen without darkening the hue. */
 .twp-card__parent {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 11px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--accent);
 }
 .twp-card__foot {
