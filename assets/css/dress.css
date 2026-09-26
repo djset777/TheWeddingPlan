@@ -1,5 +1,5 @@
 /* ==========================================================================
-   The Dress: vision, at-a-glance matrix, guide, tagged gown cards, references
+   The Dress: vision, guide by category, tagged gown cards, references
    Loads after site.css. Uses the existing palette and type tokens only.
    ========================================================================== */
 
@@ -41,43 +41,28 @@
   color: var(--deeper);
 }
 
-/* --- At a glance matrix -------------------------------------------------- */
-.glance-scroll { overflow-x: auto; }
-.glance {
-  width: 100%;
-  min-width: 640px;
-  border-collapse: collapse;
-  font-size: var(--step--1);
-  line-height: 1.45;
-  color: var(--ink);
-}
-.glance th,
-.glance td {
-  text-align: left;
-  vertical-align: top;
-  padding: var(--space-2) var(--space-2) var(--space-2) 0;
-  border-bottom: 1px solid var(--linen-rule);
-}
-.glance thead th {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  border-bottom: 1.5px solid var(--accent);
-}
-.glance__col--req { color: var(--anchor); }
-.glance__col--try { color: var(--accent); }
-.glance__col--out { color: var(--deeper); }
-.glance tbody th {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--deeper);
-  width: 8.5rem;
-}
-
-/* --- Guide (reuses .thread from site.css) -------------------------------- */
+/* --- Guide: one section, organized by category (reuses .thread) -------- */
 .dress-guide .thread__section { margin-bottom: var(--space-4); }
-.dress-guide .bullets { max-width: var(--measure); }
+.guide-rows { margin: 0; max-width: 46rem; }
+.guide-row {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  border-top: 1px solid var(--linen-rule);
+}
+.guide-row dt {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+.guide-row dd { margin: 0; color: var(--ink); line-height: 1.5; }
+.guide-row--req dt { color: var(--anchor); }
+.guide-row--try dt { color: var(--accent); }
+.guide-row--out dt { color: var(--deeper); }
+@media (max-width: 640px) {
+  .guide-row { grid-template-columns: 1fr; gap: 0; }
+}
 
 /* --- Chips (tags) -------------------------------------------------------- */
 .chips {
@@ -145,14 +130,4 @@
 
 @media (max-width: 640px) {
   .refs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3) var(--space-2); }
-}
-
-/* Screen-reader-only text (the empty corner cell of the matrix) */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
 }
