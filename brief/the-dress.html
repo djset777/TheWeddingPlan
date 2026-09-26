@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/dress.css">
 </head>
 <body>
 
@@ -39,124 +40,414 @@
         <p class="subtitle content__subtitle">A reference for my girls — gowns worth a look.</p>
       </header>
 
-      <!-- Card 1 -->
-      <article class="dress-card">
-        <div class="dress-card__media">
-          <img class="dress-card__img" src="../assets/img/dress/berta-25-02.webp" alt="Berta 25-02" loading="lazy">
-        </div>
-        <div class="dress-card__body">
-          <h3 class="dress-card__name">Berta 25-02</h3>
-          <a class="dress-card__ref" href="https://www.instagram.com/bertaprivee/" target="_blank" rel="noopener">View Reference →</a>
-          <ul class="dress-card__list">
-            <li>Off-shoulder long-sleeve lace mermaid, sheer corset bodice with 3D floral</li>
-            <li>The Privée line — most romantic, most lace-heavy</li>
-            <li>Tryable in the US: Berta flagships &amp; stockists (not far to travel)</li>
-            <li>IG: @berta / @bertaprivee</li>
-          </ul>
-        </div>
-      </article>
+      <!-- THE VISION -->
+      <p class="dress-vision"><span class="dress-vision__label">The vision</span> · an allover lace gown with a corset bodice, sleeves that open and move instead of hugging the arm, and a fitted-to-flared or A-line skirt, designed for an open-air July afternoon in the mountains of the Dominican Republic.</p>
 
-      <!-- Card 2 -->
-      <article class="dress-card">
-        <div class="dress-card__media">
-          <img class="dress-card__img" src="../assets/img/dress/royaldi-nancy.webp" alt="Royaldi Nancy" loading="lazy">
+      <!-- AT A GLANCE -->
+      <section class="dress-block" aria-labelledby="glance-title">
+        <h2 class="dress-block__title" id="glance-title">At a Glance</h2>
+        <p class="dress-block__sig">The whole brief, on one screen.</p>
+        <div class="glance-scroll">
+          <table class="glance">
+            <thead>
+              <tr>
+                <th scope="col"><span class="visually-hidden">Category</span></th>
+                <th scope="col" class="glance__col--req">Required</th>
+                <th scope="col" class="glance__col--try">To Try</th>
+                <th scope="col" class="glance__col--out">Ruled Out</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <th scope="row">Fabric</th>
+                  <td>Allover lace; light tulle or mesh linings</td>
+                  <td>Chantilly, corded or Alençon lace, tulle skirt layers</td>
+                  <td>Satin, mikado, heavy fabrics</td>
+                </tr>
+                <tr>
+                  <th scope="row">Corset</th>
+                  <td>Corset structure</td>
+                  <td>Built-in, overlay, or dropped-V seam; hidden, tonal, or exposed boning; molded, soft, or cupless support</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">Sleeves</th>
+                  <td>Full arm coverage that opens or flares</td>
+                  <td>Off, on, or higher on the shoulder; flare at the wrist, forearm, elbow, or angel sleeve</td>
+                  <td>Detachable sleeves, arm gauntlets</td>
+                </tr>
+                <tr>
+                  <th scope="row">Neckline</th>
+                  <td>An open neckline</td>
+                  <td>Classic sweetheart, eyelash edge, inverted sweetheart, scalloped strapless</td>
+                  <td>High and mock necklines</td>
+                </tr>
+                <tr>
+                  <th scope="row">Silhouette</th>
+                  <td></td>
+                  <td>Trumpet, A-line, mermaid</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">Details</th>
+                  <td></td>
+                  <td>One each: bolero, ballgown, subtle sparkle, 3D floral</td>
+                  <td>Heavy rhinestone or crystal</td>
+                </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="dress-card__body">
-          <h3 class="dress-card__name">Royaldi Nancy</h3>
-          <a class="dress-card__ref" href="https://www.instagram.com/royaldiofficial/" target="_blank" rel="noopener">View Reference →</a>
-          <ul class="dress-card__list">
-            <li>Lace mermaid, off-shoulder, long sleeve, cathedral lace veil</li>
-            <li>Italian house — order via stocking boutique, not direct</li>
-            <li>Made to order through boutique fitting appointment</li>
-            <li>IG: @royaldiofficial</li>
-          </ul>
-        </div>
-      </article>
+      </section>
 
-      <!-- Card 3 -->
-      <article class="dress-card">
-        <div class="dress-card__media">
-          <img class="dress-card__img" src="../assets/img/dress/wona-encore.webp" alt="WONÁ Encore" loading="lazy">
+      <!-- THE GUIDE -->
+      <section class="dress-block dress-guide" aria-labelledby="guide-title">
+        <h2 class="dress-block__title" id="guide-title">The Guide</h2>
+        <p class="dress-block__sig">Each category, with the reasoning behind it.</p>
+        <div class="thread">
+          <section class="thread__section">
+            <h3 class="thread__title">Fabric</h3>
+            <p class="thread__significance">Breathable first, for an open-air July afternoon.</p>
+            <ul class="bullets">
+              <li><strong>Allover lace is the foundation</strong> because it is timeless, classic, and breathable in summer heat.</li>
+              <li><strong>Light linings keep the lace breathable,</strong> so tulle or mesh is preferred over heavy crepe or satin underlays.</li>
+              <li><strong>Lace types are flexible,</strong> and both fine Chantilly with eyelash edges and textured corded or Alençon lace are worth comparing.</li>
+              <li><strong>Tulle skirt layers are welcome</strong> for the same reason: they are lightweight and breathable.</li>
+            </ul>
+          </section>
+          <section class="thread__section">
+            <h3 class="thread__title">Corset</h3>
+            <p class="thread__significance">Structure that supports without shouting.</p>
+            <ul class="bullets">
+              <li><strong>A corset is required</strong> to support the bust and midsection.</li>
+              <li><strong>Placement is flexible,</strong> with a built-in corset, an overlay corset worn over the skirt, and a dropped-V waist seam that suggests a corset line all worth trying.</li>
+              <li><strong>Boning visibility is flexible,</strong> with hidden boning, lace-covered tonal boning, and exposed sheer boning all worth comparing on a full bust.</li>
+              <li><strong>Bust support is flexible,</strong> with molded cups, soft sewn-in cups, and a cupless internal corset all worth trying.</li>
+            </ul>
+          </section>
+          <section class="thread__section">
+            <h3 class="thread__title">Sleeves</h3>
+            <p class="thread__significance">Covered arms, with room to move.</p>
+            <ul class="bullets">
+              <li><strong>Sleeves are required</strong> to cover the arms fully, in lace dense enough to soften a tattoo sleeve beneath.</li>
+              <li><strong>Length is flexible,</strong> and full-length sleeves reaching the wrist or hand are welcome.</li>
+              <li><strong>Shoulder placement is flexible,</strong> from off the shoulder, to on the shoulder, to higher toward the neck while keeping an open neckline.</li>
+              <li><strong>The flare point is flexible,</strong> from a cuff at the wrist, to a trumpet flare from the forearm, to a bell flare from the elbow, to an angel sleeve that opens along the arm, as long as the sleeve opens somewhere instead of staying snug to the wrist.</li>
+            </ul>
+          </section>
+          <section class="thread__section">
+            <h3 class="thread__title">Neckline</h3>
+            <p class="thread__significance">Open, and cool enough for July.</p>
+            <ul class="bullets">
+              <li><strong>Sweetheart variations lead the list,</strong> including the classic sweetheart, the sweetheart with an eyelash lace edge, and the inverted sweetheart.</li>
+              <li><strong>Strapless scalloped necklines are also worth trying</strong> for their soft lace edge.</li>
+              <li><strong>An open neckline is required</strong> to stay cool in July heat.</li>
+            </ul>
+          </section>
+          <section class="thread__section">
+            <h3 class="thread__title">Silhouette</h3>
+            <p class="thread__significance">Fitted to flared, tried every way.</p>
+            <ul class="bullets">
+              <li><strong>Trumpet is the primary direction</strong> because it defines curves while leaving room to move and dance.</li>
+              <li><strong>A-line is a strong second,</strong> especially when paired with an overlay corset.</li>
+              <li><strong>Mermaid is worth trying</strong> to see how a fit through the knee reads before ruling it in or out.</li>
+            </ul>
+          </section>
+          <section class="thread__section">
+            <h3 class="thread__title">Comparison Only</h3>
+            <p class="thread__significance">One of each, to be sure.</p>
+            <ul class="bullets">
+              <li><strong>A bolero is worth one try</strong> to see the look, although it is not the leading direction.</li>
+              <li><strong>A full ballgown is worth one try</strong> to confirm or rule out volume.</li>
+              <li><strong>A subtle sparkle lace is worth one try</strong> to test how shine reads.</li>
+              <li><strong>A 3D floral appliqué is worth one try</strong> to test how raised texture reads.</li>
+            </ul>
+          </section>
+          <section class="thread__section">
+            <h3 class="thread__title">Not of Interest</h3>
+            <p class="thread__significance">Ruled out, with the reason.</p>
+            <ul class="bullets">
+              <li><strong>Satin, mikado, and other heavy fabrics are ruled out</strong> because they do not breathe and they damage easily.</li>
+              <li><strong>Detachable sleeves and arm gauntlets are ruled out</strong> in favor of sleeves built into the gown.</li>
+              <li><strong>High necklines and mock necks are ruled out</strong> because of the heat.</li>
+              <li><strong>Heavy rhinestone or crystal embellishment is ruled out</strong> in favor of the lace doing the work.</li>
+            </ul>
+          </section>
+          <section class="thread__section">
+            <h3 class="thread__title">Veil</h3>
+            <p class="thread__significance">Still open.</p>
+            <ul class="bullets">
+              <li><strong>The veil is still to be decided</strong> and will follow once the dress direction is set.</li>
+            </ul>
+          </section>
         </div>
-        <div class="dress-card__body">
-          <h3 class="dress-card__name">WONÁ Encore</h3>
-          <a class="dress-card__ref" href="https://www.instagram.com/wona_concept/" target="_blank" rel="noopener">View Reference →</a>
-          <ul class="dress-card__list">
-            <li>Lace mermaid, off-shoulder sleeves, corset lace-up back</li>
-            <li>NYC bridal house — order via boutique appointment</li>
-            <li>Detachable overskirt — mermaid or full train, two looks</li>
-            <li>IG: @wona_concept</li>
-          </ul>
-        </div>
-      </article>
+      </section>
 
-      <!-- Card 4 -->
-      <article class="dress-card">
-        <div class="dress-card__media">
-          <img class="dress-card__img" src="../assets/img/dress/oleg-baburov-verbena.webp" alt="Oleg Baburov Verbena" loading="lazy">
-        </div>
-        <div class="dress-card__body">
-          <h3 class="dress-card__name">Oleg Baburov 'Verbena'</h3>
-          <a class="dress-card__ref" href="https://www.instagram.com/oleg_baburow/" target="_blank" rel="noopener">View Reference →</a>
-          <ul class="dress-card__list">
-            <li>Lace mermaid, sweetheart neckline, off-shoulder straps</li>
-            <li>Long sleeves flare into a soft bell shape at the wrist, sheer lace throughout</li>
-            <li>Delicate floral lace overlay, subtle shimmer, matching lace cathedral veil</li>
-            <li>IG: @oleg_baburow</li>
-          </ul>
-        </div>
-      </article>
+      <!-- THE GOWNS -->
+      <section class="dress-block" aria-labelledby="gowns-title">
+        <h2 class="dress-block__title" id="gowns-title">The Gowns</h2>
+        <p class="dress-block__sig">Real gowns worth a fitting.</p>
 
-      <!-- Card 5 -->
-      <article class="dress-card">
-        <div class="dress-card__media">
-          <img class="dress-card__img" src="../assets/img/dress/ange-etoiles-blanca.webp" alt="Ange Étoiles Blanca" loading="lazy">
-        </div>
-        <div class="dress-card__body">
-          <h3 class="dress-card__name">Ange Étoiles Blanca</h3>
-          <a class="dress-card__ref" href="https://www.instagram.com/dellamorebridal/" target="_blank" rel="noopener">View Reference →</a>
-          <ul class="dress-card__list">
-            <li>Satin and tulle A-line, clean minimal lines, no embellishment</li>
-            <li>Low open back, modest coverage through the bodice</li>
-            <li>Simple, beach-inspired silhouette — pared-back rather than dramatic</li>
-            <li>IG: @dellamorebridal</li>
-          </ul>
-        </div>
-      </article>
+        <!-- Card 1: The Bell Cuff -->
+        <article class="dress-card">
+          <div class="dress-card__media">
+            <img class="dress-card__img" src="../assets/img/dress/oleg-baburov-verbena.webp" alt="The Bell Cuff" loading="lazy">
+          </div>
+          <div class="dress-card__body">
+            <h3 class="dress-card__name">The Bell Cuff</h3>
+            <p class="dress-card__meta">Oleg Baburov · Verbena</p>
+            <ul class="chips" aria-label="Details"><li class="chip">Off-shoulder sweetheart</li><li class="chip">Eyelash edge</li><li class="chip">Exposed boning</li><li class="chip">Flared cuff</li><li class="chip">Mermaid</li></ul>
+            <a class="dress-card__ref" href="https://www.instagram.com/oleg_baburow/" target="_blank" rel="noopener">View Reference →</a>
+            <ul class="dress-card__list">
+              <li>Lace mermaid with a sweetheart neckline and off-shoulder straps</li>
+              <li>Long sheer lace sleeves that flare into a soft bell at the wrist</li>
+              <li>Delicate floral lace with subtle shimmer and a matching cathedral veil</li>
+            </ul>
+          </div>
+        </article>
 
-      <!-- Card 6 -->
-      <article class="dress-card">
-        <div class="dress-card__media">
-          <img class="dress-card__img" src="../assets/img/dress/calla-blanche-ruya.webp" alt="Calla Blanche Ruya" loading="lazy">
-        </div>
-        <div class="dress-card__body">
-          <h3 class="dress-card__name">Calla Blanche Ruya</h3>
-          <a class="dress-card__ref" href="https://www.instagram.com/callablanchebridal/" target="_blank" rel="noopener">View Reference →</a>
-          <ul class="dress-card__list">
-            <li>Beaded lace sheath, corset bodice, matching long-sleeve jacket</li>
-            <li>Toronto-based designer — order via stocking boutique</li>
-            <li>Strapless underneath, jacket detaches for two looks</li>
-            <li>IG: @callablanchebridal</li>
-          </ul>
-        </div>
-      </article>
+        <!-- Card 2: The Pearl Drape -->
+        <article class="dress-card">
+          <div class="dress-card__media">
+            <img class="dress-card__img" src="../assets/img/dress/pearl-drape.webp" alt="The Pearl Drape" loading="lazy">
+          </div>
+          <div class="dress-card__body">
+            <h3 class="dress-card__name">The Pearl Drape</h3>
+            <p class="dress-card__meta"><span class="tbc">Designer to be confirmed</span></p>
+            <ul class="chips" aria-label="Details"><li class="chip">Off-shoulder sweetheart</li><li class="chip">Eyelash edge</li><li class="chip">Pearl-draped corset</li><li class="chip">Mermaid</li></ul>
+            <ul class="dress-card__list">
+              <li>Allover Chantilly lace on a nude lining, finished with an eyelash hem and train</li>
+              <li>Structured corset shaped by draped pearl strands instead of visible boning</li>
+              <li>Sheer long sleeves that open slightly at the hand, so a denser or lined sleeve is worth asking about</li>
+            </ul>
+          </div>
+        </article>
 
-      <!-- Card 7 -->
-      <article class="dress-card">
-        <div class="dress-card__media">
-          <img class="dress-card__img" src="../assets/img/dress/margot-venus.webp" alt="Margot Venus" loading="lazy">
+        <!-- Card 3: The Cathedral Lace -->
+        <article class="dress-card">
+          <div class="dress-card__media">
+            <img class="dress-card__img" src="../assets/img/dress/royaldi-nancy.webp" alt="The Cathedral Lace" loading="lazy">
+          </div>
+          <div class="dress-card__body">
+            <h3 class="dress-card__name">The Cathedral Lace</h3>
+            <p class="dress-card__meta">Royaldi · Nancy</p>
+            <ul class="chips" aria-label="Details"><li class="chip">Off-shoulder</li><li class="chip">Long sleeve</li><li class="chip">Allover lace</li><li class="chip">Mermaid</li></ul>
+            <a class="dress-card__ref" href="https://www.instagram.com/royaldiofficial/" target="_blank" rel="noopener">View Reference →</a>
+            <ul class="dress-card__list">
+              <li>Lace mermaid with off-shoulder long sleeves and a cathedral lace veil</li>
+              <li>Italian house, ordered through a stocking boutique rather than direct</li>
+              <li>Made to order after a boutique fitting appointment</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 4: The Floral Corset -->
+        <article class="dress-card">
+          <div class="dress-card__media">
+            <img class="dress-card__img" src="../assets/img/dress/berta-25-02.webp" alt="The Floral Corset" loading="lazy">
+          </div>
+          <div class="dress-card__body">
+            <h3 class="dress-card__name">The Floral Corset</h3>
+            <p class="dress-card__meta">Berta · 25-02</p>
+            <ul class="chips" aria-label="Details"><li class="chip">Off-shoulder</li><li class="chip">Long sleeve</li><li class="chip">Sheer corset</li><li class="chip">Mermaid</li></ul>
+            <a class="dress-card__ref" href="https://www.instagram.com/bertaprivee/" target="_blank" rel="noopener">View Reference →</a>
+            <ul class="dress-card__list">
+              <li>Off-shoulder long-sleeve lace mermaid with a sheer corset bodice and 3D floral detail</li>
+              <li>From the Privée line, the most romantic and lace-heavy Berta collection</li>
+              <li>Available to try on in the US through Berta flagships and stockists</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 5: The Two-Look -->
+        <article class="dress-card">
+          <div class="dress-card__media">
+            <img class="dress-card__img" src="../assets/img/dress/wona-encore.webp" alt="The Two-Look" loading="lazy">
+          </div>
+          <div class="dress-card__body">
+            <h3 class="dress-card__name">The Two-Look</h3>
+            <p class="dress-card__meta">WONÁ · Encore</p>
+            <ul class="chips" aria-label="Details"><li class="chip">Off-shoulder sleeve</li><li class="chip">Lace-up back</li><li class="chip">Detachable overskirt</li><li class="chip">Mermaid</li></ul>
+            <a class="dress-card__ref" href="https://www.instagram.com/wona_concept/" target="_blank" rel="noopener">View Reference →</a>
+            <ul class="dress-card__list">
+              <li>Lace mermaid with off-shoulder sleeves and a corset lace-up back</li>
+              <li>Detachable overskirt that turns the mermaid into a full train for a second look</li>
+              <li>NYC bridal house, ordered through a boutique appointment</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 6: The Bolero -->
+        <article class="dress-card">
+          <div class="dress-card__media">
+            <img class="dress-card__img" src="../assets/img/dress/ange-etoiles-blanca.webp" alt="The Bolero" loading="lazy">
+          </div>
+          <div class="dress-card__body">
+            <h3 class="dress-card__name">The Bolero</h3>
+            <p class="dress-card__meta">Ange Étoiles · Blanca</p>
+            <ul class="chips" aria-label="Details"><li class="chip">Bolero</li><li class="chip">Bell sleeve</li><li class="chip">Basque waist</li><li class="chip">A-line</li></ul>
+            <a class="dress-card__ref" href="https://www.instagram.com/dellamorebridal/" target="_blank" rel="noopener">View Reference →</a>
+            <ul class="dress-card__list">
+              <li>Strapless corset bodice with visible boning and a basque waist over an A-line lace skirt</li>
+              <li>High-neck lace bolero with bell sleeves layered over the bodice</li>
+              <li>A comparison try-on for the bolero look</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Card 7: The Lace Jacket -->
+        <article class="dress-card">
+          <div class="dress-card__media">
+            <img class="dress-card__img" src="../assets/img/dress/calla-blanche-ruya.webp" alt="The Lace Jacket" loading="lazy">
+          </div>
+          <div class="dress-card__body">
+            <h3 class="dress-card__name">The Lace Jacket</h3>
+            <p class="dress-card__meta">Calla Blanche · Ruya</p>
+            <ul class="chips" aria-label="Details"><li class="chip">Lace jacket</li><li class="chip">Corset bodice</li><li class="chip">Sheath</li></ul>
+            <a class="dress-card__ref" href="https://www.instagram.com/callablanchebridal/" target="_blank" rel="noopener">View Reference →</a>
+            <ul class="dress-card__list">
+              <li>Beaded lace sheath with a corset bodice and a matching long-sleeve jacket</li>
+              <li>Strapless underneath, with the jacket removed for a second look</li>
+              <li>Toronto designer, ordered through a stocking boutique</li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <!-- THE REFERENCES -->
+      <section class="dress-block" aria-labelledby="refs-title">
+        <h2 class="dress-block__title" id="refs-title">The References</h2>
+        <p class="dress-block__sig">Details worth a closer look.</p>
+        <div class="refs-group">
+          <h3 class="refs-group__title">Corset &amp; Bodice</h3>
+          <div class="refs-grid">
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/01.webp" alt="Reference 01: eyelash sweetheart, exposed boning, flared cuff" loading="lazy">
+              <figcaption class="ref-tile__num">01</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Eyelash sweetheart</li><li class="chip">Exposed boning</li><li class="chip">Flared cuff</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/02.webp" alt="Reference 02: eyelash sweetheart, exposed boning, pointed cuff" loading="lazy">
+              <figcaption class="ref-tile__num">02</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Eyelash sweetheart</li><li class="chip">Exposed boning</li><li class="chip">Pointed cuff</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/03.webp" alt="Reference 03: exposed boning, trumpet sleeve" loading="lazy">
+              <figcaption class="ref-tile__num">03</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Exposed boning</li><li class="chip">Trumpet sleeve</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/04.webp" alt="Reference 04: plunging sweetheart, corset bodice, mermaid" loading="lazy">
+              <figcaption class="ref-tile__num">04</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Plunging sweetheart</li><li class="chip">Corset bodice</li><li class="chip">Mermaid</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/05.webp" alt="Reference 05: overlay corset, basque waist" loading="lazy">
+              <figcaption class="ref-tile__num">05</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Overlay corset</li><li class="chip">Basque waist</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/06.webp" alt="Reference 06: overlay corset, basque waist, corded lace" loading="lazy">
+              <figcaption class="ref-tile__num">06</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Overlay corset</li><li class="chip">Basque waist</li><li class="chip">Corded lace</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/07.webp" alt="Reference 07: pleated corset, straight neckline" loading="lazy">
+              <figcaption class="ref-tile__num">07</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Pleated corset</li><li class="chip">Straight neckline</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/08.webp" alt="Reference 08: smooth bodice, curved neckline" loading="lazy">
+              <figcaption class="ref-tile__num">08</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Smooth bodice</li><li class="chip">Curved neckline</li></ul>
+            </figure>
+          </div>
         </div>
-        <div class="dress-card__body">
-          <h3 class="dress-card__name">Margot 'Venus'</h3>
-          <a class="dress-card__ref" href="https://www.instagram.com/maison_margot_official/" target="_blank" rel="noopener">View Reference →</a>
-          <ul class="dress-card__list">
-            <li>Sequin lace bodice, square neckline, off-shoulder straps</li>
-            <li>Long sleeves flare into a soft bell shape, sheer lace overlay through the arm</li>
-            <li>Delicate sequin/floral lace throughout, subtle sparkle</li>
-            <li>IG: @maison_margot_official</li>
-          </ul>
+        <div class="refs-group">
+          <h3 class="refs-group__title">Sleeves</h3>
+          <div class="refs-grid">
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/09.webp" alt="Reference 09: off-shoulder sweetheart, pointed cuff, scalloped edge" loading="lazy">
+              <figcaption class="ref-tile__num">09</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Off-shoulder sweetheart</li><li class="chip">Pointed cuff</li><li class="chip">Scalloped edge</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/10.webp" alt="Reference 10: bell sleeve, off-shoulder, exposed boning" loading="lazy">
+              <figcaption class="ref-tile__num">10</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Bell sleeve</li><li class="chip">Off-shoulder</li><li class="chip">Exposed boning</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/11.webp" alt="Reference 11: bell sleeve, exposed boning" loading="lazy">
+              <figcaption class="ref-tile__num">11</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Bell sleeve</li><li class="chip">Exposed boning</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/12.webp" alt="Reference 12: angel sleeve, eyelash sweetheart" loading="lazy">
+              <figcaption class="ref-tile__num">12</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Angel sleeve</li><li class="chip">Eyelash sweetheart</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/13.webp" alt="Reference 13: bell sleeve, lace-up back" loading="lazy">
+              <figcaption class="ref-tile__num">13</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Bell sleeve</li><li class="chip">Lace-up back</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/14.webp" alt="Reference 14: dense lace sleeve, allover lace" loading="lazy">
+              <figcaption class="ref-tile__num">14</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Dense lace sleeve</li><li class="chip">Allover lace</li></ul>
+            </figure>
+          </div>
         </div>
-      </article>
+        <div class="refs-group">
+          <h3 class="refs-group__title">Skirt &amp; Silhouette</h3>
+          <div class="refs-grid">
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/15.webp" alt="Reference 15: off-shoulder, allover lace, trumpet" loading="lazy">
+              <figcaption class="ref-tile__num">15</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Off-shoulder</li><li class="chip">Allover lace</li><li class="chip">Trumpet</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/16.webp" alt="Reference 16: a-line, high slit, eyelash edge" loading="lazy">
+              <figcaption class="ref-tile__num">16</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">A-line</li><li class="chip">High slit</li><li class="chip">Eyelash edge</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/17.webp" alt="Reference 17: overskirt, eyelash sweetheart" loading="lazy">
+              <figcaption class="ref-tile__num">17</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Overskirt</li><li class="chip">Eyelash sweetheart</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/18.webp" alt="Reference 18: full lace skirt, off-shoulder sleeve" loading="lazy">
+              <figcaption class="ref-tile__num">18</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Full lace skirt</li><li class="chip">Off-shoulder sleeve</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/19.webp" alt="Reference 19: fitted lace, off-shoulder" loading="lazy">
+              <figcaption class="ref-tile__num">19</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Fitted lace</li><li class="chip">Off-shoulder</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/20.webp" alt="Reference 20: fitted lace, mermaid" loading="lazy">
+              <figcaption class="ref-tile__num">20</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Fitted lace</li><li class="chip">Mermaid</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/21.webp" alt="Reference 21: a-line, high slit, exposed boning" loading="lazy">
+              <figcaption class="ref-tile__num">21</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">A-line</li><li class="chip">High slit</li><li class="chip">Exposed boning</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/22.webp" alt="Reference 22: draped skirt, a-line" loading="lazy">
+              <figcaption class="ref-tile__num">22</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Draped skirt</li><li class="chip">A-line</li></ul>
+            </figure>
+            <figure class="ref-tile">
+              <img class="ref-tile__img" src="../assets/img/dress/refs/23.webp" alt="Reference 23: column fit, corded lace, scalloped hem" loading="lazy">
+              <figcaption class="ref-tile__num">23</figcaption>
+              <ul class="chips chips--small" aria-label="Details"><li class="chip">Column fit</li><li class="chip">Corded lace</li><li class="chip">Scalloped hem</li></ul>
+            </figure>
+          </div>
+        </div>
+      </section>
 
       <footer class="page-footer">
         <span class="page-footer__name">Danisa &amp; Julian</span>

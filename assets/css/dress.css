@@ -1,0 +1,158 @@
+/* ==========================================================================
+   The Dress: vision, at-a-glance matrix, guide, tagged gown cards, references
+   Loads after site.css. Uses the existing palette and type tokens only.
+   ========================================================================== */
+
+/* --- Section blocks ------------------------------------------------------ */
+.dress-block { margin-bottom: var(--space-5); }
+
+.dress-block__title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-1);
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  margin: 0;
+  padding: 0 0 var(--space-1);
+  border: none;
+  border-bottom: 1px solid var(--accent);
+}
+.dress-block__sig {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--accent);
+  font-size: var(--step-0);
+  margin: var(--space-1) 0 var(--space-3);
+}
+
+/* --- Vision -------------------------------------------------------------- */
+.dress-vision {
+  max-width: var(--measure);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 0 0 var(--space-5);
+}
+.dress-vision__label {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--deeper);
+}
+
+/* --- At a glance matrix -------------------------------------------------- */
+.glance-scroll { overflow-x: auto; }
+.glance {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+  line-height: 1.45;
+  color: var(--ink);
+}
+.glance th,
+.glance td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--space-2) var(--space-2) var(--space-2) 0;
+  border-bottom: 1px solid var(--linen-rule);
+}
+.glance thead th {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  border-bottom: 1.5px solid var(--accent);
+}
+.glance__col--req { color: var(--anchor); }
+.glance__col--try { color: var(--accent); }
+.glance__col--out { color: var(--deeper); }
+.glance tbody th {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--deeper);
+  width: 8.5rem;
+}
+
+/* --- Guide (reuses .thread from site.css) -------------------------------- */
+.dress-guide .thread__section { margin-bottom: var(--space-4); }
+.dress-guide .bullets { max-width: var(--measure); }
+
+/* --- Chips (tags) -------------------------------------------------------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.chip {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  color: var(--deeper);
+  border: 1px solid var(--accent);
+  padding: 4px 10px;
+}
+.chips--small .chip { font-size: 0.72rem; padding: 3px 7px; }
+
+/* --- Gown cards: additions only ------------------------------------------ */
+.dress-card__body { display: flex; flex-direction: column; gap: var(--space-2); }
+.dress-card__body .dress-card__ref { margin: 0; align-self: flex-start; }
+.dress-card__meta {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* --- References ---------------------------------------------------------- */
+.refs-group { margin-bottom: var(--space-4); }
+.refs-group__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--step-1);
+  color: var(--deeper);
+  margin: 0 0 var(--space-2);
+  border: none;
+  padding: 0;
+}
+.refs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: var(--space-4) var(--space-3);
+}
+.ref-tile { margin: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+.ref-tile__img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  background: var(--linen-shade);
+}
+.ref-tile__num {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  font-size: var(--step--1);
+}
+
+@media (max-width: 640px) {
+  .refs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3) var(--space-2); }
+}
+
+/* Screen-reader-only text (the empty corner cell of the matrix) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
