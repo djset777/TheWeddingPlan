@@ -3,6 +3,9 @@
    Loads after site.css. Uses the existing palette and type tokens only.
    ========================================================================== */
 
+/* --- One reading width for the whole page ----------------------------- */
+.content.dress-content { max-width: calc(52rem + 2 * var(--space-4)); }
+
 /* --- Section blocks ------------------------------------------------------ */
 .dress-block { margin-bottom: var(--space-5); }
 
@@ -28,7 +31,6 @@
 
 /* --- Vision -------------------------------------------------------------- */
 .dress-vision {
-  max-width: var(--measure);
   font-size: var(--step-0);
   line-height: 1.6;
   color: var(--ink);
@@ -43,7 +45,7 @@
 
 /* --- Guide: one section, organized by category (reuses .thread) -------- */
 .dress-guide .thread__section { margin-bottom: var(--space-4); }
-.guide-rows { margin: 0; max-width: 46rem; }
+.guide-rows { margin: 0; }
 .guide-row {
   display: grid;
   grid-template-columns: 7.5rem minmax(0, 1fr);
@@ -109,7 +111,7 @@
 }
 .refs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-4) var(--space-3);
 }
 .ref-tile { margin: 0; display: flex; flex-direction: column; gap: var(--space-1); }
