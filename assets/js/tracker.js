@@ -91,6 +91,17 @@
       `<span class="twp-bub" title="${esc(n)}">${esc(initialsOf(n))}</span>`).join('');
   }
   // Two names fit a card; beyond that the count carries it.
+  // Every owner as an overlapping stack of marks (one per person);
+  // an unassigned task keeps its single dash mark.
+  function ownerMarks(s, cls) {
+    const n = ownersOf(s);
+    const title = esc(n.join(', ') || 'Unassigned');
+    if (!n.length) return `<span class="${cls}" title="${title}">&ndash;</span>`;
+    return `<span class="twp-marks" title="${title}">` +
+      n.map(p => `<span class="${cls}">${esc(initialsOf(p))}</span>`).join('') +
+      `</span>`;
+  }
+
   function ownersLabel(s) {
     const n = ownersOf(s);
     if (!n.length) return 'Unassigned';
@@ -297,7 +308,7 @@
       <button type="button" class="twp-card${done ? ' twp-card--done' : ''}" data-open="${esc(s.id)}">
         <span class="twp-card__head">
           <span class="twp-card__parent">${esc(s.parentTitle)}</span>
-          <span class="twp-card__mark" title="${esc(ownersOf(s).join(', ') || 'Unassigned')}">${ownersOf(s).length ? esc(initialsOf(ownersOf(s)[0])) : '&ndash;'}</span>
+          ${ownerMarks(s, 'twp-card__mark')}
         </span>
         <span class="twp-card__title">${esc(s.title)}</span>
         <span class="twp-card__foot">
@@ -413,7 +424,7 @@
             <span class="twp-pip twp-pip--${PIP_KEY(s)}"></span>
             <span class="twp-sub__tf${late ? ' is-late' : ''}">${esc(TF_LABEL[s.timeframe] || '')}</span>
           </span>
-          <span class="twp-sub__mark" title="${esc(ownersOf(s).join(', ') || 'Unassigned')}">${ownersOf(s).length ? esc(initialsOf(ownersOf(s)[0])) : '&ndash;'}</span>
+          ${ownerMarks(s, 'twp-sub__mark')}
         </div>`;
     }).join('');
 

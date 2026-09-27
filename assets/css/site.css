@@ -3405,3 +3405,13 @@
   .pal__rule { padding-right: 0; margin-right: 0; }
   .pal__bar { height: 88px; border-radius: 4px !important; }
 }
+
+/* ==========================================================================
+   Multiple owners — overlapping stack (option B, Sept 2026)
+   Each mark keeps its full circle; a linen ring separates the overlap.
+   ========================================================================== */
+.twp-marks { display: inline-flex; flex-shrink: 0; }
+.twp-marks > .twp-card__mark,
+.twp-marks > .twp-sub__mark { box-shadow: 0 0 0 2px var(--bg); }
+.twp-marks > .twp-card__mark + .twp-card__mark { margin-left: -7px; }
+.twp-marks > .twp-sub__mark + .twp-sub__mark { margin-left: -6px; }
