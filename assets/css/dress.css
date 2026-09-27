@@ -35,7 +35,7 @@
 .dress-content .content__title { color: var(--doc-ink); }
 
 /* --- Vision: gold small-caps label + italic statement, inside the header - */
-.dress-vision { margin-top: var(--space-4); }
+.dress-vision { margin: 0 0 var(--space-5); }
 .dress-vision__label {
   margin: 0 0 6px;
   font-family: 'Cormorant SC', Georgia, serif;
