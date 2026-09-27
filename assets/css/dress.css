@@ -1,5 +1,5 @@
 /* ==========================================================================
-   The Dress: vision, guide by category, tagged gown cards, references
+   The Dress: vision, guide by category, filterable references, lightbox
    Loads after site.css. Uses the existing palette and type tokens only.
    ========================================================================== */
 
@@ -48,7 +48,7 @@
 .guide-rows { margin: 0; }
 .guide-row {
   display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr);
+  grid-template-columns: 9.5rem minmax(0, 1fr);
   gap: var(--space-2);
   padding: var(--space-1) 0;
   border-top: 1px solid var(--linen-rule);
@@ -87,37 +87,51 @@
 }
 .chips--small .chip { font-size: 0.72rem; padding: 3px 7px; }
 
-/* --- Gown cards: additions only ------------------------------------------ */
-.dress-card__body { display: flex; flex-direction: column; gap: var(--space-2); }
-.dress-card__body .dress-card__ref { margin: 0; align-self: flex-start; }
-.dress-card__meta {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  color: var(--ink);
-  margin: 0;
+/* --- References: filter row ---------------------------------------------- */
+.ref-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 var(--space-4);
 }
-
-/* --- References ---------------------------------------------------------- */
-.refs-group { margin-bottom: var(--space-4); }
-.refs-group__title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
+.ref-filter__btn {
+  font-family: 'Cormorant SC', Georgia, serif;
   font-weight: 500;
-  font-size: var(--step-1);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  line-height: 1.2;
   color: var(--deeper);
-  margin: 0 0 var(--space-2);
-  border: none;
-  padding: 0;
+  background: transparent;
+  border: 1px solid var(--accent);
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
 }
+.ref-filter__btn:hover { background: rgba(212, 175, 55, 0.12); }
+.ref-filter__btn.is-active { background: var(--anchor); border-color: var(--anchor); color: var(--linen); }
+.ref-filter__count { opacity: 0.6; margin-left: 2px; }
+.ref-filter__btn:focus-visible,
+.ref-tile__open:focus-visible,
+.lightbox button:focus-visible { outline: 2px solid var(--anchor); outline-offset: 2px; }
+
 .refs-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-4) var(--space-3);
 }
 .ref-tile { margin: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+.ref-tile[hidden] { display: none; }
+.ref-tile__open {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: zoom-in;
+}
 .ref-tile__img {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   display: block;
   background: var(--linen-shade);
@@ -132,4 +146,61 @@
 
 @media (max-width: 640px) {
   .refs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3) var(--space-2); }
+}
+
+/* --- Lightbox (click a reference to see it full size) --------------------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+  background: rgba(10, 22, 40, 0.97);
+}
+.lightbox[hidden] { display: none; }
+.lightbox__figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  max-height: 100%;
+}
+.lightbox__img {
+  max-width: min(90vw, 720px);
+  max-height: calc(100vh - 8rem);
+  width: auto;
+  height: auto;
+  display: block;
+}
+.lightbox__caption {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--linen);
+  font-size: var(--step--1);
+  text-align: center;
+}
+.lightbox__close,
+.lightbox__nav {
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  line-height: 1;
+}
+.lightbox__close { position: absolute; top: var(--space-2); right: var(--space-3); font-size: 2.4rem; }
+.lightbox__nav { font-size: 3rem; padding: var(--space-2); }
+.lightbox__close:hover,
+.lightbox__nav:hover { color: var(--linen); }
+@media (max-width: 640px) {
+  .lightbox { padding: var(--space-4) 0; gap: 0; }
+  .lightbox__nav { position: absolute; bottom: var(--space-2); font-size: 2.6rem; }
+  .lightbox__nav--prev { left: var(--space-3); }
+  .lightbox__nav--next { right: var(--space-3); }
+  .lightbox__img { max-width: 100vw; max-height: calc(100vh - 10rem); }
 }
