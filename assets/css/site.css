@@ -3415,3 +3415,7 @@
 .twp-marks > .twp-sub__mark { box-shadow: 0 0 0 2px var(--bg); }
 .twp-marks > .twp-card__mark + .twp-card__mark { margin-left: -7px; }
 .twp-marks > .twp-sub__mark + .twp-sub__mark { margin-left: -6px; }
+
+/* The Look — palette sits directly under its section title (Sept 2026). */
+.section-head:has(+ .pal) { margin-bottom: 0; }
+.section-head + .pal { margin-top: 0; }
