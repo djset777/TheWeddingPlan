@@ -17,7 +17,7 @@ const GUEST_SITE_URL = 'https://djset777.github.io/djset/';
   const prefix = inSubfolder ? '../' : '';
 
   mount.innerHTML = `
-    <a class="sidebar__mark" href="${prefix}index.html">DJ Set</a>
+    <a class="sidebar__mark" href="${prefix}index.html">Danisa &amp; Julian</a>
     <a class="sidebar__brand" href="${GUEST_SITE_URL}" target="_blank" rel="noopener" title="The wedding site guests see">7 · 7 · 27</a>
 
     <div class="sidebar__countdown" data-sidebar-countdown>
