@@ -3487,3 +3487,8 @@
 /* Open items — always the last thing on the line, gold italic (Sept 2026). */
 .tbc { color: var(--gold); font-style: italic; }
 
+/* Dress gate — title sits as tightly to its note as the page title does to
+   its subtitle; button label in gold (Sept 2026). */
+.dress-gate__title { line-height: 1.05; }
+.dress-gate__btn { color: var(--gold); }
+
