@@ -3,8 +3,7 @@
    Loads after site.css. Uses the existing palette and type tokens only.
    ========================================================================== */
 
-/* --- One reading width for the whole page ----------------------------- */
-.content.dress-content { max-width: calc(52rem + 2 * var(--space-4)); }
+/* --- Page width: follows the site-wide .content width, like The Look --- */
 
 /* --- Section blocks ------------------------------------------------------ */
 .dress-block { margin-bottom: var(--space-5); }
@@ -48,6 +47,20 @@
 
 /* --- Guide: thread of categories, each with labelled groups ------------- */
 .dress-guide .thread__section { margin-bottom: var(--space-4); }
+/* Thread styled like the guest site: line fades in and out, plain dots */
+.dress-guide .thread::before {
+  background: linear-gradient(to bottom,
+    rgba(212, 175, 55, 0) 0,
+    var(--accent) 48px,
+    var(--accent) calc(100% - 48px),
+    rgba(212, 175, 55, 0) 100%);
+}
+.dress-guide .thread__section::before {
+  width: 10px;
+  height: 10px;
+  margin-left: 2px;
+  box-shadow: none;
+}
 .guide-groups {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
