@@ -45,10 +45,12 @@
   color: var(--deeper);
 }
 
-/* --- Guide: thread of categories, each with labelled groups ------------- */
-.dress-guide .thread__section { margin-bottom: var(--space-4); }
-/* Thread styled like the guest site: line fades in and out, plain dots */
+/* --- Guide: document style inside the thread ---------------------------
+   Gold em-dash lists, bold subheads, teal text, gold italic intro lines.  */
+.dress-guide { --guide-ink: #23574F; }
+.dress-guide .thread__section { margin-bottom: var(--space-5); }
 .dress-guide .thread::before {
+  width: 3px;
   background: linear-gradient(to bottom,
     rgba(212, 175, 55, 0) 0,
     var(--accent) 48px,
@@ -58,42 +60,48 @@
 .dress-guide .thread__section::before {
   width: 10px;
   height: 10px;
-  margin-left: 2px;
+  margin-left: 3.5px;
+  top: calc(var(--space-2) + 6px);
   box-shadow: none;
+}
+.dress-guide .thread__title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: var(--step-2);
+  letter-spacing: 0.04em;
+  color: var(--guide-ink);
+}
+.dress-guide .thread__significance {
+  font-style: italic;
+  color: #A8862A;
+  margin-bottom: 0;
 }
 .guide-groups {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-3) var(--space-4);
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
 }
-.guide-group__label {
+.guide-group__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: var(--step-0);
+  color: var(--guide-ink);
+  margin: 0 0 6px;
+  border: none;
+  padding: 0;
+}
+.guide-list { list-style: none; margin: 0; padding: 0; }
+.guide-list li {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0 0 4px;
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-weight: 500;
-  font-size: var(--step--1);
-  letter-spacing: 0.08em;
+  gap: 0.6em;
+  margin-bottom: 4px;
+  line-height: 1.5;
+  color: var(--guide-ink);
 }
-.guide-group__icon {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.guide-group__items { margin: 0; line-height: 1.5; color: var(--ink); }
-.guide-group--must .guide-group__label    { color: var(--anchor); }
-.guide-group--explore .guide-group__label { color: #8C6E12; }
-.guide-group--skip .guide-group__label,
-.guide-group--skip .guide-group__items    { color: #5A6270; }
+.guide-list li::before { content: "\2014"; color: var(--accent); flex-shrink: 0; }
 @media (max-width: 700px) {
-  .guide-groups { grid-template-columns: 1fr; gap: var(--space-2); }
+  .guide-groups { grid-template-columns: 1fr; gap: var(--space-3); }
 }
 
 /* --- Chips (tags) -------------------------------------------------------- */
