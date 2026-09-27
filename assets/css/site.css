@@ -3419,3 +3419,68 @@
 /* The Look — palette sits directly under its section title (Sept 2026). */
 .section-head:has(+ .pal) { margin-bottom: 0; }
 .section-head + .pal { margin-top: 0; }
+
+/* ==========================================================================
+   Thread — one style for The Dress, The Journey, The Logistics and The Day
+   (Sept 2026). Faded gold bar, solid gold dots, gold small-caps section
+   titles, teal italic significance lines, teal small-caps sub-labels and
+   gold em-dash lists in teal.
+   ========================================================================== */
+.thread::before {
+  width: 3px;
+  background: linear-gradient(to bottom,
+    rgba(212, 175, 55, 0) 0,
+    var(--gold) 44px,
+    var(--gold) calc(100% - 44px),
+    rgba(212, 175, 55, 0) 100%);
+}
+.thread__section { margin-bottom: var(--space-4); }
+.thread__section:last-child { margin-bottom: 0; }
+.thread__section::before {
+  width: 10px;
+  height: 10px;
+  margin-left: 3.5px;
+  top: calc(var(--space-2) + 4px);
+  background: var(--gold);
+  box-shadow: none;
+}
+.thread__title { margin: 0; }
+.thread__significance {
+  font-style: italic;
+  color: var(--teal);
+  margin: 6px 0 var(--space-2);
+}
+.thread__sub { margin: var(--space-3) 0 0; }
+.thread__sub-title {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: var(--step--1);
+  letter-spacing: 0.18em;
+  color: var(--teal);
+  margin: 0 0 8px;
+}
+.thread .bullets { padding: 0 0 0 18px; }
+.thread .bullets li {
+  position: relative;
+  display: block;
+  padding-left: 1.6em;
+  margin-bottom: 6px;
+  font-size: var(--step-0);
+  line-height: 1.5;
+  color: var(--teal);
+}
+.thread .bullets li::before {
+  content: "\2014";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.thread .bullets strong { color: var(--teal); font-weight: 500; }
+
