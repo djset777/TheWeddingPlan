@@ -3492,3 +3492,8 @@
 .dress-gate__title { line-height: 1.05; }
 .dress-gate__btn { color: var(--gold); }
 
+/* Reading size — The Dress, The Journey, The Logistics, The Day (Sept 2026). */
+.thread__significance,
+.thread__section > p,
+.thread .bullets li { font-size: 17.7px; }
+
