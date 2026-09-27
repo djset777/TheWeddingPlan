@@ -20,6 +20,8 @@
   border: none;
   border-bottom: 1px solid var(--accent);
 }
+/* Section titles stand alone (no subtitle), so they carry their own gap */
+.dress-block__title { margin-bottom: var(--space-3); }
 .dress-block__sig {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
