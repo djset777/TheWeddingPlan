@@ -67,8 +67,8 @@ const GUEST_SITE_URL = 'https://djset777.github.io/djset/';
     if (clean === currentPath) a.setAttribute('aria-current', 'page');
   });
 
-  // --- Countdown (days · hours · minutes · seconds) ------------------
-  const target = new Date('2027-07-07T16:00:00-04:00');
+  // --- Countdown (months · weeks · days), to the 2:00 PM start --------
+  const target = new Date('2027-07-07T14:00:00-04:00');
   const el = {
     mo:  mount.querySelector('[data-cd-mo]'),
     wk:  mount.querySelector('[data-cd-wk]'),

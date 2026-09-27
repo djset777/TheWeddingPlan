@@ -9,8 +9,8 @@
   --forest: #014421;
   --navy:   #003153;
   --gold:   #D4AF37;
-  --abyss:  #0C343D;
-  --linen:  #F2EDE6;
+  --abyss:  #0A1628;
+  --linen:  #F5F0E8;
 
   /* Semantic aliases so we never write raw hex in components */
   --bg:            var(--linen);
@@ -22,7 +22,7 @@
 
   /* Layer for subtle surfaces (cards, dividers) */
   --linen-shade:   #EAE3D7;
-  --linen-rule:    rgba(12, 52, 61, 0.12);
+  --linen-rule:    rgba(10, 22, 40, 0.12);
 
   /* Type scale — fluid, keyed off viewport */
   --step--2: clamp(0.72rem, 0.68rem + 0.15vw, 0.82rem);
