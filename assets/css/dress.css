@@ -9,17 +9,18 @@
 .dress-block { margin-bottom: var(--space-5); }
 
 .dress-block__title {
-  font-family: 'Cormorant SC', Georgia, serif;
-  font-weight: 500;
-  font-size: var(--step-1);
-  letter-spacing: 0.16em;
-  color: var(--accent);
-  margin: 0;
-  padding: 0;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.2rem, 1.8rem + 1.4vw, 2.9rem);
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: var(--doc-ink);
+  margin: 0 0 var(--space-3);
+  padding: 0 0 10px;
   border: none;
+  border-bottom: 1px solid var(--doc-gold);
 }
 /* Section titles stand alone (no subtitle), so they carry their own gap */
-.dress-block__title { margin-bottom: var(--space-3); }
 .dress-block__sig {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
@@ -29,77 +30,80 @@
   margin: var(--space-1) 0 var(--space-3);
 }
 
-/* --- Vision -------------------------------------------------------------- */
-.dress-vision {
-  font-size: var(--step-0);
-  line-height: 1.6;
-  color: var(--ink);
-  margin: 0 0 var(--space-5);
-}
+/* --- Page palette: matched to the DJ Set doc (one teal, one gold) ------ */
+.dress-content { --doc-ink: #285E5E; --doc-gold: #CEB04E; }
+.dress-content .content__title { color: var(--doc-ink); }
+
+/* --- Vision: gold small-caps label + italic statement, inside the header - */
+.dress-vision { margin-top: var(--space-4); max-width: 52rem; }
 .dress-vision__label {
-  display: block;
-  margin-bottom: 4px;
+  margin: 0 0 6px;
   font-family: 'Cormorant SC', Georgia, serif;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--deeper);
+  font-weight: 600;
+  font-size: var(--step--1);
+  letter-spacing: 0.18em;
+  color: #A8862A;
+}
+.dress-vision__text {
+  margin: 0;
+  font-style: italic;
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--doc-ink);
 }
 
-/* --- Guide: document style inside the thread ---------------------------
-   Gold em-dash lists, bold subheads, teal text, gold italic intro lines.  */
-.dress-guide { --guide-ink: #23574F; }
-.dress-guide .thread__section { margin-bottom: var(--space-5); }
+/* --- Guide: document style inside the thread --------------------------- */
+.dress-guide .thread__section { margin-bottom: var(--space-4); }
 .dress-guide .thread::before {
   width: 3px;
   background: linear-gradient(to bottom,
-    rgba(212, 175, 55, 0) 0,
-    var(--accent) 48px,
-    var(--accent) calc(100% - 48px),
-    rgba(212, 175, 55, 0) 100%);
+    rgba(206, 176, 78, 0) 0,
+    var(--doc-gold) 44px,
+    var(--doc-gold) calc(100% - 44px),
+    rgba(206, 176, 78, 0) 100%);
 }
 .dress-guide .thread__section::before {
   width: 10px;
   height: 10px;
   margin-left: 3.5px;
-  top: calc(var(--space-2) + 6px);
+  top: calc(var(--space-2) + 4px);
+  background: var(--doc-gold);
   box-shadow: none;
 }
 .dress-guide .thread__title {
   font-family: 'Cormorant SC', Georgia, serif;
-  font-weight: 500;
-  font-size: var(--step-2);
-  letter-spacing: 0.04em;
-  color: var(--guide-ink);
+  font-weight: 600;
+  font-size: clamp(1.45rem, 1.3rem + 0.5vw, 1.75rem);
+  letter-spacing: 0.02em;
+  color: var(--doc-ink);
+  margin: 0;
 }
-.dress-guide .thread__significance {
-  font-style: italic;
-  color: #A8862A;
-  margin-bottom: 0;
-}
+.dress-guide .thread__significance { font-style: italic; color: var(--doc-ink); margin: 6px 0 0; }
 .guide-groups {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-3) var(--space-4);
-  margin-top: var(--space-3);
+  margin-top: 10px;
 }
 .guide-group__title {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 700;
-  font-size: var(--step-0);
-  color: var(--guide-ink);
+  font-size: var(--step-1);
+  color: var(--doc-ink);
   margin: 0 0 6px;
   border: none;
   padding: 0;
 }
-.guide-list { list-style: none; margin: 0; padding: 0; }
+.guide-list { list-style: none; margin: 0; padding: 0 0 0 18px; }
 .guide-list li {
   display: flex;
   gap: 0.6em;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  font-size: var(--step-0);
   line-height: 1.5;
-  color: var(--guide-ink);
+  color: var(--doc-ink);
 }
-.guide-list li::before { content: "\2014"; color: var(--accent); flex-shrink: 0; }
+.guide-list li::before { content: "\2014"; color: var(--doc-gold); flex-shrink: 0; }
 @media (max-width: 700px) {
   .guide-groups { grid-template-columns: 1fr; gap: var(--space-3); }
 }
@@ -119,8 +123,8 @@
   font-size: 0.82rem;
   letter-spacing: 0.08em;
   line-height: 1.2;
-  color: var(--deeper);
-  border: 1px solid var(--accent);
+  color: var(--doc-ink);
+  border: 1px solid var(--doc-gold);
   padding: 4px 10px;
 }
 .chips--small .chip { font-size: 0.72rem; padding: 3px 7px; }
@@ -138,15 +142,15 @@
   font-size: var(--step--1);
   letter-spacing: 0.08em;
   line-height: 1.2;
-  color: var(--deeper);
+  color: var(--doc-ink);
   background: transparent;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--doc-gold);
   padding: 6px 12px;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
 .ref-filter__btn:hover { background: rgba(212, 175, 55, 0.12); }
-.ref-filter__btn.is-active { background: var(--anchor); border-color: var(--anchor); color: var(--linen); }
+.ref-filter__btn.is-active { background: var(--doc-ink); border-color: var(--doc-ink); color: var(--linen); }
 .ref-filter__count { opacity: 0.6; margin-left: 2px; }
 .ref-filter__btn:focus-visible,
 .ref-tile__open:focus-visible,
