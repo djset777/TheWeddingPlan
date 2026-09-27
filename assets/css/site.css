@@ -3484,3 +3484,6 @@
 }
 .thread .bullets strong { color: var(--teal); font-weight: 500; }
 
+/* Open items — always the last thing on the line, gold italic (Sept 2026). */
+.tbc { color: var(--gold); font-style: italic; }
+
