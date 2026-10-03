@@ -17,41 +17,63 @@
   // Gown number -> reference photo number. Only add pairs that are confirmed.
   var REF_MAP = { '25-02': '01' };
 
+  // Style number -> that gown's photo on the designer's or a retailer's page.
+  // Add a line here and the style tag becomes a link.
+  var STYLE_LINKS = {
+    '25-02': 'https://bloomfeld.nl/collection/berta/berta-25-02/',
+    '24-04': 'https://www.berta.com/wp-content/uploads/2025/01/24-04-2.jpg',
+    '24-107': 'https://bloomfeld.nl/collection/berta/24-107/',
+    '26-112': 'https://bloomfeld.nl/collection/berta/26-112/',
+    '27-04': 'https://www.berta.com/wp-content/uploads/2026/04/27-04-5.jpg',
+    '27-06': 'https://www.berta.com/wp-content/uploads/2026/04/27-06-1.jpg'
+  };
+
+  // rsvp: true turns on the Guests section for that appointment.
+  // guests: how many people the boutique allows. invited: who the calendar
+  // invite went to (edit this list as invites change).
   var APPOINTMENTS = [
     {
       id: 'berta',
       name: 'Berta NYC',
       when: 'Saturday, October 17 \u00b7 12:00 PM',
-      where: '120 Wooster St, 4th floor, New York',
+      address: '120 Wooster St, 4th Floor, New York, NY 10012',
+      mapQuery: 'Berta NYC, 120 Wooster St, New York, NY 10012',
       status: 'Confirmed', statusKey: 'confirmed',
       event: 'Fall/Winter 2027 flagship event',
-      styles: ['25-02', '24-04', '24-107', '26-112', '27-04', '27-06'],
-      inPerson: ['Melonie', 'Kailey', 'Neisha', 'Carmen'],
-      video: ['Sileni']
+      rsvp: true,
+      guests: 4,
+      invited: ['Melonie', 'Kailey', 'Neisha', 'Carmen', 'Sileni'],
+      styles: ['25-02', '24-04', '24-107', '26-112', '27-04', '27-06']
     },
     {
       id: 'galia',
       name: 'Galia Lahav NYC',
       when: 'Trunk show \u00b7 October 15\u201318 \u00b7 time to be confirmed',
-      where: '155 Wooster St, New York',
+      address: '155 Wooster St, New York, NY 10012',
+      mapQuery: 'Galia Lahav, 155 Wooster St, New York, NY 10012',
       status: 'Requested', statusKey: 'requested',
-      styles: [], inPerson: [], video: []
+      rsvp: false, guests: 0, invited: [],
+      styles: []
     },
     {
       id: 'lanovea',
       name: 'La Novea \u00b7 Santiago',
       when: 'October 8 \u00b7 3:00 PM (not booked yet)',
-      where: 'Santiago, Dominican Republic',
+      address: 'Santiago, Dominican Republic',
+      mapQuery: '',
       status: 'On hold', statusKey: 'hold',
-      styles: [], inPerson: [], video: []
+      rsvp: false, guests: 0, invited: [],
+      styles: []
     }
   ];
   // ---------------------------------------------------------------------------
 
   var VERDICTS = ['Love', 'Maybe', 'No'];
   var notes = [];
+  var rsvps = [];
   var loaded = false;
   var flash = null;
+  var rsvpFlash = null;
 
   // Notes reuse the page password that was typed at the gate, so there is no
   // second password. It lives only in memory for this visit.
@@ -137,6 +159,7 @@
     }
     call('list').then(function (j) {
       notes = j.notes || [];
+      rsvps = j.rsvps || [];
       loaded = true;
       setNotice('');
       render();
@@ -243,12 +266,23 @@
     var body = el('div', 'gown__body');
     body.appendChild(el('p', 'gown__title', g.title));
     var refNum = REF_MAP[g.title.trim()];
-    if (refNum) {
+    var link = STYLE_LINKS[g.title.trim()];
+    if (refNum || link) {
       var ref = el('p', 'gown__ref');
-      var rb = el('button', null, 'See reference ' + refNum);
-      rb.type = 'button';
-      rb.addEventListener('click', function () { openReference(refNum); });
-      ref.appendChild(rb);
+      if (link) {
+        var dl = el('a', null, 'Designer photo');
+        dl.href = link;
+        dl.target = '_blank';
+        dl.rel = 'noopener';
+        ref.appendChild(dl);
+      }
+      if (refNum) {
+        if (link) ref.appendChild(document.createTextNode(' \u00b7 '));
+        var rb = el('button', null, 'See reference ' + refNum);
+        rb.type = 'button';
+        rb.addEventListener('click', function () { openReference(refNum); });
+        ref.appendChild(rb);
+      }
       body.appendChild(ref);
     }
     var list = el('ul', 'gown__notes');
@@ -266,6 +300,7 @@
 
   function renderForm(a) {
     var d = el('details', 'appt-form');
+    d.setAttribute('data-key', 'note-' + a.id);
     var sum = el('summary', null, 'Add a gown or note');
     d.appendChild(sum);
 
@@ -376,6 +411,144 @@
     return d;
   }
 
+  // --- Guests and RSVP -------------------------------------------------------------
+  var RSVP_LABEL = { Yes: 'Going', Maybe: 'Maybe', No: "Can't go" };
+
+  function apptRsvps(apptId) { return rsvps.filter(function (r) { return r.appt === apptId; }); }
+
+  function renderGuests(a) {
+    var box = el('div', 'appt__guests');
+    box.appendChild(el('p', 'appt__label', 'Guests'));
+    box.appendChild(el('p', 'appt__people',
+      'Booked for up to ' + a.guests + ' guests. Invites are out. RSVP here or in the calendar invite.'));
+
+    var known = loaded || !ENDPOINT;
+    var byName = {};
+    apptRsvps(a.id).forEach(function (r) { byName[r.name] = r; });
+    var names = a.invited.slice();
+    Object.keys(byName).forEach(function (n) { if (names.indexOf(n) === -1) names.push(n); });
+
+    var yes = 0, maybe = 0, no = 0, wait = 0, inPerson = 0;
+    names.forEach(function (n) {
+      var r = byName[n];
+      if (!r) wait++;
+      else if (r.response === 'Yes') { yes++; if (r.inPerson) inPerson++; }
+      else if (r.response === 'Maybe') maybe++;
+      else no++;
+    });
+
+    if (known) {
+      var parts = [];
+      if (yes) parts.push(yes + ' going');
+      if (maybe) parts.push(maybe + ' maybe');
+      if (no) parts.push(no + " can't go");
+      if (wait) parts.push(wait + ' waiting');
+      if (inPerson) parts.push(inPerson + ' of ' + a.guests + ' in person');
+      if (parts.length) box.appendChild(el('p', 'appt__tally', parts.join(' \u00b7 ')));
+    }
+
+    var ul = el('ul', 'appt__rsvps');
+    names.forEach(function (n) {
+      var r = byName[n];
+      var li = el('li', 'appt__rsvp');
+      li.appendChild(el('span', 'appt__rsvp-name', n));
+      var key = !known ? 'wait' : !r ? 'wait' : r.response === 'Yes' ? 'yes' : r.response === 'Maybe' ? 'maybe' : 'no';
+      var label = !known ? '\u2026' : !r ? 'Waiting' : RSVP_LABEL[r.response];
+      li.appendChild(el('span', 'rsvp rsvp--' + key, label));
+      if (known && r && r.response === 'Yes' && r.inPerson) li.appendChild(el('span', 'appt__rsvp-note', 'in person'));
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+    box.appendChild(renderRsvpForm(a));
+    return box;
+  }
+
+  function renderRsvpForm(a) {
+    var d = el('details', 'appt-form appt-form--rsvp');
+    d.setAttribute('data-key', 'rsvp-' + a.id);
+    d.appendChild(el('summary', null, 'RSVP'));
+
+    var form = el('form');
+    form.noValidate = true;
+
+    var who = el('select', 'appt-form__field');
+    who.setAttribute('aria-label', 'Your name');
+    who.style.maxWidth = '260px';
+    who.appendChild(new Option('Your name', ''));
+    PEOPLE.forEach(function (p) { who.appendChild(new Option(p, p)); });
+    var grid = el('div', 'appt-form__grid');
+    grid.appendChild(who);
+    form.appendChild(grid);
+
+    var fs = el('fieldset', 'appt-form__verdict');
+    fs.appendChild(el('legend', null, 'Are you coming?'));
+    [['Yes', 'Going'], ['Maybe', 'Maybe'], ['No', "Can't go"]].forEach(function (o) {
+      var lab = el('label');
+      var r = el('input');
+      r.type = 'radio'; r.name = 'rsvp-' + a.id; r.value = o[0];
+      lab.appendChild(r);
+      lab.appendChild(el('span', null, o[1]));
+      fs.appendChild(lab);
+    });
+    form.appendChild(fs);
+
+    var ipWrap = el('label', 'appt-form__check');
+    var ip = el('input');
+    ip.type = 'checkbox';
+    ipWrap.appendChild(ip);
+    ipWrap.appendChild(el('span', null, " I'll be there in person"));
+    form.appendChild(ipWrap);
+
+    var actions = el('div', 'appt-form__actions');
+    var btn = el('button', 'appt-form__btn', 'Send RSVP');
+    btn.type = 'submit';
+    var status = el('span', 'appt-form__status');
+    status.setAttribute('role', 'status');
+    actions.appendChild(btn);
+    actions.appendChild(status);
+    form.appendChild(actions);
+    form.appendChild(el('p', 'appt__empty', 'You can change your answer any time by sending it again.'));
+
+    function say(msg, kind) {
+      status.textContent = msg || '';
+      status.className = 'appt-form__status' + (kind ? ' is-' + kind : '');
+    }
+    if (rsvpFlash && rsvpFlash.id === a.id) { say(rsvpFlash.msg, 'ok'); rsvpFlash = null; }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var resp = ($('input[name="rsvp-' + a.id + '"]:checked', form) || {}).value;
+      if (!ENDPOINT) return say('RSVPs are not connected yet.', 'error');
+      if (!getKey()) return say('Unlock the page with its password first.', 'error');
+      if (!who.value) return say('Choose your name first.', 'error');
+      if (!resp) return say("Pick Going, Maybe, or Can't go.", 'error');
+      btn.disabled = true;
+      say('Saving\u2026');
+      call('rsvp', { appt: a.id, name: who.value, response: resp, inPerson: !!ip.checked && resp === 'Yes' })
+        .then(function () {
+          rsvpFlash = { id: a.id, msg: 'Thanks, your RSVP is in.' };
+          form.reset();
+          loadNotes();
+        }).catch(function () {
+          say('Could not save. If this keeps happening, the Google script may need updating.', 'error');
+        }).then(function () { btn.disabled = false; });
+    });
+
+    d.appendChild(form);
+    return d;
+  }
+
+  function renderTriedOn(card, a, gowns) {
+    card.appendChild(el('p', 'appt__label', gowns.length ? 'Tried on \u00b7 ' + gowns.length + (gowns.length === 1 ? ' gown' : ' gowns') : 'Tried on'));
+    if (gowns.length) {
+      gowns.forEach(function (g) { card.appendChild(renderGown(g)); });
+    } else {
+      card.appendChild(el('p', 'appt__empty', loaded || !ENDPOINT
+        ? 'No gowns logged yet. Photos and comments from the visit will show up here.'
+        : 'Loading\u2026'));
+    }
+  }
+
   function renderCard(a) {
     var card = el('article', 'appt');
     card.id = 'appt-' + a.id;
@@ -383,31 +556,40 @@
     var head = el('div', 'appt__head');
     var left = el('div');
     left.appendChild(el('h3', 'appt__name', a.name));
-    left.appendChild(el('p', 'appt__when', a.when));
-    left.appendChild(el('p', 'appt__where', a.where + (a.event ? ' \u00b7 ' + a.event : '')));
+    left.appendChild(el('p', 'appt__when', a.when + (a.event ? ' \u00b7 ' + a.event : '')));
+    var addr = el('p', 'appt__where', a.address);
+    if (a.mapQuery) {
+      addr.appendChild(document.createTextNode(' '));
+      var m = el('a', 'appt__map', 'Open in Maps');
+      m.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a.mapQuery);
+      m.target = '_blank';
+      m.rel = 'noopener';
+      addr.appendChild(m);
+    }
+    left.appendChild(addr);
     head.appendChild(left);
     head.appendChild(el('span', 'appt__status appt__status--' + a.statusKey, a.status));
     card.appendChild(head);
 
-    if (a.inPerson.length || a.video.length) {
-      card.appendChild(el('p', 'appt__label', 'Who is coming'));
-      var parts = [];
-      if (a.inPerson.length) parts.push(a.inPerson.join(', ') + ' in person');
-      if (a.video.length) parts.push(a.video.join(', ') + ' by video');
-      card.appendChild(el('p', 'appt__people', parts.join(' \u00b7 ')));
-    }
+    var gowns = groupGowns(a.id);
+    // After the visit, photos and comments lead; before it, the plan leads.
+    if (gowns.length) renderTriedOn(card, a, gowns);
+
+    if (a.rsvp) card.appendChild(renderGuests(a));
 
     if (a.styles.length) {
       card.appendChild(el('p', 'appt__label', 'Styles to try'));
+      card.appendChild(el('p', 'appt__hint', "Tap a style to see its photo on the designer's page."));
       var ul = el('ul', 'appt__tags');
       a.styles.forEach(function (s) {
         var li = el('li');
-        if (REF_MAP[s]) {
-          var b = el('button', 'appt__tag', s);
-          b.type = 'button';
-          b.setAttribute('aria-label', s + ', open reference ' + REF_MAP[s]);
-          b.addEventListener('click', function () { openReference(REF_MAP[s]); });
-          li.appendChild(b);
+        if (STYLE_LINKS[s]) {
+          var l = el('a', 'appt__tag', s);
+          l.href = STYLE_LINKS[s];
+          l.target = '_blank';
+          l.rel = 'noopener';
+          l.setAttribute('aria-label', s + ', opens its photo in a new tab');
+          li.appendChild(l);
         } else {
           li.appendChild(el('span', 'appt__tag', s));
         }
@@ -416,15 +598,7 @@
       card.appendChild(ul);
     }
 
-    var gowns = groupGowns(a.id);
-    card.appendChild(el('p', 'appt__label', gowns.length ? 'Tried on \u00b7 ' + gowns.length + (gowns.length === 1 ? ' gown' : ' gowns') : 'Tried on'));
-    if (gowns.length) {
-      gowns.forEach(function (g) { card.appendChild(renderGown(g)); });
-    } else {
-      card.appendChild(el('p', 'appt__empty', loaded || !ENDPOINT
-        ? 'No gowns logged yet. Add the first one after the visit.'
-        : 'Loading\u2026'));
-    }
+    if (!gowns.length) renderTriedOn(card, a, gowns);
 
     card.appendChild(renderForm(a));
     return card;
@@ -432,13 +606,13 @@
 
   function render() {
     var list = $('#apptsList');
-    // Keep any open form (and what is typed in it) from being wiped by a refresh
+    // Keep any open form (and what is typed in it) from closing on refresh
     var open = {};
-    $$('.appt-form', list).forEach(function (d, i) { open[i] = d.open; });
+    $$('details.appt-form', list).forEach(function (d) { open[d.getAttribute('data-key')] = d.open; });
     list.textContent = '';
-    APPOINTMENTS.forEach(function (a, i) {
+    APPOINTMENTS.forEach(function (a) {
       var c = renderCard(a);
-      if (open[i]) $('.appt-form', c).open = true;
+      $$('details.appt-form', c).forEach(function (d) { if (open[d.getAttribute('data-key')]) d.open = true; });
       list.appendChild(c);
     });
   }

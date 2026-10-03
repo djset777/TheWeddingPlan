@@ -44,7 +44,9 @@
   padding: 0;
 }
 .appt__when { margin: 2px 0 0; font-size: var(--step-0); line-height: 1.45; }
-.appt__where { margin: 0; font-size: var(--step--1); color: rgba(10, 22, 40, 0.65); }
+.appt__where { margin: 4px 0 0; font-size: var(--step-0); line-height: 1.45; color: var(--abyss); }
+.appt__map { margin-left: 4px; font-size: var(--step--1); color: var(--teal); text-decoration: underline; text-underline-offset: 2px; }
+.appt__map:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 .appt__status {
   font-family: 'Cormorant SC', Georgia, serif;
@@ -82,8 +84,11 @@
   color: var(--teal);
   background: transparent;
 }
-button.appt__tag { cursor: pointer; }
-button.appt__tag:hover { background: rgba(212, 175, 55, 0.14); }
+button.appt__tag,
+a.appt__tag { cursor: pointer; }
+a.appt__tag { text-decoration: none; }
+button.appt__tag:hover,
+a.appt__tag:hover { background: rgba(212, 175, 55, 0.14); }
 .appt__tag:focus-visible,
 .appt__photo:focus-visible,
 .appt-form__btn:focus-visible,
@@ -94,13 +99,13 @@ button.appt__tag:hover { background: rgba(212, 175, 55, 0.14); }
 .gown__photos { display: flex; flex-direction: column; gap: 6px; flex: none; }
 .appt__photo {
   display: block; padding: 0; border: 1px solid var(--linen-rule); border-radius: 6px;
-  width: 72px; height: 96px; overflow: hidden; cursor: zoom-in; background: var(--linen-shade);
+  width: 104px; height: 138px; overflow: hidden; cursor: zoom-in; background: var(--linen-shade);
 }
 .appt__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .gown__body { flex: 1; min-width: 0; }
 .gown__title { margin: 0; font-size: var(--step-0); font-weight: 500; }
 .gown__ref { margin: 2px 0 0; font-size: var(--step--1); }
-.gown__ref button { font: inherit; padding: 0; border: none; background: none; color: var(--teal); text-decoration: underline; cursor: pointer; }
+.gown__ref a, .gown__ref button { font: inherit; padding: 0; border: none; background: none; color: var(--teal); text-decoration: underline; cursor: pointer; }
 .gown__notes { list-style: none; margin: var(--space-1) 0 0; padding: 0; }
 .gown__note { margin: 0 0 4px; font-size: var(--step--1); line-height: 1.5; }
 .gown__who { font-weight: 500; }
@@ -167,3 +172,22 @@ button.appt__tag:hover { background: rgba(212, 175, 55, 0.14); }
   .dress-tabs .viewtab { white-space: nowrap; padding: var(--space-2) 0.3rem; letter-spacing: 0.04em; font-size: var(--step--2); }
   .appt { padding: var(--space-2); }
 }
+
+/* --- Guests and RSVP ------------------------------------------------------- */
+.appt__tally { margin: 6px 0 0; font-size: var(--step--1); color: var(--forest); }
+.appt__rsvps { list-style: none; margin: var(--space-2) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px var(--space-3); }
+.appt__rsvp { display: flex; align-items: center; gap: 8px; font-size: var(--step--1); }
+.appt__rsvp-name { font-weight: 500; }
+.appt__rsvp-note { font-style: italic; color: rgba(10, 22, 40, 0.6); }
+.rsvp {
+  font-family: 'Cormorant SC', Georgia, serif; font-size: var(--step--2); letter-spacing: 0.1em;
+  padding: 0 8px; border: 1px solid currentColor; border-radius: 999px;
+}
+.rsvp--yes { color: var(--forest); }
+.rsvp--maybe { color: #8a6d12; }
+.rsvp--no { color: var(--navy); }
+.rsvp--wait { color: rgba(10, 22, 40, 0.5); border-style: dashed; }
+.appt-form--rsvp { border-top: none; margin-top: var(--space-2); padding-top: 0; }
+.appt-form__check { display: inline-flex; align-items: center; gap: 4px; margin: 0 0 var(--space-2); font-size: var(--step--1); cursor: pointer; }
+
+.appt__hint { margin: 0 0 var(--space-1); font-size: var(--step--2); color: rgba(10, 22, 40, 0.6); }
