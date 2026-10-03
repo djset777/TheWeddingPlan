@@ -1,9 +1,9 @@
 /* ==========================================================================
    The Dress: tabs + The Appointments
    STRICT PALETTE: teal, gold and linen only. No opacity, no gray, no black.
-     Teal  = every word, and solid fills (the Confirmed tag, the Going mark)
-     Gold  = every outline, divider, and button border; solid gold fill
-             when a control is pressed or selected
+     Teal  = every word, every unselected outline, and solid fills (the Confirmed tag, the Going mark)
+     Gold  = every divider; the thick outline on anything selected or pressed (never a fill,
+             so teal words stay readable)
      Linen = the ground, and words on teal
    Sizes: 12 / 15 / 18 / 22 / 27 only. Square corners everywhere.
    Spacing: 8 / 16 / 24 / 32 only.
@@ -53,11 +53,11 @@
 .appt-list { display: flex; flex-direction: column; gap: var(--a1); }
 .appt-item {
   display: block; width: 100%; text-align: left; font: inherit; line-height: 1.3;
-  color: var(--teal); background: transparent; border: 1px solid var(--gold); border-radius: 0;
+  color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 0;
   padding: var(--a2); cursor: pointer;
 }
-.appt-item:hover { box-shadow: inset 0 0 0 1px var(--gold); }
-.appt-item:active, .appt-item.is-selected { background: var(--gold); }
+.appt-item:hover { border-color: var(--gold); }
+.appt-item:active, .appt-item.is-selected { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
 .appt-item:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .appt-item__name {
   display: block; font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
@@ -74,7 +74,7 @@
 .appt__name {
   margin: 0 0 var(--a1);
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 300;
-  font-size: 27px; letter-spacing: 3.4px; line-height: 1.2; color: var(--gold); border: none; padding: 0;
+  font-size: 27px; letter-spacing: 3.4px; line-height: 1.2; color: var(--teal); border: none; padding: 0;
 }
 .appt__when { margin: 0; font-size: 22px; line-height: 1.4; color: var(--teal); }
 .appt__where, .appt__phone { margin: 4px 0 0; font-size: 18px; line-height: 1.45; color: var(--teal); }
@@ -148,11 +148,11 @@ a.tile:hover, a.tile:focus-visible { box-shadow: inset 0 0 0 1px var(--gold); ou
 .appt-form > summary, .appt-form__btn {
   display: inline-block; cursor: pointer; list-style: none; user-select: none;
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.14em; line-height: 1.3;
-  color: var(--teal); background: transparent; border: 1px solid var(--gold); border-radius: 0; padding: 8px 16px;
+  color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 0; padding: 8px 16px;
 }
 .appt-form > summary::-webkit-details-marker { display: none; }
-.appt-form > summary:hover, .appt-form__btn:hover { box-shadow: inset 0 0 0 1px var(--gold); }
-.appt-form > summary:active, .appt-form[open] > summary, .appt-form__btn:active, .appt-form__btn:disabled { background: var(--gold); box-shadow: none; }
+.appt-form > summary:hover, .appt-form__btn:hover { border-color: var(--gold); }
+.appt-form > summary:active, .appt-form[open] > summary, .appt-form__btn:active, .appt-form__btn:disabled { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
 .appt-form > summary:focus-visible, .appt-form__btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .appt-form__btn:disabled { cursor: default; }
 
@@ -166,9 +166,9 @@ a.tile:hover, a.tile:focus-visible { box-shadow: inset 0 0 0 1px var(--gold); ou
 .appt-form__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--a2); margin: 0 0 var(--a2); }
 .appt-form__field {
   width: 100%; box-sizing: border-box; font: inherit; font-size: 18px; font-weight: 500; line-height: 1.3;
-  color: var(--teal); background-color: var(--linen); border: 1px solid var(--gold); border-radius: 0; padding: 8px 12px;
+  color: var(--teal); background-color: var(--linen); border: 1px solid var(--teal); border-radius: 0; padding: 8px 12px;
 }
-.appt-form__field:focus, .appt-form__field:focus-visible { outline: 0; box-shadow: inset 0 0 0 1px var(--gold); }
+.appt-form__field:focus, .appt-form__field:focus-visible { outline: 0; border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
 .appt-form__field::placeholder { color: var(--teal); opacity: 1; font-style: italic; }
 select.appt-form__field {
   appearance: none; -webkit-appearance: none; padding-right: 36px; cursor: pointer;
@@ -182,14 +182,15 @@ textarea.appt-form__field { display: block; margin: 0 0 var(--a2); resize: verti
 .appt-form__verdict legend { display: block; width: 100%; float: left; padding: 0; margin: 0 0 var(--a1); font-size: 18px; color: var(--teal); }
 .appt-form__verdict legend + * { clear: both; }
 .appt-form__verdict label { cursor: pointer; margin-left: -1px; position: relative; }
+.appt-form__verdict label:hover, .appt-form__verdict label:has(input:checked), .appt-form__verdict label:active { z-index: 1; }
 .appt-form__verdict label:first-of-type { margin-left: 0; }
 .appt-form__verdict input { position: absolute; opacity: 0; pointer-events: none; }
 .appt-form__verdict span {
-  display: inline-block; padding: 6px 12px; border: 1px solid var(--gold); border-radius: 0;
+  display: inline-block; padding: 6px 12px; border: 1px solid var(--teal); border-radius: 0;
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.1em; line-height: 1.3; color: var(--teal); user-select: none;
 }
-.appt-form__verdict label:hover span { box-shadow: inset 0 0 0 1px var(--gold); }
-.appt-form__verdict label:active span, .appt-form__verdict input:checked + span { background: var(--gold); }
+.appt-form__verdict label:hover span { border-color: var(--gold); }
+.appt-form__verdict label:active span, .appt-form__verdict input:checked + span { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
 .appt-form__verdict input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* Checkbox: gold square, gold fill with a check when ticked */
@@ -197,9 +198,9 @@ textarea.appt-form__field { display: block; margin: 0 0 var(--a2); resize: verti
 .appt-form__check input { position: absolute; opacity: 0; pointer-events: none; }
 .appt-form__check span::before {
   content: ''; display: inline-block; width: 22px; height: 22px; margin-right: var(--a1); vertical-align: middle;
-  border: 1px solid var(--gold); text-align: center; font-size: 15px; line-height: 20px; color: var(--teal);
+  border: 1px solid var(--teal); text-align: center; font-size: 15px; line-height: 20px; color: var(--teal);
 }
-.appt-form__check input:checked + span::before { content: '\2713'; background: var(--gold); }
+.appt-form__check input:checked + span::before { content: '\2713'; border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
 .appt-form__check input:focus-visible + span::before { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* Photo picker */
@@ -207,10 +208,10 @@ textarea.appt-form__field { display: block; margin: 0 0 var(--a2); resize: verti
 .appt-form__photo input { font: inherit; color: var(--teal); }
 .appt-form__photo input::file-selector-button {
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.14em;
-  color: var(--teal); background: transparent; border: 1px solid var(--gold); border-radius: 0; padding: 8px 16px; margin-right: var(--a2); cursor: pointer;
+  color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 0; padding: 8px 16px; margin-right: var(--a2); cursor: pointer;
 }
-.appt-form__photo input::file-selector-button:hover { box-shadow: inset 0 0 0 1px var(--gold); }
-.appt-form__photo input::file-selector-button:active { background: var(--gold); }
+.appt-form__photo input::file-selector-button:hover { border-color: var(--gold); }
+.appt-form__photo input::file-selector-button:active { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
 
 .appt-form__actions { display: flex; align-items: center; gap: var(--a2); flex-wrap: wrap; }
 .appt-form__status { font-size: 15px; font-style: italic; color: var(--teal); }

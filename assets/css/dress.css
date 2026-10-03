@@ -125,14 +125,16 @@
   line-height: 1.2;
   color: var(--teal);
   background: transparent;
-  border: 1px solid var(--gold);
+  border: 1px solid var(--teal);
   border-radius: 0;
   padding: 6px 12px;
   cursor: pointer;
 }
-.ref-filter__btn:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+/* Unselected = thin teal outline. Selected or pressed = thick gold outline, no fill,
+   so the teal words always stay readable. */
+.ref-filter__btn:hover { border-color: var(--gold); }
 .ref-filter__btn:active,
-.ref-filter__btn.is-active { background: var(--gold); color: var(--teal); }
+.ref-filter__btn.is-active { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
 .ref-filter__count { margin-left: 2px; }
 .ref-filter__btn:focus-visible,
 .ref-tile__open:focus-visible,
@@ -233,27 +235,3 @@
 .dress-vision__text,
 .dress-guide .thread__significance,
 .guide-list li { font-size: 17.7px; }
-
-
-/* --- Password gate: teal words, gold outlines, gold fill when pressed --------- */
-.dress-gate__title { color: var(--teal); }
-.dress-gate__note { color: var(--teal); }
-.dress-gate__input {
-  color: var(--teal);
-  background: var(--linen);
-  border: 1px solid var(--gold);
-  border-radius: 0;
-  font-weight: 500;
-}
-.dress-gate__input:focus { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); }
-.dress-gate__input::placeholder { color: var(--teal); opacity: 1; font-style: italic; }
-.dress-gate__btn {
-  color: var(--teal);
-  background: transparent;
-  border: 1px solid var(--gold);
-  border-radius: 0;
-}
-.dress-gate__btn:hover { background: transparent; box-shadow: inset 0 0 0 1px var(--gold); }
-.dress-gate__btn:active { background: var(--gold); }
-.dress-gate__error { color: var(--teal); font-weight: 500; }
-.dress-gate__error::before { content: "\2715  "; }
