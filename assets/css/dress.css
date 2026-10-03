@@ -95,16 +95,20 @@
   padding: 0;
 }
 .chip {
-  font-family: 'Cormorant SC', Georgia, serif;
+  display: inline;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 500;
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
-  line-height: 1.2;
-  color: var(--doc-ink);
-  border: 1px solid var(--doc-gold);
-  padding: 4px 10px;
+  font-size: 15px;
+  font-style: italic;
+  letter-spacing: 0;
+  line-height: 1.4;
+  color: var(--teal);
+  border: 0;
+  padding: 0;
 }
-.chips--small .chip { font-size: 0.72rem; padding: 3px 7px; }
+.chip + .chip::before { content: "\00a0\00b7\00a0"; color: var(--gold); font-style: normal; }
+.chips { display: block; }
+.chips--small .chip { font-size: 15px; padding: 0; }
 
 /* --- References: filter row ---------------------------------------------- */
 .ref-filter {
@@ -116,22 +120,23 @@
 .ref-filter__btn {
   font-family: 'Cormorant SC', Georgia, serif;
   font-weight: 500;
-  font-size: var(--step--1);
+  font-size: 15px;
   letter-spacing: 0.08em;
   line-height: 1.2;
-  color: var(--doc-ink);
+  color: var(--teal);
   background: transparent;
-  border: 1px solid var(--doc-gold);
+  border: 1px solid var(--gold);
+  border-radius: 0;
   padding: 6px 12px;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
 }
-.ref-filter__btn:hover { background: rgba(212, 175, 55, 0.12); }
-.ref-filter__btn.is-active { background: var(--doc-ink); border-color: var(--doc-ink); color: var(--linen); }
-.ref-filter__count { opacity: 0.6; margin-left: 2px; }
+.ref-filter__btn:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+.ref-filter__btn:active,
+.ref-filter__btn.is-active { background: var(--gold); color: var(--teal); }
+.ref-filter__count { margin-left: 2px; }
 .ref-filter__btn:focus-visible,
 .ref-tile__open:focus-visible,
-.lightbox button:focus-visible { outline: 2px solid var(--anchor); outline-offset: 2px; }
+.lightbox button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 .refs-grid {
   display: grid;
@@ -153,14 +158,14 @@
   aspect-ratio: 4 / 5;
   object-fit: cover;
   display: block;
-  background: var(--linen-shade);
+  background: var(--linen);
 }
 .ref-tile__num {
   font-family: 'Cormorant SC', Georgia, serif;
   font-weight: 500;
   letter-spacing: 0.14em;
-  color: var(--accent);
-  font-size: var(--step--1);
+  color: var(--teal);
+  font-size: 15px;
 }
 
 @media (max-width: 640px) {
@@ -177,7 +182,7 @@
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-4) var(--space-3);
-  background: rgba(1, 96, 95, 0.9);
+  background: var(--teal);
 }
 .lightbox[hidden] { display: none; }
 .lightbox__figure {
@@ -229,3 +234,26 @@
 .dress-guide .thread__significance,
 .guide-list li { font-size: 17.7px; }
 
+
+/* --- Password gate: teal words, gold outlines, gold fill when pressed --------- */
+.dress-gate__title { color: var(--teal); }
+.dress-gate__note { color: var(--teal); }
+.dress-gate__input {
+  color: var(--teal);
+  background: var(--linen);
+  border: 1px solid var(--gold);
+  border-radius: 0;
+  font-weight: 500;
+}
+.dress-gate__input:focus { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); }
+.dress-gate__input::placeholder { color: var(--teal); opacity: 1; font-style: italic; }
+.dress-gate__btn {
+  color: var(--teal);
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 0;
+}
+.dress-gate__btn:hover { background: transparent; box-shadow: inset 0 0 0 1px var(--gold); }
+.dress-gate__btn:active { background: var(--gold); }
+.dress-gate__error { color: var(--teal); font-weight: 500; }
+.dress-gate__error::before { content: "\2715  "; }

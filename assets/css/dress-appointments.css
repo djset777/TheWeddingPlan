@@ -1,231 +1,242 @@
 /* ==========================================================================
-   The Dress: tabs + The Appointments (boutique picker and detail)
-   Loads after dress.css. Colors: only the locked palette (teal, forest,
-   celestial, gold, bloom yellow, bamboo, linen, abyss) and thinned versions
-   of those same colors. One spacing scale: 8 / 16 / 24 / 32.
+   The Dress: tabs + The Appointments
+   STRICT PALETTE: teal, gold and linen only. No opacity, no gray, no black.
+     Teal  = every word, and solid fills (the Confirmed tag, the Going mark)
+     Gold  = every outline, divider, and button border; solid gold fill
+             when a control is pressed or selected
+     Linen = the ground, and words on teal
+   Sizes: 12 / 15 / 18 / 22 / 27 only. Square corners everywhere.
+   Spacing: 8 / 16 / 24 / 32 only.
    ========================================================================== */
 
 .dress-content { --a1: 8px; --a2: 16px; --a3: 24px; --a4: 32px; }
 .dress-panel[hidden] { display: none; }
 
-/* Shared page title: one visible heading level per tab, so the section
-   titles inside each tab are kept for screen readers only. */
+/* Each tab opens straight into its content: the section titles inside a tab
+   stay for screen readers only. */
 .dress-panel .dress-block__title {
   position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
 }
 .dress-panel .dress-vision { margin: 0 0 var(--a4); }
 
-/* --- Tabs: on a baseline, like the wedding website's nav ---------------------- */
+/* --- Tabs: selected = gold underline ------------------------------------------ */
 .dress-tabs {
-  display: flex;
-  flex-wrap: wrap;
+  display: flex; flex-wrap: wrap;
   gap: 0 clamp(1.5rem, 3.4vw, 2.5rem);
-  margin: 0 0 var(--a4);
-  padding: 0;
-  border: 0;
-  border-bottom: 1px solid rgba(1, 96, 95, 0.22);
+  margin: 0 0 var(--a4); padding: 0; border: 0;
+  border-bottom: 1px solid var(--gold);
 }
 .dress-tabs .viewtab {
-  position: relative;
-  margin: 0;
-  padding: 0 0 14px;
-  border: 0;
-  background: none;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-weight: 400;
-  font-size: var(--step-0);
-  line-height: 1.2;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: rgba(1, 96, 95, 0.62);
-  cursor: pointer;
-  transition: color 0.2s ease;
+  position: relative; margin: 0; padding: 0 0 14px; border: 0; background: none; border-radius: 0;
+  font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400;
+  font-size: 18px; line-height: 1.2; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap;
+  color: var(--teal); cursor: pointer;
 }
 .dress-tabs .viewtab::after {
-  content: '';
-  position: absolute;
-  left: -0.5rem;
-  right: calc(-0.5rem + 0.16em);
-  bottom: -1px;
-  height: 2px;
-  background: var(--gold);
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  content: ''; position: absolute; left: -8px; right: calc(-8px + 0.14em); bottom: -2px; height: 3px;
+  background: var(--gold); opacity: 0;
 }
-.dress-tabs .viewtab:hover { color: var(--teal); }
-.dress-tabs .viewtab:hover::after { opacity: 0.4; }
-.dress-tabs .viewtab.is-active { color: var(--teal); font-weight: 500; border: 0; }
-.dress-tabs .viewtab.is-active::after { opacity: 1; }
+.dress-tabs .viewtab:hover::after { opacity: 1; height: 1px; bottom: -1px; }
+.dress-tabs .viewtab.is-active { font-weight: 500; border: 0; color: var(--teal); }
+.dress-tabs .viewtab.is-active::after { opacity: 1; height: 3px; bottom: -2px; }
 .dress-tabs .viewtab:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }
 
-/* --- Notice ------------------------------------------------------------------- */
+/* --- Notice ------------------------------------------------------------------ */
 .appts-notice {
-  margin: 0 0 var(--a3); padding: var(--a2) var(--a3);
-  border: 1px solid rgba(1, 96, 95, 0.22); border-radius: 6px; background: #faf8f2;
-  font-size: var(--step--1); line-height: 1.5; color: var(--teal);
+  margin: 0 0 var(--a3); padding: var(--a2) 0;
+  border-top: 1px solid var(--gold); border-bottom: 1px solid var(--gold);
+  font-size: 15px; font-style: italic; line-height: 1.5; color: var(--teal);
 }
 
-/* --- Picker (left) + detail (right) ------------------------------------------- */
+/* --- Picker (left) + detail (right) -------------------------------------------- */
 .appts-wrap { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: var(--a4); align-items: start; }
 .appt-list { display: flex; flex-direction: column; gap: var(--a1); }
 .appt-item {
-  display: block; text-align: left; width: 100%;
-  font: inherit; color: var(--abyss); background: transparent; line-height: 1.3;
-  border: 1px solid rgba(1, 96, 95, 0.22); border-radius: 8px; padding: var(--a2); cursor: pointer;
+  display: block; width: 100%; text-align: left; font: inherit; line-height: 1.3;
+  color: var(--teal); background: transparent; border: 1px solid var(--gold); border-radius: 0;
+  padding: var(--a2); cursor: pointer;
 }
-.appt-item:hover { border-color: var(--teal); }
-.appt-item.is-selected { background: #faf8f2; border-color: var(--teal); }
+.appt-item:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+.appt-item:active, .appt-item.is-selected { background: var(--gold); }
 .appt-item:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .appt-item__name {
   display: block; font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
-  font-size: var(--step-0); letter-spacing: 0.08em; color: var(--teal);
+  font-size: 18px; letter-spacing: 0.08em; color: var(--teal);
 }
-.appt-item__when { display: block; margin-top: 2px; font-size: var(--step--1); }
-.appt-item__status {
-  display: inline-block; margin-top: var(--a1);
-  font-family: 'Cormorant SC', Georgia, serif; font-size: var(--step--2); letter-spacing: 0.12em;
-  border: 1px solid currentColor; border-radius: 999px; padding: 1px 10px;
+.appt-item__when { display: block; margin-top: 2px; font-size: 15px; color: var(--teal); }
+.appt-item__status { display: inline-block; margin-top: var(--a1); font-size: 15px; font-style: italic; color: var(--teal); }
+.appt-item__status--confirmed {
+  font-family: 'Cormorant SC', Georgia, serif; font-style: normal; font-size: 12px; letter-spacing: 0.12em;
+  background: var(--teal); color: var(--linen); padding: 1px 10px;
 }
-.appt-item__status--confirmed { color: var(--forest); }
-.appt-item__status--tbd { color: var(--navy); border-style: dashed; }
-.appt-item__status--requested { color: var(--navy); }
-.appt-item__status--hold { color: var(--teal); }
 
-.appt-detail { background: #faf8f2; border: 1px solid rgba(1, 96, 95, 0.22); border-radius: 10px; padding: var(--a4); }
+.appt-detail { background: transparent; }
 .appt__name {
   margin: 0 0 var(--a1);
-  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
-  font-size: var(--step-2); letter-spacing: 0.1em; line-height: 1.2; color: var(--teal); border: none; padding: 0;
+  font-family: 'Cormorant SC', Georgia, serif; font-weight: 300;
+  font-size: 27px; letter-spacing: 3.4px; line-height: 1.2; color: var(--gold); border: none; padding: 0;
 }
-.appt__when { margin: 0; font-size: var(--step-1); line-height: 1.4; }
-.appt__where, .appt__phone { margin: 4px 0 0; font-size: var(--step-0); line-height: 1.45; }
-.appt__event { margin: 4px 0 0; font-size: var(--step--1); font-style: italic; color: var(--teal); }
-.appt__map { margin-left: 4px; font-size: var(--step--1); color: var(--teal); text-decoration: underline; text-underline-offset: 2px; }
+.appt__when { margin: 0; font-size: 22px; line-height: 1.4; color: var(--teal); }
+.appt__where, .appt__phone { margin: 4px 0 0; font-size: 18px; line-height: 1.45; color: var(--teal); }
+.appt__event { margin: 4px 0 0; font-size: 15px; font-style: italic; color: var(--teal); }
+.appt__map, .gown__ref a, .gown__ref button {
+  font: inherit; color: var(--teal); background: none; border: 0; padding: 0; cursor: pointer;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;
+}
+.appt__map { margin-left: 4px; font-size: 15px; }
 .appt__phone .appt__map { margin-left: 0; font-size: inherit; }
-.appt__map:focus-visible, .tile:focus-visible, .appt__photo:focus-visible,
-.appt-form__btn:focus-visible, .appt-form__verdict label:focus-within,
-.appt-form > summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.appt__map:hover, .gown__ref a:hover, .gown__ref button:hover { text-decoration-color: var(--gold); text-decoration-thickness: 3px; }
+.appt__map:focus-visible, .gown__ref a:focus-visible, .gown__ref button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
-/* --- Blocks inside the detail pane: guests, styles, visit notes ---------------- */
-.dsec, .visit { margin-top: var(--a4); }
+/* --- Sections inside the detail: gold rule above, teal small-caps label ------- */
+.dsec, .visit { margin-top: var(--a3); padding-top: var(--a3); border-top: 1px solid var(--gold); }
 .dsec__title {
   margin: 0 0 var(--a2);
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
-  font-size: var(--step--1); letter-spacing: 0.14em; line-height: 1.3; color: var(--teal); border: none; padding: 0;
+  font-size: 15px; letter-spacing: 0.18em; line-height: 1.3; color: var(--teal); border: none; padding: 0;
 }
-.dsec__note { margin: var(--a1) 0 0; font-size: var(--step--1); font-style: italic; color: var(--teal); }
+.dsec__note { margin: var(--a2) 0 0; font-size: 15px; font-style: italic; color: var(--teal); }
 
-/* Guests */
-.guests { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--a2) var(--a3); }
-.guest { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 64px; text-align: center; }
-.guest__dot {
-  width: 40px; height: 40px; border-radius: 50%; border: 1px solid;
-  display: inline-flex; align-items: center; justify-content: center; font-size: var(--step-1);
+/* Guests: one line per person, a mark and the word */
+.guests { list-style: none; margin: 0; padding: 0; }
+.guest { display: flex; justify-content: space-between; align-items: baseline; gap: var(--a2); padding: 12px 0; border-top: 1px solid var(--gold); }
+.guest:last-child { border-bottom: 1px solid var(--gold); }
+.guest__name { font-size: 18px; color: var(--teal); }
+.guest__note { display: block; font-size: 15px; font-style: italic; color: var(--teal); }
+.guest__status {
+  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.12em;
+  white-space: nowrap; color: var(--teal);
 }
-.guest__dot--yes { background: var(--teal); border-color: var(--teal); color: var(--linen); }
-.guest__dot--maybe { background: var(--bloom, #e8b024); border-color: var(--bloom, #e8b024); color: var(--abyss); }
-.guest__dot--no { background: var(--navy); border-color: var(--navy); color: var(--linen); }
-.guest__dot--wait { border: 1px dashed var(--teal); color: var(--teal); }
-.guest__name { font-size: var(--step-0); line-height: 1.2; }
-.guest__status { font-size: var(--step--2); font-style: italic; color: var(--teal); line-height: 1.2; }
-
-/* RSVP button (a details element styled as a button) */
-.appt-form--button { margin-top: var(--a2); padding: 0; border: none; }
-.appt-form--button > summary { padding: 8px 24px; }
-.appt-form--button form { margin-top: var(--a2); max-width: 420px; }
+.guest__mark { display: inline-block; width: 20px; margin-right: var(--a1); text-align: center; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; }
+.guest--yes .guest__status { background: var(--teal); color: var(--linen); padding: 2px 12px; }
 
 /* Style tiles */
 .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--a1); }
-.tile { display: block; border: 1px solid rgba(1, 96, 95, 0.22); border-radius: 8px; overflow: hidden; background: #faf8f2; color: var(--teal); text-decoration: none; }
+.tile { display: block; border: 1px solid var(--gold); background: transparent; color: var(--teal); text-decoration: none; }
 a.tile { cursor: pointer; }
-a.tile:hover { border-color: var(--gold); }
-.tile__frame { display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 4; background: rgba(232, 220, 196, 0.6); overflow: hidden; }
+a.tile:hover, a.tile:focus-visible { box-shadow: inset 0 0 0 1px var(--gold); outline: 0; }
+.tile__frame { display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 4; border-bottom: 1px solid var(--gold); overflow: hidden; }
 .tile__img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
-.tile__frame.is-missing::after { content: 'View photo'; font-size: var(--step--2); font-style: italic; color: var(--teal); }
-.tile__num { display: block; padding: 4px var(--a1); font-size: var(--step--1); line-height: 1.2; }
+.tile__frame.is-missing::after { content: 'View photo'; font-size: 15px; font-style: italic; color: var(--teal); }
+.tile__num { display: block; padding: 4px var(--a1); font-size: 15px; line-height: 1.3; color: var(--teal); }
 
-/* --- Visit notes / tried-on log ----------------------------------------------- */
-.visit__empty { margin: 0; font-size: var(--step-0); font-style: italic; color: var(--teal); }
-.gown { display: flex; gap: var(--a2); padding: var(--a2) 0; border-top: 1px solid rgba(1, 96, 95, 0.18); }
+/* Visit notes / tried-on log */
+.visit__empty { margin: 0; font-size: 18px; font-style: italic; color: var(--teal); }
+.gown { display: flex; gap: var(--a2); padding: var(--a2) 0; border-top: 1px solid var(--gold); }
 .gown:first-of-type { border-top: none; padding-top: 0; }
 .gown__photos { display: flex; flex-direction: column; gap: var(--a1); flex: none; }
-.appt__photo {
-  display: block; padding: 0; border: 1px solid rgba(1, 96, 95, 0.22); border-radius: 6px;
-  width: 104px; height: 138px; overflow: hidden; cursor: zoom-in; background: rgba(232, 220, 196, 0.6);
-}
+.appt__photo { display: block; padding: 0; border: 1px solid var(--gold); border-radius: 0; width: 104px; height: 138px; overflow: hidden; cursor: zoom-in; background: transparent; }
+.appt__photo:hover, .appt__photo:focus-visible { box-shadow: inset 0 0 0 1px var(--gold); outline: 0; }
 .appt__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .gown__body { flex: 1; min-width: 0; }
-.gown__title { margin: 0; font-size: var(--step-1); font-weight: 500; line-height: 1.3; }
-.gown__ref { margin: 4px 0 0; font-size: var(--step--1); }
-.gown__ref a, .gown__ref button { font: inherit; padding: 0; border: none; background: none; color: var(--teal); text-decoration: underline; cursor: pointer; }
+.gown__title { margin: 0; font-size: 22px; font-weight: 500; line-height: 1.3; color: var(--teal); }
+.gown__ref { margin: 4px 0 0; font-size: 15px; color: var(--teal); }
 .gown__notes { list-style: none; margin: var(--a1) 0 0; padding: 0; }
-.gown__note { margin: 0 0 4px; font-size: var(--step-0); line-height: 1.5; }
+.gown__note { margin: 0 0 4px; font-size: 18px; line-height: 1.5; color: var(--teal); }
 .gown__who { font-weight: 500; }
 .gown__text { font-style: italic; }
 .verdict {
-  display: inline-block; font-family: 'Cormorant SC', Georgia, serif; font-size: var(--step--2);
-  letter-spacing: 0.1em; padding: 0 8px; border: 1px solid currentColor; border-radius: 999px; margin: 0 6px; vertical-align: 1px;
+  display: inline-block; margin: 0 8px; font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
+  font-size: 12px; letter-spacing: 0.12em; vertical-align: 1px; color: var(--teal);
 }
-.verdict--love { color: var(--forest); }
-.verdict--maybe { color: var(--abyss); border-color: #e8b024; background: rgba(232, 176, 36, 0.28); }
-.verdict--no { color: var(--navy); }
-.appt__empty { margin: var(--a1) 0 0; font-size: var(--step--1); font-style: italic; color: var(--teal); }
+.verdict--love { background: var(--teal); color: var(--linen); padding: 1px 10px; }
+.verdict--maybe::before { content: "? "; }
+.verdict--no::before { content: "\2715  "; }
+.appt__empty { margin: var(--a1) 0 0; font-size: 15px; font-style: italic; color: var(--teal); }
 
-/* --- Add a gown or note / RSVP form -------------------------------------------- */
-.visit .appt-form { margin-top: var(--a2); padding: 0; border: none; }
-.appt-form > summary {
-  cursor: pointer; list-style: none; display: inline-block;
-  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
-  font-size: var(--step--1); letter-spacing: 0.14em; color: var(--teal);
-  border: 1px solid var(--teal); border-radius: 6px; padding: 8px 16px;
+/* --- Buttons: gold border, clear fill. Pressed or selected: solid gold. ------- */
+.appt-form > summary, .appt-form__btn {
+  display: inline-block; cursor: pointer; list-style: none; user-select: none;
+  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.14em; line-height: 1.3;
+  color: var(--teal); background: transparent; border: 1px solid var(--gold); border-radius: 0; padding: 8px 16px;
 }
-.appt-form > summary:hover { background: rgba(212, 175, 55, 0.16); }
 .appt-form > summary::-webkit-details-marker { display: none; }
-.appt-form[open] > summary { background: var(--teal); color: var(--linen); }
+.appt-form > summary:hover, .appt-form__btn:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+.appt-form > summary:active, .appt-form[open] > summary, .appt-form__btn:active, .appt-form__btn:disabled { background: var(--gold); box-shadow: none; }
+.appt-form > summary:focus-visible, .appt-form__btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.appt-form__btn:disabled { cursor: default; }
+
+.visit .appt-form { margin-top: var(--a2); padding: 0; border: 0; }
+.appt-form--button { margin-top: var(--a2); padding: 0; border: 0; }
+.appt-form--button > summary { padding: 8px 24px; }
 .appt-form form { margin-top: var(--a2); }
+.appt-form--button form { max-width: 420px; }
+
+/* --- Form fields: gold line, linen fill, teal words ------------------------------ */
 .appt-form__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--a2); margin: 0 0 var(--a2); }
 .appt-form__field {
-  width: 100%; box-sizing: border-box; font: inherit; font-size: var(--step-0);
-  padding: 8px 10px; border: 1px solid rgba(1, 96, 95, 0.4); border-radius: 6px; background: var(--linen); color: var(--abyss);
+  width: 100%; box-sizing: border-box; font: inherit; font-size: 18px; font-weight: 500; line-height: 1.3;
+  color: var(--teal); background-color: var(--linen); border: 1px solid var(--gold); border-radius: 0; padding: 8px 12px;
 }
-.appt-form__field:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
-.appt-form__verdict { display: flex; gap: var(--a1); margin: 0 0 var(--a2); padding: 0; border: none; flex-wrap: wrap; }
-.appt-form__verdict legend { font-size: var(--step--1); padding: 0; margin-bottom: 4px; }
-.appt-form__verdict label { cursor: pointer; }
-.appt-form__verdict input { position: absolute; opacity: 0; }
-.appt-form__verdict span { display: inline-block; padding: 4px 16px; border: 1px solid rgba(1, 96, 95, 0.4); border-radius: 999px; font-size: var(--step--1); color: var(--teal); }
-.appt-form__verdict input:checked + span { background: var(--teal); border-color: var(--teal); color: var(--linen); }
-.appt-form__check { display: inline-flex; align-items: center; gap: 4px; margin: 0 0 var(--a2); font-size: var(--step--1); cursor: pointer; }
-.appt-form__photo { font-size: var(--step--1); margin: var(--a2) 0; }
-.appt-form__actions { display: flex; align-items: center; gap: var(--a2); flex-wrap: wrap; }
-.appt-form__btn {
-  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; letter-spacing: 0.14em; font-size: var(--step--1);
-  color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 6px; padding: 8px 16px; cursor: pointer;
+.appt-form__field:focus, .appt-form__field:focus-visible { outline: 0; box-shadow: inset 0 0 0 1px var(--gold); }
+.appt-form__field::placeholder { color: var(--teal); opacity: 1; font-style: italic; }
+select.appt-form__field {
+  appearance: none; -webkit-appearance: none; padding-right: 36px; cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2301605F' stroke-width='2'/></svg>");
+  background-repeat: no-repeat; background-position: right 12px center;
 }
-.appt-form__btn:hover { background: rgba(212, 175, 55, 0.16); }
-.appt-form__status { font-size: var(--step--1); }
-.appt-form__status.is-error { color: var(--navy); font-weight: 500; }
-.appt-form__status.is-ok { color: var(--forest); }
+textarea.appt-form__field { display: block; margin: 0 0 var(--a2); resize: vertical; }
 
-/* --- Full-size photo viewer ------------------------------------------------ */
-.appt-viewer { position: fixed; inset: 0; z-index: 1000; background: rgba(10, 22, 40, 0.88); display: flex; align-items: center; justify-content: center; padding: var(--space-3); }
+/* Choice (Going / Maybe / Can't go, and Love / Maybe / No): joined gold buttons */
+.appt-form__verdict { display: inline-flex; flex-wrap: wrap; margin: 0 0 var(--a2); padding: 0; border: 0; }
+.appt-form__verdict legend { display: block; width: 100%; float: left; padding: 0; margin: 0 0 var(--a1); font-size: 18px; color: var(--teal); }
+.appt-form__verdict legend + * { clear: both; }
+.appt-form__verdict label { cursor: pointer; margin-left: -1px; position: relative; }
+.appt-form__verdict label:first-of-type { margin-left: 0; }
+.appt-form__verdict input { position: absolute; opacity: 0; pointer-events: none; }
+.appt-form__verdict span {
+  display: inline-block; padding: 6px 12px; border: 1px solid var(--gold); border-radius: 0;
+  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.1em; line-height: 1.3; color: var(--teal); user-select: none;
+}
+.appt-form__verdict label:hover span { box-shadow: inset 0 0 0 1px var(--gold); }
+.appt-form__verdict label:active span, .appt-form__verdict input:checked + span { background: var(--gold); }
+.appt-form__verdict input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* Checkbox: gold square, gold fill with a check when ticked */
+.appt-form__check { display: flex; align-items: center; margin: 0 0 var(--a2); font-size: 18px; color: var(--teal); cursor: pointer; }
+.appt-form__check input { position: absolute; opacity: 0; pointer-events: none; }
+.appt-form__check span::before {
+  content: ''; display: inline-block; width: 22px; height: 22px; margin-right: var(--a1); vertical-align: middle;
+  border: 1px solid var(--gold); text-align: center; font-size: 15px; line-height: 20px; color: var(--teal);
+}
+.appt-form__check input:checked + span::before { content: '\2713'; background: var(--gold); }
+.appt-form__check input:focus-visible + span::before { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* Photo picker */
+.appt-form__photo { margin: var(--a2) 0; font-size: 15px; color: var(--teal); }
+.appt-form__photo input { font: inherit; color: var(--teal); }
+.appt-form__photo input::file-selector-button {
+  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.14em;
+  color: var(--teal); background: transparent; border: 1px solid var(--gold); border-radius: 0; padding: 8px 16px; margin-right: var(--a2); cursor: pointer;
+}
+.appt-form__photo input::file-selector-button:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+.appt-form__photo input::file-selector-button:active { background: var(--gold); }
+
+.appt-form__actions { display: flex; align-items: center; gap: var(--a2); flex-wrap: wrap; }
+.appt-form__status { font-size: 15px; font-style: italic; color: var(--teal); }
+.appt-form__status.is-error { font-style: normal; font-weight: 500; }
+.appt-form__status.is-error::before { content: "\2715  "; }
+.appt-form__status.is-ok::before { content: "\2713  "; }
+
+/* --- Full-size photo viewer ------------------------------------------------------- */
+.appt-viewer { position: fixed; inset: 0; z-index: 1000; background: var(--teal); display: flex; align-items: center; justify-content: center; padding: var(--a3); }
 .appt-viewer[hidden] { display: none; }
-.appt-viewer img { max-width: 100%; max-height: 90vh; border-radius: 6px; }
-.appt-viewer__close { position: absolute; top: 12px; right: 18px; font-size: 2rem; line-height: 1; color: var(--linen); background: none; border: none; cursor: pointer; }
-.appt-viewer__msg { color: var(--linen); font-size: var(--step-0); }
+.appt-viewer img { max-width: 100%; max-height: 90vh; border-radius: 0; }
+.appt-viewer__close { position: absolute; top: 12px; right: 18px; font-size: 2rem; line-height: 1; color: var(--gold); background: none; border: none; cursor: pointer; }
+.appt-viewer__close:hover { color: var(--linen); }
+.appt-viewer__msg { color: var(--linen); font-size: 18px; }
 
 @media (max-width: 760px) {
   .appts-wrap { grid-template-columns: minmax(0, 1fr); gap: var(--a3); }
   .appt-list { flex-direction: row; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 4px; }
   .appt-item { flex: 0 0 190px; scroll-snap-align: start; }
   .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .guest { flex-wrap: wrap; }
 }
 @media (max-width: 560px) {
   .dress-tabs { gap: 0 1.1rem; }
-  .dress-tabs .viewtab { font-size: 0.85rem; letter-spacing: 0.1em; padding-bottom: 12px; }
-  .dress-tabs .viewtab::after { right: calc(-0.5rem + 0.1em); }
+  .dress-tabs .viewtab { font-size: 15px; letter-spacing: 0.1em; padding-bottom: 12px; }
+  .dress-tabs .viewtab::after { right: calc(-8px + 0.1em); }
   .tab-the { display: none; }
-  .appt-detail { padding: var(--a3) var(--a2); }
   .appt__photo { width: 88px; height: 117px; }
 }

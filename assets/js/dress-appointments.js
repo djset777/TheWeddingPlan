@@ -482,6 +482,7 @@
     Object.keys(byName).forEach(function (n) { if (names.indexOf(n) === -1) names.push(n); });
 
     var yes = 0, maybe = 0, no = 0, wait = 0;
+    var MARK = { yes: '\u2713', maybe: '?', no: '\u2715', wait: '\u2026' };
     var ul = el('ul', 'guests');
     names.forEach(function (n) {
       var r = byName[n];
@@ -491,12 +492,14 @@
       else if (r.response === 'Maybe') maybe++;
       else no++;
 
-      var li = el('li', 'guest');
-      li.appendChild(el('span', 'guest__dot guest__dot--' + key, n.charAt(0)));
-      li.appendChild(el('span', 'guest__name', n));
-      var status = !known ? '\u2026' : !r ? 'Waiting' : RSVP_LABEL[r.response];
-      if (known && r && r.response === 'Yes' && r.inPerson) status += ' \u00b7 in person';
-      li.appendChild(el('span', 'guest__status', status));
+      var li = el('li', 'guest guest--' + key);
+      var who = el('span', 'guest__name', n);
+      if (known && r && r.response === 'Yes' && r.inPerson) who.appendChild(el('em', 'guest__note', 'in person'));
+      li.appendChild(who);
+      var st = el('span', 'guest__status');
+      st.appendChild(el('b', 'guest__mark', MARK[key]));
+      st.appendChild(document.createTextNode(!known ? '\u2026' : !r ? 'Waiting' : RSVP_LABEL[r.response]));
+      li.appendChild(st);
       ul.appendChild(li);
     });
     if (names.length) block.appendChild(ul);
