@@ -3,9 +3,51 @@
    Loads after dress.css. Existing palette, type and spacing tokens only.
    ========================================================================== */
 
-/* --- Tabs: reuse the site's .viewtabs strip -------------------------------- */
-.dress-tabs { margin: 0 0 var(--space-4); }
+/* --- Tabs: styled like the wedding website's nav ---------------------------
+   Tracked capitals, sage when idle, deep teal when active, with a feathered
+   gold rule under the active tab. */
 .dress-panel[hidden] { display: none; }
+.dress-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) clamp(1.4rem, 3.4vw, 2.6rem);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  border: none;
+}
+.dress-tabs .viewtab {
+  position: relative;
+  margin: 0;
+  padding: 0 0 14px;
+  border: 0;
+  background: none;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: var(--step-0);
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(1, 96, 95, 0.55);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.dress-tabs .viewtab::after {
+  content: '';
+  position: absolute;
+  left: -0.5rem;
+  right: calc(-0.5rem + 0.16em);
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0), var(--gold) 20%, var(--gold) 80%, rgba(212, 175, 55, 0));
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.dress-tabs .viewtab:hover { color: var(--teal); }
+.dress-tabs .viewtab:hover::after { opacity: 0.35; }
+.dress-tabs .viewtab.is-active { color: var(--teal); font-weight: 500; border: 0; }
+.dress-tabs .viewtab.is-active::after { opacity: 1; }
+.dress-tabs .viewtab:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }
 
 /* --- Notices -------------------------------------------------------------- */
 .appts-notice {
@@ -168,8 +210,10 @@ a.appt__tag:hover { background: rgba(212, 175, 55, 0.14); }
 .appt-viewer__msg { color: var(--linen); font-size: var(--step-0); }
 
 @media (max-width: 560px) {
-  .dress-tabs { gap: var(--space-1); justify-content: space-between; overflow-x: auto; scrollbar-width: none; }
-  .dress-tabs .viewtab { white-space: nowrap; padding: var(--space-2) 0.3rem; letter-spacing: 0.04em; font-size: var(--step--2); }
+  .dress-tabs { gap: 0 1.1rem; }
+  .dress-tabs .viewtab { font-size: 0.85rem; letter-spacing: 0.1em; padding-bottom: 12px; }
+  .dress-tabs .viewtab::after { right: calc(-0.5rem + 0.1em); }
+  .tab-the { display: none; }
   .appt { padding: var(--space-2); }
 }
 
