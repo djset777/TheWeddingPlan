@@ -520,6 +520,7 @@
     function tryUnlock() {
       var typed = (input.value || "").trim().toLowerCase();
       if (typed === PASS) {
+        window.DRESS_KEY = typed;
         unlock();
         document.dispatchEvent(new CustomEvent("dress:unlocked"));
       } else {

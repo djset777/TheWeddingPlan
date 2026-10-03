@@ -53,11 +53,9 @@
   var loaded = false;
   var flash = null;
 
-  // The notes passcode is typed once per visit and kept only for this browser
-  // session. It is never written into the page or the repo.
-  function getKey() { try { return sessionStorage.getItem('dressNotesKey') || ''; } catch (e) { return ''; } }
-  function setKey(k) { try { sessionStorage.setItem('dressNotesKey', k); } catch (e) { /* private mode */ } }
-  function clearKey() { try { sessionStorage.removeItem('dressNotesKey'); } catch (e) { /* ignore */ } }
+  // Notes reuse the page password that was typed at the gate, so there is no
+  // second password. It lives only in memory for this visit.
+  function getKey() { return window.DRESS_KEY || ''; }
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -120,32 +118,10 @@
       .then(function (j) { if (!j || !j.ok) throw new Error((j && j.error) || 'failed'); return j; });
   }
 
-  function setNotice(msg, withForm) {
+  function setNotice(msg) {
     var n = $('#apptsNotice');
-    n.textContent = '';
-    if (!msg && !withForm) { n.hidden = true; return; }
-    if (msg) n.appendChild(el('p', null, msg));
-    if (withForm) {
-      var f = el('form', 'appt-form__actions');
-      var inp = el('input', 'appt-form__field');
-      inp.type = 'password';
-      inp.placeholder = 'Notes passcode';
-      inp.autocomplete = 'off';
-      inp.setAttribute('aria-label', 'Notes passcode');
-      inp.style.maxWidth = '220px';
-      var b = el('button', 'appt-form__btn', 'Unlock notes');
-      b.type = 'submit';
-      f.appendChild(inp);
-      f.appendChild(b);
-      f.addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (!inp.value.trim()) return;
-        setKey(inp.value.trim());
-        loadNotes();
-      });
-      n.appendChild(f);
-    }
-    n.hidden = false;
+    n.textContent = msg || '';
+    n.hidden = !msg;
   }
 
   function loadNotes() {
@@ -155,7 +131,7 @@
       return;
     }
     if (!getKey()) {
-      setNotice('Enter the notes passcode to see and add notes and photos.', true);
+      setNotice('Unlock the page with its password to see notes and photos.');
       render();
       return;
     }
@@ -166,8 +142,7 @@
       render();
     }).catch(function (err) {
       if (err && err.message === 'auth') {
-        clearKey();
-        setNotice('That passcode did not match. Try again.', true);
+        setNotice('Notes could not unlock. The notes password in Google may not match the page password.');
       } else {
         setNotice('Notes could not load. Check your connection and refresh the page.');
       }
@@ -369,7 +344,7 @@
       e.preventDefault();
       var verdict = ($('input[name="verdict-' + a.id + '"]:checked', form) || {}).value;
       if (!ENDPOINT) return say('Notes are not connected yet.', 'error');
-      if (!getKey()) return say('Enter the notes passcode at the top of this tab first.', 'error');
+      if (!getKey()) return say('Unlock the page with its password first.', 'error');
       if (!who.value) return say('Choose your name first.', 'error');
       if (!gown.value.trim()) return say('Enter the gown name or number.', 'error');
       if (!verdict) return say('Pick Love, Maybe, or No.', 'error');
@@ -390,7 +365,7 @@
         flash = { id: a.id, msg: 'Added.' };
         loadNotes();
       }).catch(function (err) {
-        if (err && err.message === 'auth') { clearKey(); loadNotes(); return say('That passcode did not match.', 'error'); }
+        if (err && err.message === 'auth') return say('Could not save: the notes password does not match the page password.', 'error');
         say(err && err.message === 'bad-image'
           ? 'That photo could not be read. Try a different one.'
           : 'Could not save. Try again in a moment.', 'error');
