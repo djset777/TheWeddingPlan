@@ -88,6 +88,7 @@
   border: 1px solid currentColor; border-radius: 999px; padding: 1px 10px;
 }
 .appt-item__status--confirmed { color: var(--forest); }
+.appt-item__status--tbd { color: var(--navy); border-style: dashed; }
 .appt-item__status--requested { color: var(--navy); }
 .appt-item__status--hold { color: var(--teal); }
 

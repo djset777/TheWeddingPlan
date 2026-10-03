@@ -79,12 +79,25 @@
     {
       id: 'galia',
       name: 'Galia Lahav NYC',
-      short: 'Oct 15\u201318 \u00b7 time to confirm',
-      when: 'Trunk show \u00b7 October 15\u201318 \u00b7 time to be confirmed',
+      short: 'Oct 15\u201318 \u00b7 date and time TBD',
+      when: 'Trunk show \u00b7 October 15\u201318 \u00b7 date and time TBD',
       address: '155 Wooster St, New York, NY 10012',
       mapQuery: 'Galia Lahav, 155 Wooster St, New York, NY 10012',
       phone: '646-677-5147',
-      status: 'Requested', statusKey: 'requested',
+      status: 'TBD', statusKey: 'tbd',
+      rsvp: false, guests: 0, invited: [],
+      styles: []
+    },
+    {
+      id: 'karennovias',
+      name: 'Karen Novias',
+      short: 'Santiago \u00b7 possible stop-by',
+      when: 'Possible stop-by \u00b7 date and time TBD',
+      address: 'Santiago, Dominican Republic',
+      mapQuery: 'Karen Novias & Boutique, Santiago, Dominican Republic',
+      phone: '',
+      status: 'TBD', statusKey: 'tbd',
+      event: 'Visit only if there is time during the DR trip. Question for Dioris: does it rent bridal gowns?',
       rsvp: false, guests: 0, invited: [],
       styles: []
     },
