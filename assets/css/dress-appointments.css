@@ -1,19 +1,29 @@
 /* ==========================================================================
-   The Dress: tabs + The Appointments (boutique cards, tried-on log, notes form)
-   Loads after dress.css. Existing palette, type and spacing tokens only.
+   The Dress: tabs + The Appointments (boutique picker and detail)
+   Loads after dress.css. Colors: only the locked palette (teal, forest,
+   celestial, gold, bloom yellow, bamboo, linen, abyss) and thinned versions
+   of those same colors. One spacing scale: 8 / 16 / 24 / 32.
    ========================================================================== */
 
-/* --- Tabs: styled like the wedding website's nav ---------------------------
-   Tracked capitals, sage when idle, deep teal when active, with a feathered
-   gold rule under the active tab. */
+.dress-content { --a1: 8px; --a2: 16px; --a3: 24px; --a4: 32px; }
 .dress-panel[hidden] { display: none; }
+
+/* Shared page title: one visible heading level per tab, so the section
+   titles inside each tab are kept for screen readers only. */
+.dress-panel .dress-block__title {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+.dress-panel .dress-vision { margin: 0 0 var(--a4); }
+
+/* --- Tabs: on a baseline, like the wedding website's nav ---------------------- */
 .dress-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2) clamp(1.4rem, 3.4vw, 2.6rem);
-  margin: 0 0 var(--space-5);
+  gap: 0 clamp(1.5rem, 3.4vw, 2.5rem);
+  margin: 0 0 var(--a4);
   padding: 0;
-  border: none;
+  border: 0;
+  border-bottom: 1px solid rgba(1, 96, 95, 0.22);
 }
 .dress-tabs .viewtab {
   position: relative;
@@ -28,7 +38,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: rgba(1, 96, 95, 0.55);
+  color: rgba(1, 96, 95, 0.62);
   cursor: pointer;
   transition: color 0.2s ease;
 }
@@ -37,126 +47,111 @@
   position: absolute;
   left: -0.5rem;
   right: calc(-0.5rem + 0.16em);
-  bottom: 0;
+  bottom: -1px;
   height: 2px;
-  background: linear-gradient(90deg, rgba(212, 175, 55, 0), var(--gold) 20%, var(--gold) 80%, rgba(212, 175, 55, 0));
+  background: var(--gold);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 .dress-tabs .viewtab:hover { color: var(--teal); }
-.dress-tabs .viewtab:hover::after { opacity: 0.35; }
+.dress-tabs .viewtab:hover::after { opacity: 0.4; }
 .dress-tabs .viewtab.is-active { color: var(--teal); font-weight: 500; border: 0; }
 .dress-tabs .viewtab.is-active::after { opacity: 1; }
 .dress-tabs .viewtab:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }
 
-/* --- Notices -------------------------------------------------------------- */
+/* --- Notice ------------------------------------------------------------------- */
 .appts-notice {
-  margin: 0 0 var(--a3);
-  padding: var(--a2) var(--a3);
-  border: 1px solid var(--linen-rule);
-  border-radius: 6px;
-  background: var(--linen-shade);
-  font-size: var(--step--1);
-  line-height: 1.5;
-  color: var(--doc-ink, var(--teal));
+  margin: 0 0 var(--a3); padding: var(--a2) var(--a3);
+  border: 1px solid rgba(1, 96, 95, 0.22); border-radius: 6px; background: #faf8f2;
+  font-size: var(--step--1); line-height: 1.5; color: var(--teal);
 }
 
-/* --- Spacing scale: 8 / 16 / 24 / 32. Everything below uses only these. ----- */
-.dress-panel { --a1: 8px; --a2: 16px; --a3: 24px; --a4: 32px; }
-
-/* --- Boutique card --------------------------------------------------------- */
-.appt {
-  border: 1px solid var(--linen-rule);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.4);
-  padding: var(--a4);
-  margin-bottom: var(--a3);
+/* --- Picker (left) + detail (right) ------------------------------------------- */
+.appts-wrap { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: var(--a4); align-items: start; }
+.appt-list { display: flex; flex-direction: column; gap: var(--a1); }
+.appt-item {
+  display: block; text-align: left; width: 100%;
+  font: inherit; color: var(--abyss); background: transparent; line-height: 1.3;
+  border: 1px solid rgba(1, 96, 95, 0.22); border-radius: 8px; padding: var(--a2); cursor: pointer;
 }
-.appt__head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--a2); flex-wrap: wrap; }
+.appt-item:hover { border-color: var(--teal); }
+.appt-item.is-selected { background: #faf8f2; border-color: var(--teal); }
+.appt-item:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.appt-item__name {
+  display: block; font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
+  font-size: var(--step-0); letter-spacing: 0.08em; color: var(--teal);
+}
+.appt-item__when { display: block; margin-top: 2px; font-size: var(--step--1); }
+.appt-item__status {
+  display: inline-block; margin-top: var(--a1);
+  font-family: 'Cormorant SC', Georgia, serif; font-size: var(--step--2); letter-spacing: 0.12em;
+  border: 1px solid currentColor; border-radius: 999px; padding: 1px 10px;
+}
+.appt-item__status--confirmed { color: var(--forest); }
+.appt-item__status--requested { color: var(--navy); }
+.appt-item__status--hold { color: var(--teal); }
+
+.appt-detail { background: #faf8f2; border: 1px solid rgba(1, 96, 95, 0.22); border-radius: 10px; padding: var(--a4); }
 .appt__name {
   margin: 0 0 var(--a1);
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
-  font-size: var(--step-2); letter-spacing: 0.1em; line-height: 1.2;
-  color: var(--doc-ink, var(--teal)); border: none; padding: 0;
+  font-size: var(--step-2); letter-spacing: 0.1em; line-height: 1.2; color: var(--teal); border: none; padding: 0;
 }
 .appt__when { margin: 0; font-size: var(--step-1); line-height: 1.4; }
-.appt__where { margin: 4px 0 0; font-size: var(--step-0); line-height: 1.45; }
-.appt__event { margin: var(--a1) 0 0; font-size: var(--step--1); font-style: italic; color: rgba(10, 22, 40, 0.62); }
+.appt__where, .appt__phone { margin: 4px 0 0; font-size: var(--step-0); line-height: 1.45; }
+.appt__event { margin: 4px 0 0; font-size: var(--step--1); font-style: italic; color: var(--teal); }
 .appt__map { margin-left: 4px; font-size: var(--step--1); color: var(--teal); text-decoration: underline; text-underline-offset: 2px; }
+.appt__phone .appt__map { margin-left: 0; font-size: inherit; }
 .appt__map:focus-visible, .tile:focus-visible, .appt__photo:focus-visible,
 .appt-form__btn:focus-visible, .appt-form__verdict label:focus-within,
 .appt-form > summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
-.appt__status {
-  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
-  font-size: var(--step--2); letter-spacing: 0.12em;
-  padding: 3px 12px; border: 1px solid currentColor; border-radius: 999px; white-space: nowrap;
-}
-.appt__status--confirmed { color: var(--forest); }
-.appt__status--requested { color: #8a6d12; }
-.appt__status--hold { color: rgba(10, 22, 40, 0.6); }
-
-/* --- Panels: guests beside style photos ------------------------------------- */
-.panels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr); gap: var(--a2); margin-top: var(--a3); }
-.panels--one { grid-template-columns: minmax(0, 1fr); }
-.panel { border: 1px solid var(--linen-rule); border-radius: 8px; background: #fffdf9; padding: var(--a3); }
-.panel__title {
+/* --- Blocks inside the detail pane: guests, styles, visit notes ---------------- */
+.dsec, .visit { margin-top: var(--a4); }
+.dsec__title {
   margin: 0 0 var(--a2);
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
-  font-size: var(--step--1); letter-spacing: 0.14em; line-height: 1.3;
-  color: var(--doc-ink, var(--teal)); border: none; padding: 0;
+  font-size: var(--step--1); letter-spacing: 0.14em; line-height: 1.3; color: var(--teal); border: none; padding: 0;
 }
-.panel__tally { margin: var(--a2) 0 0; font-size: var(--step--1); color: var(--forest); }
-.panel__hint { margin: var(--a1) 0 0; font-size: var(--step--2); line-height: 1.4; color: rgba(10, 22, 40, 0.6); }
+.dsec__note { margin: var(--a1) 0 0; font-size: var(--step--1); font-style: italic; color: var(--teal); }
 
 /* Guests */
-.guests { list-style: none; margin: 0; padding: 0; }
-.guest { display: flex; align-items: center; gap: 12px; padding: var(--a1) 0; }
-.guest + .guest { border-top: 1px solid var(--linen-rule); }
+.guests { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--a2) var(--a3); }
+.guest { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 64px; text-align: center; }
 .guest__dot {
-  flex: none; width: 32px; height: 32px; border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  font-size: var(--step-0); border: 1px solid;
+  width: 40px; height: 40px; border-radius: 50%; border: 1px solid;
+  display: inline-flex; align-items: center; justify-content: center; font-size: var(--step-1);
 }
 .guest__dot--yes { background: var(--teal); border-color: var(--teal); color: var(--linen); }
-.guest__dot--maybe { background: #f3ebcd; border-color: var(--gold); color: #6b5710; }
-.guest__dot--no { background: #dce6ee; border-color: var(--navy); color: var(--navy); }
-.guest__dot--wait { border: 1px dashed rgba(10, 22, 40, 0.4); color: rgba(10, 22, 40, 0.6); }
-.guest__who { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
-.guest__name { font-size: var(--step-0); }
-.guest__note { font-size: var(--step--2); font-style: italic; color: rgba(10, 22, 40, 0.6); }
-.guest__status { font-size: var(--step--1); color: rgba(10, 22, 40, 0.65); white-space: nowrap; }
+.guest__dot--maybe { background: var(--bloom, #e8b024); border-color: var(--bloom, #e8b024); color: var(--abyss); }
+.guest__dot--no { background: var(--navy); border-color: var(--navy); color: var(--linen); }
+.guest__dot--wait { border: 1px dashed var(--teal); color: var(--teal); }
+.guest__name { font-size: var(--step-0); line-height: 1.2; }
+.guest__status { font-size: var(--step--2); font-style: italic; color: var(--teal); line-height: 1.2; }
 
 /* RSVP button (a details element styled as a button) */
 .appt-form--button { margin-top: var(--a2); padding: 0; border: none; }
-.appt-form--button > summary {
-  display: block; text-align: center; padding: 8px 16px;
-  border: 1px solid var(--teal); border-radius: 6px;
-  letter-spacing: 0.14em; color: var(--teal);
-}
-.appt-form--button > summary:hover { background: rgba(212, 175, 55, 0.14); }
-.appt-form--button[open] > summary { background: var(--teal); color: var(--linen); }
-.appt-form--button form { margin-top: var(--a2); }
+.appt-form--button > summary { padding: 8px 24px; }
+.appt-form--button form { margin-top: var(--a2); max-width: 420px; }
 
 /* Style tiles */
-.tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.tile { display: block; border: 1px solid var(--linen-rule); border-radius: 8px; overflow: hidden; background: #fff; color: var(--teal); text-decoration: none; }
+.tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--a1); }
+.tile { display: block; border: 1px solid rgba(1, 96, 95, 0.22); border-radius: 8px; overflow: hidden; background: #faf8f2; color: var(--teal); text-decoration: none; }
 a.tile { cursor: pointer; }
 a.tile:hover { border-color: var(--gold); }
-.tile__frame { display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 4; background: #e6f0ec; overflow: hidden; }
+.tile__frame { display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 4; background: rgba(232, 220, 196, 0.6); overflow: hidden; }
 .tile__img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
-.tile__frame.is-missing::after { content: 'View photo'; font-size: var(--step--2); letter-spacing: 0.06em; color: rgba(1, 96, 95, 0.75); }
-.tile__num { display: block; padding: var(--a1) 12px; font-size: var(--step-0); line-height: 1.2; }
+.tile__frame.is-missing::after { content: 'View photo'; font-size: var(--step--2); font-style: italic; color: var(--teal); }
+.tile__num { display: block; padding: 4px var(--a1); font-size: var(--step--1); line-height: 1.2; }
 
-/* --- Visit notes / tried-on log --------------------------------------------- */
-.visit { margin-top: var(--a3); padding-top: var(--a3); border-top: 1px solid var(--linen-rule); }
-.visit__empty { margin: 0; font-size: var(--step--1); color: rgba(10, 22, 40, 0.65); }
-.gown { display: flex; gap: var(--a2); padding: var(--a2) 0; border-top: 1px solid var(--linen-rule); }
+/* --- Visit notes / tried-on log ----------------------------------------------- */
+.visit__empty { margin: 0; font-size: var(--step-0); font-style: italic; color: var(--teal); }
+.gown { display: flex; gap: var(--a2); padding: var(--a2) 0; border-top: 1px solid rgba(1, 96, 95, 0.18); }
 .gown:first-of-type { border-top: none; padding-top: 0; }
 .gown__photos { display: flex; flex-direction: column; gap: var(--a1); flex: none; }
 .appt__photo {
-  display: block; padding: 0; border: 1px solid var(--linen-rule); border-radius: 6px;
-  width: 104px; height: 138px; overflow: hidden; cursor: zoom-in; background: var(--linen-shade);
+  display: block; padding: 0; border: 1px solid rgba(1, 96, 95, 0.22); border-radius: 6px;
+  width: 104px; height: 138px; overflow: hidden; cursor: zoom-in; background: rgba(232, 220, 196, 0.6);
 }
 .appt__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .gown__body { flex: 1; min-width: 0; }
@@ -169,15 +164,14 @@ a.tile:hover { border-color: var(--gold); }
 .gown__text { font-style: italic; }
 .verdict {
   display: inline-block; font-family: 'Cormorant SC', Georgia, serif; font-size: var(--step--2);
-  letter-spacing: 0.1em; padding: 0 8px; border: 1px solid currentColor; border-radius: 999px;
-  margin: 0 6px; vertical-align: 1px;
+  letter-spacing: 0.1em; padding: 0 8px; border: 1px solid currentColor; border-radius: 999px; margin: 0 6px; vertical-align: 1px;
 }
 .verdict--love { color: var(--forest); }
-.verdict--maybe { color: #8a6d12; }
+.verdict--maybe { color: var(--abyss); border-color: #e8b024; background: rgba(232, 176, 36, 0.28); }
 .verdict--no { color: var(--navy); }
-.appt__empty { margin: var(--a1) 0 0; font-size: var(--step--1); color: rgba(10, 22, 40, 0.65); }
+.appt__empty { margin: var(--a1) 0 0; font-size: var(--step--1); font-style: italic; color: var(--teal); }
 
-/* --- Add a gown or note ------------------------------------------------------ */
+/* --- Add a gown or note / RSVP form -------------------------------------------- */
 .visit .appt-form { margin-top: var(--a2); padding: 0; border: none; }
 .appt-form > summary {
   cursor: pointer; list-style: none; display: inline-block;
@@ -185,14 +179,14 @@ a.tile:hover { border-color: var(--gold); }
   font-size: var(--step--1); letter-spacing: 0.14em; color: var(--teal);
   border: 1px solid var(--teal); border-radius: 6px; padding: 8px 16px;
 }
-.appt-form > summary:hover { background: rgba(212, 175, 55, 0.14); }
+.appt-form > summary:hover { background: rgba(212, 175, 55, 0.16); }
 .appt-form > summary::-webkit-details-marker { display: none; }
 .appt-form[open] > summary { background: var(--teal); color: var(--linen); }
 .appt-form form { margin-top: var(--a2); }
 .appt-form__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--a2); margin: 0 0 var(--a2); }
 .appt-form__field {
   width: 100%; box-sizing: border-box; font: inherit; font-size: var(--step-0);
-  padding: 8px 10px; border: 1px solid rgba(10, 22, 40, 0.25); border-radius: 6px; background: #fffdf9; color: var(--abyss);
+  padding: 8px 10px; border: 1px solid rgba(1, 96, 95, 0.4); border-radius: 6px; background: var(--linen); color: var(--abyss);
 }
 .appt-form__field:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
 .appt-form__verdict { display: flex; gap: var(--a1); margin: 0 0 var(--a2); padding: 0; border: none; flex-wrap: wrap; }
@@ -208,9 +202,9 @@ a.tile:hover { border-color: var(--gold); }
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; letter-spacing: 0.14em; font-size: var(--step--1);
   color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 6px; padding: 8px 16px; cursor: pointer;
 }
-.appt-form__btn:hover { background: rgba(212, 175, 55, 0.14); }
+.appt-form__btn:hover { background: rgba(212, 175, 55, 0.16); }
 .appt-form__status { font-size: var(--step--1); }
-.appt-form__status.is-error { color: #8c2a2a; }
+.appt-form__status.is-error { color: var(--navy); font-weight: 500; }
 .appt-form__status.is-ok { color: var(--forest); }
 
 /* --- Full-size photo viewer ------------------------------------------------ */
@@ -221,15 +215,16 @@ a.tile:hover { border-color: var(--gold); }
 .appt-viewer__msg { color: var(--linen); font-size: var(--step-0); }
 
 @media (max-width: 760px) {
-  .panels { grid-template-columns: minmax(0, 1fr); }
+  .appts-wrap { grid-template-columns: minmax(0, 1fr); gap: var(--a3); }
+  .appt-list { flex-direction: row; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 4px; }
+  .appt-item { flex: 0 0 190px; scroll-snap-align: start; }
+  .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 560px) {
   .dress-tabs { gap: 0 1.1rem; }
   .dress-tabs .viewtab { font-size: 0.85rem; letter-spacing: 0.1em; padding-bottom: 12px; }
   .dress-tabs .viewtab::after { right: calc(-0.5rem + 0.1em); }
   .tab-the { display: none; }
-  .appt { padding: var(--a3) var(--a2); }
-  .panel { padding: var(--a2); }
-  .tiles { gap: var(--a1); }
+  .appt-detail { padding: var(--a3) var(--a2); }
   .appt__photo { width: 88px; height: 117px; }
 }

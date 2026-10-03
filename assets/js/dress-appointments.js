@@ -40,16 +40,20 @@
     '27-06': 'https://www.berta.com/wp-content/uploads/2026/04/27-06-1.jpg'
   };
 
-  // rsvp: true turns on the Guests section for that appointment.
-  // guests: how many people the boutique allows. invited: who the calendar
-  // invite went to (edit this list as invites change).
+  // One entry per boutique, in the order they appear in the picker.
+  // short: the line under the name in the picker. arrive / phone are optional.
+  // rsvp: true turns on the Guests section. guests: how many the boutique
+  // allows. invited: who the calendar invite went to (edit as invites change).
   var APPOINTMENTS = [
     {
       id: 'berta',
       name: 'Berta NYC',
+      short: 'Sat, Oct 17 \u00b7 12:00 PM',
       when: 'Saturday, October 17 \u00b7 12:00 PM',
+      arrive: 'Arrive by 11:50',
       address: '120 Wooster St, 4th Floor, New York, NY 10012',
       mapQuery: 'Berta NYC, 120 Wooster St, New York, NY 10012',
+      phone: '212-625-2000',
       status: 'Confirmed', statusKey: 'confirmed',
       event: 'Fall/Winter 2027 flagship event',
       rsvp: true,
@@ -58,11 +62,28 @@
       styles: ['25-02', '24-04', '24-107', '26-112', '27-04', '27-06']
     },
     {
+      id: 'milanova',
+      name: 'Milla Nova NYC',
+      short: 'Sat, Oct 17 \u00b7 3:30 PM',
+      when: 'Saturday, October 17 \u00b7 3:30 PM',
+      arrive: 'Arrive by 3:15',
+      address: '597 Broadway, New York, NY 10012',
+      mapQuery: 'Milla Nova, 597 Broadway, New York, NY 10012',
+      phone: '646-787-5178',
+      status: 'Confirmed', statusKey: 'confirmed',
+      rsvp: true,
+      guests: 3,
+      invited: ['Melonie', 'Kailey', 'Neisha', 'Carmen', 'Sileni'],
+      styles: []
+    },
+    {
       id: 'galia',
       name: 'Galia Lahav NYC',
+      short: 'Oct 15\u201318 \u00b7 time to confirm',
       when: 'Trunk show \u00b7 October 15\u201318 \u00b7 time to be confirmed',
       address: '155 Wooster St, New York, NY 10012',
       mapQuery: 'Galia Lahav, 155 Wooster St, New York, NY 10012',
+      phone: '646-677-5147',
       status: 'Requested', statusKey: 'requested',
       rsvp: false, guests: 0, invited: [],
       styles: []
@@ -70,14 +91,18 @@
     {
       id: 'lanovea',
       name: 'La Novea \u00b7 Santiago',
+      short: 'Oct 8 \u00b7 3:00 PM \u00b7 not booked',
       when: 'October 8 \u00b7 3:00 PM (not booked yet)',
       address: 'Santiago, Dominican Republic',
       mapQuery: '',
+      phone: '',
       status: 'On hold', statusKey: 'hold',
       rsvp: false, guests: 0, invited: [],
       styles: []
     }
   ];
+  var selected = 'berta';
+  var ready = false;
   // ---------------------------------------------------------------------------
 
   var VERDICTS = ['Love', 'Maybe', 'No'];
@@ -126,8 +151,13 @@
     });
   });
   function tabFromHash() {
-    var h = (location.hash || '').replace('#', '');
-    showTab(panels[h] ? h : 'guide', false);
+    var parts = (location.hash || '').replace('#', '').split('/');
+    var name = panels[parts[0]] ? parts[0] : 'guide';
+    if (name === 'appointments' && parts[1] && APPOINTMENTS.some(function (a) { return a.id === parts[1]; })) {
+      selected = parts[1];
+      if (ready) render();
+    }
+    showTab(name, false);
   }
   window.addEventListener('hashchange', tabFromHash);
   tabFromHash();
@@ -429,8 +459,8 @@
   function apptRsvps(apptId) { return rsvps.filter(function (r) { return r.appt === apptId; }); }
 
   function renderGuests(a) {
-    var panel = el('section', 'panel panel--guests');
-    panel.appendChild(el('h4', 'panel__title', 'Guests \u00b7 up to ' + a.guests));
+    var block = el('section', 'dsec dsec--guests');
+    block.appendChild(el('h4', 'dsec__title', 'Guests \u00b7 up to ' + a.guests));
 
     var known = loaded || !ENDPOINT;
     var byName = {};
@@ -438,26 +468,25 @@
     var names = a.invited.slice();
     Object.keys(byName).forEach(function (n) { if (names.indexOf(n) === -1) names.push(n); });
 
-    var yes = 0, maybe = 0, no = 0, wait = 0, inPerson = 0;
+    var yes = 0, maybe = 0, no = 0, wait = 0;
     var ul = el('ul', 'guests');
     names.forEach(function (n) {
       var r = byName[n];
       var key = !known || !r ? 'wait' : r.response === 'Yes' ? 'yes' : r.response === 'Maybe' ? 'maybe' : 'no';
       if (!r) wait++;
-      else if (r.response === 'Yes') { yes++; if (r.inPerson) inPerson++; }
+      else if (r.response === 'Yes') yes++;
       else if (r.response === 'Maybe') maybe++;
       else no++;
 
       var li = el('li', 'guest');
       li.appendChild(el('span', 'guest__dot guest__dot--' + key, n.charAt(0)));
-      var who = el('span', 'guest__who');
-      who.appendChild(el('span', 'guest__name', n));
-      if (known && r && r.response === 'Yes' && r.inPerson) who.appendChild(el('span', 'guest__note', 'in person'));
-      li.appendChild(who);
-      li.appendChild(el('span', 'guest__status', !known ? '\u2026' : !r ? 'Waiting' : RSVP_LABEL[r.response]));
+      li.appendChild(el('span', 'guest__name', n));
+      var status = !known ? '\u2026' : !r ? 'Waiting' : RSVP_LABEL[r.response];
+      if (known && r && r.response === 'Yes' && r.inPerson) status += ' \u00b7 in person';
+      li.appendChild(el('span', 'guest__status', status));
       ul.appendChild(li);
     });
-    panel.appendChild(ul);
+    if (names.length) block.appendChild(ul);
 
     if (known) {
       var parts = [];
@@ -465,11 +494,11 @@
       if (maybe) parts.push(maybe + ' maybe');
       if (no) parts.push(no + " can't go");
       if (wait) parts.push(wait + ' waiting');
-      if (parts.length) panel.appendChild(el('p', 'panel__tally', parts.join(' \u00b7 ')));
+      block.appendChild(el('p', 'dsec__note', parts.length ? parts.join(' \u00b7 ') : 'No RSVPs yet.'));
     }
-    panel.appendChild(renderRsvpForm(a));
-    panel.appendChild(el('p', 'panel__hint', 'You can also RSVP in the calendar invite.'));
-    return panel;
+    block.appendChild(renderRsvpForm(a));
+    block.appendChild(el('p', 'dsec__note', 'You can also RSVP in the calendar invite.'));
+    return block;
   }
 
   function renderRsvpForm(a) {
@@ -548,8 +577,8 @@
   }
 
   function renderStyles(a) {
-    var panel = el('section', 'panel panel--styles');
-    panel.appendChild(el('h4', 'panel__title', 'Styles to try'));
+    var panel = el('section', 'dsec dsec--styles');
+    panel.appendChild(el('h4', 'dsec__title', 'Styles to try'));
     var grid = el('ul', 'tiles');
     a.styles.forEach(function (st) {
       var li = el('li');
@@ -581,13 +610,13 @@
       grid.appendChild(li);
     });
     panel.appendChild(grid);
-    panel.appendChild(el('p', 'panel__hint', "Tap a tile to open the gown on the designer's page."));
+    panel.appendChild(el('p', 'dsec__note', "Tap a tile to open the gown on the designer's page."));
     return panel;
   }
 
   function renderTriedOn(card, a, gowns) {
     var sec = el('section', 'visit');
-    sec.appendChild(el('h4', 'panel__title', gowns.length ? 'Tried on \u00b7 ' + gowns.length + (gowns.length === 1 ? ' gown' : ' gowns') : 'Visit notes'));
+    sec.appendChild(el('h4', 'dsec__title', gowns.length ? 'Tried on \u00b7 ' + gowns.length + (gowns.length === 1 ? ' gown' : ' gowns') : 'Visit notes'));
     if (gowns.length) {
       gowns.forEach(function (g) { sec.appendChild(renderGown(g)); });
     } else {
@@ -600,13 +629,12 @@
   }
 
   function renderCard(a) {
-    var card = el('article', 'appt');
+    var card = el('article', 'appt-detail');
     card.id = 'appt-' + a.id;
 
-    var head = el('div', 'appt__head');
-    var left = el('div');
-    left.appendChild(el('h3', 'appt__name', a.name));
-    left.appendChild(el('p', 'appt__when', a.when));
+    card.appendChild(el('h3', 'appt__name', a.name));
+    card.appendChild(el('p', 'appt__when', a.when));
+    if (a.arrive) card.appendChild(el('p', 'appt__event', a.arrive));
     var addr = el('p', 'appt__where', a.address);
     if (a.mapQuery) {
       addr.appendChild(document.createTextNode(' '));
@@ -616,42 +644,63 @@
       m.rel = 'noopener';
       addr.appendChild(m);
     }
-    left.appendChild(addr);
-    if (a.event) left.appendChild(el('p', 'appt__event', a.event));
-    head.appendChild(left);
-    head.appendChild(el('span', 'appt__status appt__status--' + a.statusKey, a.status));
-    card.appendChild(head);
+    card.appendChild(addr);
+    if (a.phone) {
+      var ph = el('p', 'appt__phone', a.statusKey === 'confirmed' ? 'Running late? Call ' : 'Questions? Call ');
+      var tel = el('a', 'appt__map', a.phone);
+      tel.href = 'tel:' + a.phone.replace(/[^0-9+]/g, '');
+      ph.appendChild(tel);
+      card.appendChild(ph);
+    }
+    if (a.event) card.appendChild(el('p', 'appt__event', a.event));
 
     var gowns = groupGowns(a.id);
     // After the visit, photos and comments lead; before it, the plan leads.
     if (gowns.length) renderTriedOn(card, a, gowns);
-
-    var panels = [];
-    if (a.rsvp) panels.push(renderGuests(a));
-    if (a.styles.length) panels.push(renderStyles(a));
-    if (panels.length) {
-      var wrap = el('div', 'panels' + (panels.length === 1 ? ' panels--one' : ''));
-      panels.forEach(function (p) { wrap.appendChild(p); });
-      card.appendChild(wrap);
-    }
-
+    if (a.rsvp) card.appendChild(renderGuests(a));
+    if (a.styles.length) card.appendChild(renderStyles(a));
     if (!gowns.length) renderTriedOn(card, a, gowns);
     return card;
   }
 
-  function render() {
-    var list = $('#apptsList');
-    // Keep any open form (and what is typed in it) from closing on refresh
-    var open = {};
-    $$('details.appt-form', list).forEach(function (d) { open[d.getAttribute('data-key')] = d.open; });
-    list.textContent = '';
+  function renderPicker() {
+    var list = el('div', 'appt-list');
+    list.setAttribute('role', 'tablist');
+    list.setAttribute('aria-label', 'Boutiques');
     APPOINTMENTS.forEach(function (a) {
-      var c = renderCard(a);
-      $$('details.appt-form', c).forEach(function (d) { if (open[d.getAttribute('data-key')]) d.open = true; });
-      list.appendChild(c);
+      var b = el('button', 'appt-item' + (a.id === selected ? ' is-selected' : ''));
+      b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-selected', a.id === selected ? 'true' : 'false');
+      b.appendChild(el('span', 'appt-item__name', a.name));
+      b.appendChild(el('span', 'appt-item__when', a.short));
+      b.appendChild(el('span', 'appt-item__status appt-item__status--' + a.statusKey, a.status));
+      b.addEventListener('click', function () {
+        selected = a.id;
+        if (window.history && history.replaceState) history.replaceState(null, '', '#appointments/' + a.id);
+        render();
+      });
+      list.appendChild(b);
     });
+    return list;
   }
 
+  function render() {
+    var root = $('#apptsList');
+    // Keep any open form (and what is typed in it) from closing on refresh
+    var open = {};
+    $$('details.appt-form', root).forEach(function (d) { open[d.getAttribute('data-key')] = d.open; });
+    root.textContent = '';
+    var cur = APPOINTMENTS.filter(function (a) { return a.id === selected; })[0] || APPOINTMENTS[0];
+    var wrap = el('div', 'appts-wrap');
+    wrap.appendChild(renderPicker());
+    var detail = renderCard(cur);
+    $$('details.appt-form', detail).forEach(function (d) { if (open[d.getAttribute('data-key')]) d.open = true; });
+    wrap.appendChild(detail);
+    root.appendChild(wrap);
+  }
+
+  ready = true;
   render();
   document.addEventListener('dress:unlocked', loadNotes);
   if (!$('#dressLayout.dress-locked')) loadNotes();
