@@ -98,8 +98,9 @@
       phone: '',
       status: 'TBD', statusKey: 'tbd',
       event: 'Visit only if there is time during the DR trip. Question for Dioris: does it rent bridal gowns?',
-      // virtual: true turns the Guests section into virtual guests who are asked to
-      // be available by video during a time block. timeBlock: fill in once it is set.
+      // virtual: true makes every guest a video guest. They can only say yes after
+      // timeBlock is filled in (for example 'Thursday, October 22 \u00b7 2:00\u20134:00 PM'),
+      // because yes means "I am free that day during that time".
       rsvp: true, virtual: true, timeBlock: '', guests: 0,
       invited: ['Melonie', 'Kailey', 'Neisha', 'Carmen', 'Sileni'],
       styles: []
@@ -499,14 +500,20 @@
   }
 
   // --- Guests and RSVP -------------------------------------------------------------
-  var RSVP_LABEL = { Yes: 'Going', Maybe: 'Maybe', No: "Can't go" };
-  // Virtual guests answer "can you be on the video call", so the words change.
-  function rsvpLabel(a, resp) {
-    if (a.virtual) return resp === 'Yes' ? 'Available' : resp === 'Maybe' ? 'Maybe' : "Can't join";
-    return RSVP_LABEL[resp];
-  }
-
   function apptRsvps(apptId) { return rsvps.filter(function (r) { return r.appt === apptId; }); }
+
+  // How one guest's answer reads: the circle style and the word under it.
+  // An RSVP is a yes or a no. A yes that is not "in person" means joining by video.
+  function guestState(a, r, known) {
+    if (!known) return { key: 'wait', label: '\u2026' };
+    if (!r) return { key: 'wait', label: 'Waiting' };
+    if (r.response === 'Yes') {
+      if (a.virtual) return { key: 'yes', label: 'Available' };
+      return r.inPerson ? { key: 'yes', label: 'Going' } : { key: 'video', label: 'By video' };
+    }
+    if (r.response === 'No') return { key: 'no', label: a.virtual ? "Can't join" : "Can't go" };
+    return { key: 'wait', label: 'Waiting' };
+  }
 
   function renderGuests(a) {
     var block = el('section', 'dsec dsec--guests');
@@ -518,42 +525,60 @@
     var names = a.invited.slice();
     Object.keys(byName).forEach(function (n) { if (names.indexOf(n) === -1) names.push(n); });
 
-    var yes = 0, maybe = 0, no = 0, wait = 0;
+    var yes = 0, video = 0, no = 0, wait = 0;
     var ul = el('ul', 'guests');
     names.forEach(function (n) {
-      var r = byName[n];
-      var key = !known || !r ? 'wait' : r.response === 'Yes' ? 'yes' : r.response === 'Maybe' ? 'maybe' : 'no';
-      if (!r) wait++;
-      else if (r.response === 'Yes') yes++;
-      else if (r.response === 'Maybe') maybe++;
-      else no++;
-
-      var li = el('li', 'guest guest--' + key);
+      var st = guestState(a, byName[n], known);
+      if (st.key === 'yes') yes++; else if (st.key === 'video') video++; else if (st.key === 'no') no++; else wait++;
+      var li = el('li', 'guest guest--' + st.key);
       li.appendChild(el('span', 'guest__avatar', n.charAt(0).toUpperCase()));
       li.appendChild(el('span', 'guest__name', n));
-      li.appendChild(el('span', 'guest__status', !known ? '\u2026' : !r ? 'Waiting' : rsvpLabel(a, r.response)));
-      if (known && r && r.response === 'Yes' && r.inPerson && !a.virtual) li.appendChild(el('em', 'guest__note', 'in person'));
+      li.appendChild(el('span', 'guest__status', st.label));
       ul.appendChild(li);
     });
     if (names.length) block.appendChild(ul);
 
-    var form = renderRsvpForm(a);
-    var row = el('div', 'rsvp-row');
-    row.appendChild(toggleButton('rsvp-' + a.id, 'RSVP', form));
-    if (known) {
-      var parts = [];
-      if (yes) parts.push(yes + (a.virtual ? ' available' : ' going'));
-      if (maybe) parts.push(maybe + ' maybe');
-      if (no) parts.push(no + (a.virtual ? " can't join" : " can't go"));
-      if (wait) parts.push(wait + ' waiting');
-      row.appendChild(el('span', 'dsec__note', parts.length ? parts.join(' \u00b7 ') : 'No RSVPs yet.'));
+    // Video guests can only answer once the day and time are known.
+    var canRsvp = !a.virtual || !!a.timeBlock;
+    if (canRsvp) {
+      var form = renderRsvpForm(a);
+      var row = el('div', 'rsvp-row');
+      row.appendChild(toggleButton('rsvp-' + a.id, 'RSVP', form));
+      if (known) {
+        var parts = [];
+        if (yes) parts.push(yes + (a.virtual ? ' available' : ' going'));
+        if (video) parts.push(video + ' by video');
+        if (no) parts.push(no + (a.virtual ? " can't join" : " can't go"));
+        if (wait) parts.push(wait + ' waiting');
+        row.appendChild(el('span', 'dsec__note', parts.length ? parts.join(' \u00b7 ') : 'No RSVPs yet.'));
+      }
+      block.appendChild(row);
+      block.appendChild(form);
     }
-    block.appendChild(row);
-    block.appendChild(form);
-    block.appendChild(el('p', 'dsec__note', a.virtual
-      ? 'Invited to be available by video during a time block. Time block: ' + (a.timeBlock || 'to be confirmed') + '.'
-      : 'You can also RSVP in the calendar invite.'));
+    var note;
+    if (a.virtual) {
+      note = a.timeBlock
+        ? 'Time block: ' + a.timeBlock + '. Say yes only if you are free for all of it.'
+        : 'Invited to be available by video during a time block. RSVP opens once the day and time are set, so availability can be confirmed.';
+    } else {
+      note = 'Up to ' + a.guests + ' in person. Anyone else can join by video if free on that day during the appointment. You can also RSVP in the calendar invite.';
+    }
+    block.appendChild(el('p', 'dsec__note', note));
     return block;
+  }
+
+  function radioSet(name, legend, options) {
+    var fs = el('fieldset', 'appt-form__verdict');
+    fs.appendChild(el('legend', null, legend));
+    options.forEach(function (o) {
+      var lab = el('label');
+      var r = el('input');
+      r.type = 'radio'; r.name = name; r.value = o[0];
+      lab.appendChild(r);
+      lab.appendChild(el('span', null, o[1]));
+      fs.appendChild(lab);
+    });
+    return fs;
   }
 
   function renderRsvpForm(a) {
@@ -571,29 +596,38 @@
     grid.appendChild(who);
     form.appendChild(grid);
 
-    var choices = a.virtual
-      ? [['Yes', 'Available'], ['Maybe', 'Maybe'], ['No', "Can't join"]]
-      : [['Yes', 'Going'], ['Maybe', 'Maybe'], ['No', "Can't go"]];
-    var fs = el('fieldset', 'appt-form__verdict');
-    fs.appendChild(el('legend', null, a.virtual ? 'Can you be on the video call?' : 'Are you coming?'));
-    choices.forEach(function (o) {
-      var lab = el('label');
-      var r = el('input');
-      r.type = 'radio'; r.name = 'rsvp-' + a.id; r.value = o[0];
-      lab.appendChild(r);
-      lab.appendChild(el('span', null, o[1]));
-      fs.appendChild(lab);
-    });
-    form.appendChild(fs);
+    // 1. Yes or no.
+    var fsResp = radioSet('rsvp-' + a.id,
+      a.virtual ? 'Can you be on the video call?' : 'Are you coming?',
+      a.virtual ? [['Yes', 'Available'], ['No', "Can't join"]] : [['Yes', 'Going'], ['No', "Can't go"]]);
+    form.appendChild(fsResp);
 
-    var ip = el('input');
-    ip.type = 'checkbox';
+    // 2. In person or by video (video-only boutiques skip this).
+    var fsHow = null;
     if (!a.virtual) {
-      var ipWrap = el('label', 'appt-form__check');
-      ipWrap.appendChild(ip);
-      ipWrap.appendChild(el('span', null, " I'll be there in person"));
-      form.appendChild(ipWrap);
+      fsHow = radioSet('how-' + a.id, 'How will you join?', [['person', 'In person'], ['video', 'By video']]);
+      form.appendChild(fsHow);
     }
+
+    // 3. Anyone joining by video confirms they are free that day and time.
+    var okWrap = el('label', 'appt-form__check');
+    var ok = el('input');
+    ok.type = 'checkbox';
+    okWrap.appendChild(ok);
+    okWrap.appendChild(el('span', null, a.virtual
+      ? " I'm free on " + a.timeBlock + ' and can be on the video call for all of it.'
+      : " I'm free on " + a.when + ' and can be on the video call for the whole appointment.'));
+    form.appendChild(okWrap);
+
+    function pickedValue(name) { return ($('input[name="' + name + '"]:checked', form) || {}).value; }
+    function sync() {
+      var resp = pickedValue('rsvp-' + a.id);
+      var how = fsHow ? pickedValue('how-' + a.id) : 'video';
+      if (fsHow) fsHow.hidden = resp !== 'Yes';
+      okWrap.hidden = !(resp === 'Yes' && how === 'video');
+    }
+    form.addEventListener('change', sync);
+    sync();
 
     var actions = el('div', 'appt-form__actions');
     var btn = el('button', 'appt-form__btn', 'Send RSVP');
@@ -613,17 +647,21 @@
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var resp = ($('input[name="rsvp-' + a.id + '"]:checked', form) || {}).value;
+      var resp = pickedValue('rsvp-' + a.id);
+      var how = fsHow ? pickedValue('how-' + a.id) : 'video';
       if (!ENDPOINT) return say('RSVPs are not connected yet.', 'error');
       if (!getKey()) return say('Unlock the page with its password first.', 'error');
       if (!who.value) return say('Choose your name first.', 'error');
-      if (!resp) return say(a.virtual ? "Pick Available, Maybe, or Can't join." : "Pick Going, Maybe, or Can't go.", 'error');
+      if (!resp) return say(a.virtual ? "Pick Available or Can't join." : "Pick Going or Can't go.", 'error');
+      if (resp === 'Yes' && !how) return say('Pick In person or By video.', 'error');
+      if (resp === 'Yes' && how === 'video' && !ok.checked) return say('Please confirm you are free on that day and time.', 'error');
       btn.disabled = true;
       say('Saving\u2026');
-      call('rsvp', { appt: a.id, name: who.value, response: resp, inPerson: !a.virtual && !!ip.checked && resp === 'Yes' })
+      call('rsvp', { appt: a.id, name: who.value, response: resp, inPerson: !a.virtual && resp === 'Yes' && how === 'person' })
         .then(function () {
           rsvpFlash = { id: a.id, msg: 'Thanks, your RSVP is in.' };
           form.reset();
+          sync();
           loadNotes();
         }).catch(function () {
           say('Could not save. If this keeps happening, the Google script may need updating.', 'error');

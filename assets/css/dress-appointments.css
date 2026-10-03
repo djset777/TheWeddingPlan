@@ -1,9 +1,8 @@
 /* ==========================================================================
    The Dress: tabs + The Appointments
    STRICT PALETTE: teal, gold and linen only. No opacity, no gray, no black.
-     Teal  = every word, every unselected outline, and solid fills (the Confirmed tag, the Going mark)
-     Gold  = every divider; the thick outline on anything selected or pressed (never a fill,
-             so teal words stay readable)
+     Teal  = every word, and solid fills (the Confirmed tag, the Going circle)
+     Gold  = every outline and divider; solid gold fill when a control is clicked or selected
      Linen = the ground, and words on teal
    Sizes: 12 / 15 / 18 / 22 / 27 only. Square corners everywhere.
    Spacing: 8 / 16 / 24 / 32 only.
@@ -50,18 +49,18 @@
 
 /* --- Boutique picker: a row of cards across the top ---------------------------- */
 .appts-wrap { display: block; }
-.appt-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--a2); margin: 0 0 var(--a4); }
+.appt-list { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(170px, 1fr); gap: var(--a2); margin: 0 0 var(--a4); overflow-x: auto; }
 .appt-item {
   display: block; width: 100%; text-align: left; font: inherit; line-height: 1.3;
-  color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 0;
-  padding: var(--a2); cursor: pointer;
+  color: var(--teal); background: transparent; border: 1px solid var(--gold); border-radius: 0;
+  padding: var(--a2); cursor: pointer; min-width: 0;
 }
-.appt-item:hover { border-color: var(--gold); }
-.appt-item:active, .appt-item.is-selected { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+.appt-item:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+.appt-item:active, .appt-item.is-selected { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); } /* selected card: thick gold ring, teal words stay easy to read */
 .appt-item:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .appt-item__name {
   display: block; font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
-  font-size: 18px; letter-spacing: 0.08em; color: var(--teal);
+  font-size: 18px; letter-spacing: 0.04em; color: var(--teal);
 }
 .appt-item__when { display: block; margin-top: 2px; font-size: 15px; color: var(--teal); }
 .appt-item__status { display: inline-block; margin-top: var(--a1); font-size: 15px; font-style: italic; color: var(--teal); }
@@ -121,7 +120,7 @@
   font-size: 22px; line-height: 1; color: var(--teal); border: 1px dashed var(--teal);
 }
 .guest--yes .guest__avatar { background: var(--teal); color: var(--linen); border: 1px solid var(--teal); }
-.guest--maybe .guest__avatar { border: 3px solid var(--gold); }
+.guest--video .guest__avatar { border: 3px solid var(--gold); }
 .guest--no .guest__avatar { border: 1px solid var(--teal); }
 .guest__name { font-size: 18px; color: var(--teal); }
 .guest__status { font-size: 15px; font-style: italic; color: var(--teal); }
@@ -145,11 +144,11 @@ a.tile:hover, a.tile:focus-visible { box-shadow: inset 0 0 0 1px var(--gold); ou
 .visit__filters { display: flex; flex-wrap: wrap; gap: var(--a1); margin: 0 0 var(--a1); }
 .visit__filter {
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.08em; line-height: 1.2;
-  color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 0;
+  color: var(--teal); background: transparent; border: 1px solid var(--gold); border-radius: 0;
   padding: 6px 12px; min-height: 36px; cursor: pointer;
 }
-.visit__filter:hover { border-color: var(--gold); }
-.visit__filter.is-active { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+.visit__filter:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+.visit__filter:active, .visit__filter.is-active { background: var(--gold); box-shadow: none; }
 .visit__filter:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .visit__empty { margin: 0; font-size: 18px; font-style: italic; color: var(--teal); }
 
@@ -183,11 +182,11 @@ a.tile:hover, a.tile:focus-visible { box-shadow: inset 0 0 0 1px var(--gold); ou
 .appt-form > summary, .appt-form__btn {
   display: inline-block; cursor: pointer; list-style: none; user-select: none;
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.14em; line-height: 1.3;
-  color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 0; padding: 8px 16px;
+  color: var(--teal); background: transparent; border: 1px solid var(--gold); border-radius: 0; padding: 8px 16px;
 }
 .appt-form > summary::-webkit-details-marker { display: none; }
-.appt-form > summary:hover, .appt-form__btn:hover { border-color: var(--gold); }
-.appt-form > summary:active, .appt-form[open] > summary, .appt-form__btn:active, .appt-form__btn:disabled { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+.appt-form > summary:hover, .appt-form__btn:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+.appt-form > summary:active, .appt-form[open] > summary, .appt-form__btn:active, .appt-form__btn:disabled { background: var(--gold); box-shadow: none; }
 .appt-form > summary:focus-visible, .appt-form__btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .appt-form__btn:disabled { cursor: default; }
 
@@ -195,15 +194,16 @@ a.tile:hover, a.tile:focus-visible { box-shadow: inset 0 0 0 1px var(--gold); ou
 .appt-form { margin: 0 0 var(--a3); padding: 0; border: 0; }
 .visit .appt-form { max-width: 640px; }
 .appt-form--rsvp { margin: var(--a2) 0 0; max-width: 420px; }
-.appt-form__btn.is-open { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+.appt-form__btn.is-open { background: var(--gold); box-shadow: none; }
+.appt-form__check[hidden], .appt-form__verdict[hidden] { display: none; }
 
 /* --- Form fields: gold line, linen fill, teal words ------------------------------ */
 .appt-form__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--a2); margin: 0 0 var(--a2); }
 .appt-form__field {
   width: 100%; box-sizing: border-box; font: inherit; font-size: 18px; font-weight: 500; line-height: 1.3;
-  color: var(--teal); background-color: var(--linen); border: 1px solid var(--teal); border-radius: 0; padding: 8px 12px;
+  color: var(--teal); background-color: var(--linen); border: 1px solid var(--gold); border-radius: 0; padding: 8px 12px;
 }
-.appt-form__field:focus, .appt-form__field:focus-visible { outline: 0; border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+.appt-form__field:focus, .appt-form__field:focus-visible { outline: 0; box-shadow: inset 0 0 0 1px var(--gold); }
 .appt-form__field::placeholder { color: var(--teal); opacity: 1; font-style: italic; }
 select.appt-form__field {
   appearance: none; -webkit-appearance: none; padding-right: 36px; cursor: pointer;
@@ -221,11 +221,11 @@ textarea.appt-form__field { display: block; margin: 0 0 var(--a2); resize: verti
 .appt-form__verdict label:first-of-type { margin-left: 0; }
 .appt-form__verdict input { position: absolute; opacity: 0; pointer-events: none; }
 .appt-form__verdict span {
-  display: inline-block; padding: 6px 12px; border: 1px solid var(--teal); border-radius: 0;
+  display: inline-block; padding: 6px 12px; border: 1px solid var(--gold); border-radius: 0;
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.1em; line-height: 1.3; color: var(--teal); user-select: none;
 }
-.appt-form__verdict label:hover span { border-color: var(--gold); }
-.appt-form__verdict label:active span, .appt-form__verdict input:checked + span { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+.appt-form__verdict label:hover span { box-shadow: inset 0 0 0 1px var(--gold); }
+.appt-form__verdict label:active span, .appt-form__verdict input:checked + span { background: var(--gold); box-shadow: none; }
 .appt-form__verdict input:focus-visible + span { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* Checkbox: gold square, gold fill with a check when ticked */
@@ -233,9 +233,9 @@ textarea.appt-form__field { display: block; margin: 0 0 var(--a2); resize: verti
 .appt-form__check input { position: absolute; opacity: 0; pointer-events: none; }
 .appt-form__check span::before {
   content: ''; display: inline-block; width: 22px; height: 22px; margin-right: var(--a1); vertical-align: middle;
-  border: 1px solid var(--teal); text-align: center; font-size: 15px; line-height: 20px; color: var(--teal);
+  border: 1px solid var(--gold); text-align: center; font-size: 15px; line-height: 20px; color: var(--teal);
 }
-.appt-form__check input:checked + span::before { content: '\2713'; border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+.appt-form__check input:checked + span::before { content: '\2713'; background: var(--gold); }
 .appt-form__check input:focus-visible + span::before { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 /* Photo picker */
@@ -243,10 +243,10 @@ textarea.appt-form__field { display: block; margin: 0 0 var(--a2); resize: verti
 .appt-form__photo input { font: inherit; color: var(--teal); }
 .appt-form__photo input::file-selector-button {
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.14em;
-  color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 0; padding: 8px 16px; margin-right: var(--a2); cursor: pointer;
+  color: var(--teal); background: transparent; border: 1px solid var(--gold); border-radius: 0; padding: 8px 16px; margin-right: var(--a2); cursor: pointer;
 }
-.appt-form__photo input::file-selector-button:hover { border-color: var(--gold); }
-.appt-form__photo input::file-selector-button:active { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+.appt-form__photo input::file-selector-button:hover { box-shadow: inset 0 0 0 1px var(--gold); }
+.appt-form__photo input::file-selector-button:active { background: var(--gold); }
 
 .appt-form__actions { display: flex; align-items: center; gap: var(--a2); flex-wrap: wrap; }
 .appt-form__status { font-size: 15px; font-style: italic; color: var(--teal); }
@@ -267,7 +267,7 @@ textarea.appt-form__field { display: block; margin: 0 0 var(--a2); resize: verti
   .appt__plan .dsec--guests { flex: none; width: 100%; }
 }
 @media (max-width: 760px) {
-  .appt-list { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 190px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 4px; }
+  .appt-list { grid-auto-columns: 190px; scroll-snap-type: x proximity; padding-bottom: 4px; }
   .appt-item { scroll-snap-align: start; }
   .gown { flex-direction: column; gap: var(--a2); }
   .gown__info { flex: none; }
