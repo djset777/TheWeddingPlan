@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/site.css">
   <link rel="stylesheet" href="../assets/css/dress.css?v=16">
+  <link rel="stylesheet" href="../assets/css/dress-appointments.css?v=1">
 </head>
 <body>
 
@@ -45,6 +46,14 @@
           <p class="dress-vision__text">Allover lace, a corset bodice, moving sleeves, and a fitted-to-flared skirt: made for an open-air July afternoon in the Dominican mountains.</p>
         </div>
 
+      <!-- TABS -->
+      <div class="viewtabs dress-tabs" role="tablist" aria-label="The Dress sections">
+        <button class="viewtab is-active" type="button" role="tab" id="tab-guide" aria-controls="panel-guide" aria-selected="true" data-tab="guide">The Guide</button>
+        <button class="viewtab" type="button" role="tab" id="tab-references" aria-controls="panel-references" aria-selected="false" data-tab="references">The References</button>
+        <button class="viewtab" type="button" role="tab" id="tab-appointments" aria-controls="panel-appointments" aria-selected="false" data-tab="appointments">The Appointments</button>
+      </div>
+
+      <div class="dress-panel" id="panel-guide" role="tabpanel" aria-labelledby="tab-guide">
       <!-- THE GUIDE -->
       <section class="dress-block dress-guide" aria-labelledby="guide-title">
         <h2 class="dress-block__title" id="guide-title">The Guide</h2>
@@ -137,6 +146,9 @@
         </div>
       </section>
 
+      </div>
+
+      <div class="dress-panel" id="panel-references" role="tabpanel" aria-labelledby="tab-references" hidden>
       <!-- THE REFERENCES -->
       <section class="dress-block" aria-labelledby="refs-title">
         <h2 class="dress-block__title" id="refs-title">The References</h2>
@@ -380,6 +392,17 @@
         </div>
       </section>
 
+      </div>
+
+      <div class="dress-panel" id="panel-appointments" role="tabpanel" aria-labelledby="tab-appointments" hidden>
+        <section class="dress-block" aria-labelledby="appts-title">
+          <h2 class="dress-block__title" id="appts-title">The Appointments</h2>
+          <p class="dress-block__sig">Where to be, what to try, and what everyone thought.</p>
+          <div class="appts-notice" id="apptsNotice" hidden></div>
+          <div class="appts" id="apptsList" aria-live="polite"></div>
+        </section>
+      </div>
+
       <footer class="page-footer">
         <span class="page-footer__name">Danisa &amp; Julian</span>
       </footer>
@@ -472,6 +495,8 @@
   </script>
 
 
+  <script src="../assets/js/dress-appointments.js?v=1"></script>
+
   <!-- Gate logic — synchronous, no crypto, no async. Works on every browser,
        every protocol (file/http/https), even if other scripts fail. -->
   <script>
@@ -496,6 +521,7 @@
       var typed = (input.value || "").trim().toLowerCase();
       if (typed === PASS) {
         unlock();
+        document.dispatchEvent(new CustomEvent("dress:unlocked"));
       } else {
         if (errorEl) errorEl.hidden = false;
         input.value = "";

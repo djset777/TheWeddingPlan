@@ -1,0 +1,474 @@
+/* ==========================================================================
+   The Dress: tabs + The Appointments
+   - Tab switching with #guide / #references / #appointments links
+   - Appointment cards (edit the APPOINTMENTS list below as plans change)
+   - Tried-on log, notes form and photo upload, saved through the dress
+     Apps Script (see apps-script/dress-notes/SETUP.md)
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  // --- Settings you will edit ------------------------------------------------
+  // Paste the Web app URL from the dress-account Apps Script deployment here.
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxt-6WmNpcuappL5Yxw2ftwKCK_eJlgR_8yafWPWLCRJ_IGA86Sw1FW25WykYjEdJx6/exec';
+
+  var PEOPLE = ['Danisa', 'Carmen', 'Sileni', 'Melonie', 'Neisha', 'Kailey'];
+
+  // Gown number -> reference photo number. Only add pairs that are confirmed.
+  var REF_MAP = { '25-02': '01' };
+
+  var APPOINTMENTS = [
+    {
+      id: 'berta',
+      name: 'Berta NYC',
+      when: 'Saturday, October 17 \u00b7 12:00 PM',
+      where: '120 Wooster St, 4th floor, New York',
+      status: 'Confirmed', statusKey: 'confirmed',
+      event: 'Fall/Winter 2027 flagship event',
+      styles: ['25-02', '24-04', '24-107', '26-112', '27-04', '27-06'],
+      inPerson: ['Melonie', 'Kailey', 'Neisha', 'Carmen'],
+      video: ['Sileni']
+    },
+    {
+      id: 'galia',
+      name: 'Galia Lahav NYC',
+      when: 'Trunk show \u00b7 October 15\u201318 \u00b7 time to be confirmed',
+      where: '155 Wooster St, New York',
+      status: 'Requested', statusKey: 'requested',
+      styles: [], inPerson: [], video: []
+    },
+    {
+      id: 'lanovea',
+      name: 'La Novea \u00b7 Santiago',
+      when: 'October 8 \u00b7 3:00 PM (not booked yet)',
+      where: 'Santiago, Dominican Republic',
+      status: 'On hold', statusKey: 'hold',
+      styles: [], inPerson: [], video: []
+    }
+  ];
+  // ---------------------------------------------------------------------------
+
+  var VERDICTS = ['Love', 'Maybe', 'No'];
+  var notes = [];
+  var loaded = false;
+  var flash = null;
+
+  // The notes passcode is typed once per visit and kept only for this browser
+  // session. It is never written into the page or the repo.
+  function getKey() { try { return sessionStorage.getItem('dressNotesKey') || ''; } catch (e) { return ''; } }
+  function setKey(k) { try { sessionStorage.setItem('dressNotesKey', k); } catch (e) { /* private mode */ } }
+  function clearKey() { try { sessionStorage.removeItem('dressNotesKey'); } catch (e) { /* ignore */ } }
+
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  // --- Tabs ------------------------------------------------------------------
+  var tabs = $$('.dress-tabs .viewtab');
+  var panels = { guide: $('#panel-guide'), references: $('#panel-references'), appointments: $('#panel-appointments') };
+
+  function showTab(name, updateHash) {
+    if (!panels[name]) name = 'guide';
+    tabs.forEach(function (t) {
+      var on = t.getAttribute('data-tab') === name;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+    });
+    Object.keys(panels).forEach(function (k) { panels[k].hidden = (k !== name); });
+    if (updateHash && window.history && history.replaceState) history.replaceState(null, '', '#' + name);
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { showTab(t.getAttribute('data-tab'), true); });
+    t.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      var next = tabs[(i + d + tabs.length) % tabs.length];
+      next.focus();
+      showTab(next.getAttribute('data-tab'), true);
+    });
+  });
+  function tabFromHash() {
+    var h = (location.hash || '').replace('#', '');
+    showTab(panels[h] ? h : 'guide', false);
+  }
+  window.addEventListener('hashchange', tabFromHash);
+  tabFromHash();
+
+  // --- Jump from a gown number to its reference photo -------------------------
+  function openReference(num) {
+    showTab('references', true);
+    var tile = $$('.ref-tile').filter(function (t) { return $('.ref-tile__num', t).textContent.trim() === num; })[0];
+    if (!tile) return;
+    if (tile.hidden) { var all = $('.ref-filter__btn[data-filter="all"]'); if (all) all.click(); }
+    tile.scrollIntoView({ block: 'center' });
+    var open = $('.ref-tile__open', tile);
+    if (open) open.click();
+  }
+
+  // --- Server calls ------------------------------------------------------------
+  function call(action, payload) {
+    if (!ENDPOINT) return Promise.reject(new Error('not-connected'));
+    var body = JSON.stringify(Object.assign({ action: action, key: getKey() }, payload || {}));
+    return fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: body })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (!j || !j.ok) throw new Error((j && j.error) || 'failed'); return j; });
+  }
+
+  function setNotice(msg, withForm) {
+    var n = $('#apptsNotice');
+    n.textContent = '';
+    if (!msg && !withForm) { n.hidden = true; return; }
+    if (msg) n.appendChild(el('p', null, msg));
+    if (withForm) {
+      var f = el('form', 'appt-form__actions');
+      var inp = el('input', 'appt-form__field');
+      inp.type = 'password';
+      inp.placeholder = 'Notes passcode';
+      inp.autocomplete = 'off';
+      inp.setAttribute('aria-label', 'Notes passcode');
+      inp.style.maxWidth = '220px';
+      var b = el('button', 'appt-form__btn', 'Unlock notes');
+      b.type = 'submit';
+      f.appendChild(inp);
+      f.appendChild(b);
+      f.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!inp.value.trim()) return;
+        setKey(inp.value.trim());
+        loadNotes();
+      });
+      n.appendChild(f);
+    }
+    n.hidden = false;
+  }
+
+  function loadNotes() {
+    if (!ENDPOINT) {
+      setNotice('Notes and photos switch on once the Google Sheet is connected. Appointment details below are live now.');
+      render();
+      return;
+    }
+    if (!getKey()) {
+      setNotice('Enter the notes passcode to see and add notes and photos.', true);
+      render();
+      return;
+    }
+    call('list').then(function (j) {
+      notes = j.notes || [];
+      loaded = true;
+      setNotice('');
+      render();
+    }).catch(function (err) {
+      if (err && err.message === 'auth') {
+        clearKey();
+        setNotice('That passcode did not match. Try again.', true);
+      } else {
+        setNotice('Notes could not load. Check your connection and refresh the page.');
+      }
+      render();
+    });
+  }
+
+  // --- Photo handling ------------------------------------------------------------
+  function shrink(file, maxSide, quality) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        var s = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+        var c = document.createElement('canvas');
+        c.width = Math.round(img.naturalWidth * s);
+        c.height = Math.round(img.naturalHeight * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        resolve(c.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('bad-image')); };
+      img.src = url;
+    });
+  }
+
+  // --- Viewer for full-size photos -------------------------------------------------
+  var viewer = el('div', 'appt-viewer');
+  viewer.hidden = true;
+  viewer.setAttribute('role', 'dialog');
+  viewer.setAttribute('aria-modal', 'true');
+  viewer.setAttribute('aria-label', 'Photo, full size');
+  var viewerClose = el('button', 'appt-viewer__close', '\u00d7');
+  viewerClose.type = 'button';
+  viewerClose.setAttribute('aria-label', 'Close');
+  var viewerBody = el('div');
+  viewer.appendChild(viewerClose);
+  viewer.appendChild(viewerBody);
+  document.body.appendChild(viewer);
+  function closeViewer() { viewer.hidden = true; viewerBody.textContent = ''; document.body.style.overflow = ''; }
+  viewerClose.addEventListener('click', closeViewer);
+  viewer.addEventListener('click', function (e) { if (e.target === viewer) closeViewer(); });
+  document.addEventListener('keydown', function (e) { if (!viewer.hidden && e.key === 'Escape') closeViewer(); });
+
+  function showPhoto(photoId) {
+    viewerBody.textContent = '';
+    viewerBody.appendChild(el('p', 'appt-viewer__msg', 'Loading photo\u2026'));
+    viewer.hidden = false;
+    document.body.style.overflow = 'hidden';
+    call('photo', { id: photoId }).then(function (j) {
+      viewerBody.textContent = '';
+      var img = new Image();
+      img.alt = 'Gown photo';
+      img.src = j.data;
+      viewerBody.appendChild(img);
+    }).catch(function () {
+      viewerBody.textContent = '';
+      viewerBody.appendChild(el('p', 'appt-viewer__msg', 'That photo could not load.'));
+    });
+  }
+
+  // --- Rendering ---------------------------------------------------------------------
+  function gownKey(s) { return String(s || '').toLowerCase().replace(/\s+/g, ' ').trim(); }
+
+  function groupGowns(apptId) {
+    var order = [], map = {};
+    notes.filter(function (n) { return n.appt === apptId; }).forEach(function (n) {
+      var k = gownKey(n.gown);
+      if (!map[k]) { map[k] = { title: n.gown, notes: [] }; order.push(k); }
+      map[k].notes.push(n);
+    });
+    return order.map(function (k) { return map[k]; });
+  }
+
+  function verdictBadge(v) {
+    var key = String(v || '').toLowerCase();
+    return el('span', 'verdict verdict--' + (key === 'love' ? 'love' : key === 'no' ? 'no' : 'maybe'), v);
+  }
+
+  function renderGown(g) {
+    var row = el('div', 'gown');
+    var photos = g.notes.filter(function (n) { return n.thumb && n.photoId; });
+    if (photos.length) {
+      var col = el('div', 'gown__photos');
+      photos.forEach(function (n) {
+        var b = el('button', 'appt__photo');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Enlarge photo of ' + g.title);
+        var img = new Image();
+        img.alt = g.title;
+        img.src = n.thumb;
+        b.appendChild(img);
+        b.addEventListener('click', function () { showPhoto(n.photoId); });
+        col.appendChild(b);
+      });
+      row.appendChild(col);
+    }
+    var body = el('div', 'gown__body');
+    body.appendChild(el('p', 'gown__title', g.title));
+    var refNum = REF_MAP[g.title.trim()];
+    if (refNum) {
+      var ref = el('p', 'gown__ref');
+      var rb = el('button', null, 'See reference ' + refNum);
+      rb.type = 'button';
+      rb.addEventListener('click', function () { openReference(refNum); });
+      ref.appendChild(rb);
+      body.appendChild(ref);
+    }
+    var list = el('ul', 'gown__notes');
+    g.notes.forEach(function (n) {
+      var li = el('li', 'gown__note');
+      li.appendChild(el('span', 'gown__who', n.name));
+      li.appendChild(verdictBadge(n.verdict));
+      if (n.note) li.appendChild(el('span', 'gown__text', n.note));
+      list.appendChild(li);
+    });
+    body.appendChild(list);
+    row.appendChild(body);
+    return row;
+  }
+
+  function renderForm(a) {
+    var d = el('details', 'appt-form');
+    var sum = el('summary', null, 'Add a gown or note');
+    d.appendChild(sum);
+
+    var form = el('form');
+    form.noValidate = true;
+
+    var grid = el('div', 'appt-form__grid');
+    var who = el('select', 'appt-form__field');
+    who.setAttribute('aria-label', 'Your name');
+    who.appendChild(new Option('Your name', ''));
+    PEOPLE.forEach(function (p) { who.appendChild(new Option(p, p)); });
+
+    var gown = el('input', 'appt-form__field');
+    gown.type = 'text';
+    gown.placeholder = 'Gown name or number';
+    gown.setAttribute('aria-label', 'Gown name or number');
+    gown.maxLength = 80;
+    var dlId = 'gowns-' + a.id;
+    gown.setAttribute('list', dlId);
+    var dl = el('datalist');
+    dl.id = dlId;
+    var seen = {};
+    a.styles.concat(groupGowns(a.id).map(function (g) { return g.title; })).forEach(function (s) {
+      var k = gownKey(s);
+      if (!seen[k]) { seen[k] = 1; dl.appendChild(new Option(s, s)); }
+    });
+    grid.appendChild(who);
+    grid.appendChild(gown);
+    grid.appendChild(dl);
+    form.appendChild(grid);
+
+    var fs = el('fieldset', 'appt-form__verdict');
+    fs.appendChild(el('legend', null, 'Verdict'));
+    VERDICTS.forEach(function (v) {
+      var lab = el('label');
+      var r = el('input');
+      r.type = 'radio'; r.name = 'verdict-' + a.id; r.value = v;
+      lab.appendChild(r);
+      lab.appendChild(el('span', null, v));
+      fs.appendChild(lab);
+    });
+    form.appendChild(fs);
+
+    var text = el('textarea', 'appt-form__field');
+    text.rows = 3;
+    text.maxLength = 500;
+    text.placeholder = 'What stood out? Fit, sleeves, how it moved\u2026';
+    text.setAttribute('aria-label', 'Comment');
+    form.appendChild(text);
+
+    var photoWrap = el('div', 'appt-form__photo');
+    var photo = el('input');
+    photo.type = 'file';
+    photo.accept = 'image/*';
+    photo.setAttribute('aria-label', 'Add a photo');
+    photoWrap.appendChild(photo);
+    form.appendChild(photoWrap);
+
+    var actions = el('div', 'appt-form__actions');
+    var btn = el('button', 'appt-form__btn', 'Add to this visit');
+    btn.type = 'submit';
+    var status = el('span', 'appt-form__status');
+    status.setAttribute('role', 'status');
+    actions.appendChild(btn);
+    actions.appendChild(status);
+    form.appendChild(actions);
+
+    function say(msg, kind) {
+      status.textContent = msg || '';
+      status.className = 'appt-form__status' + (kind ? ' is-' + kind : '');
+    }
+
+    if (flash && flash.id === a.id) { say(flash.msg, 'ok'); flash = null; }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var verdict = ($('input[name="verdict-' + a.id + '"]:checked', form) || {}).value;
+      if (!ENDPOINT) return say('Notes are not connected yet.', 'error');
+      if (!getKey()) return say('Enter the notes passcode at the top of this tab first.', 'error');
+      if (!who.value) return say('Choose your name first.', 'error');
+      if (!gown.value.trim()) return say('Enter the gown name or number.', 'error');
+      if (!verdict) return say('Pick Love, Maybe, or No.', 'error');
+
+      btn.disabled = true;
+      say('Saving\u2026');
+      var file = photo.files && photo.files[0];
+      var prep = file
+        ? Promise.all([shrink(file, 1200, 0.8), shrink(file, 360, 0.7)])
+        : Promise.resolve([null, null]);
+      prep.then(function (imgs) {
+        return call('add', {
+          appt: a.id, name: who.value, gown: gown.value.trim(), verdict: verdict,
+          note: text.value.trim(), photo: imgs[0], thumb: imgs[1]
+        });
+      }).then(function () {
+        form.reset();
+        flash = { id: a.id, msg: 'Added.' };
+        loadNotes();
+      }).catch(function (err) {
+        if (err && err.message === 'auth') { clearKey(); loadNotes(); return say('That passcode did not match.', 'error'); }
+        say(err && err.message === 'bad-image'
+          ? 'That photo could not be read. Try a different one.'
+          : 'Could not save. Try again in a moment.', 'error');
+      }).then(function () { btn.disabled = false; });
+    });
+
+    d.appendChild(form);
+    return d;
+  }
+
+  function renderCard(a) {
+    var card = el('article', 'appt');
+    card.id = 'appt-' + a.id;
+
+    var head = el('div', 'appt__head');
+    var left = el('div');
+    left.appendChild(el('h3', 'appt__name', a.name));
+    left.appendChild(el('p', 'appt__when', a.when));
+    left.appendChild(el('p', 'appt__where', a.where + (a.event ? ' \u00b7 ' + a.event : '')));
+    head.appendChild(left);
+    head.appendChild(el('span', 'appt__status appt__status--' + a.statusKey, a.status));
+    card.appendChild(head);
+
+    if (a.inPerson.length || a.video.length) {
+      card.appendChild(el('p', 'appt__label', 'Who is coming'));
+      var parts = [];
+      if (a.inPerson.length) parts.push(a.inPerson.join(', ') + ' in person');
+      if (a.video.length) parts.push(a.video.join(', ') + ' by video');
+      card.appendChild(el('p', 'appt__people', parts.join(' \u00b7 ')));
+    }
+
+    if (a.styles.length) {
+      card.appendChild(el('p', 'appt__label', 'Styles to try'));
+      var ul = el('ul', 'appt__tags');
+      a.styles.forEach(function (s) {
+        var li = el('li');
+        if (REF_MAP[s]) {
+          var b = el('button', 'appt__tag', s);
+          b.type = 'button';
+          b.setAttribute('aria-label', s + ', open reference ' + REF_MAP[s]);
+          b.addEventListener('click', function () { openReference(REF_MAP[s]); });
+          li.appendChild(b);
+        } else {
+          li.appendChild(el('span', 'appt__tag', s));
+        }
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+    }
+
+    var gowns = groupGowns(a.id);
+    card.appendChild(el('p', 'appt__label', gowns.length ? 'Tried on \u00b7 ' + gowns.length + (gowns.length === 1 ? ' gown' : ' gowns') : 'Tried on'));
+    if (gowns.length) {
+      gowns.forEach(function (g) { card.appendChild(renderGown(g)); });
+    } else {
+      card.appendChild(el('p', 'appt__empty', loaded || !ENDPOINT
+        ? 'No gowns logged yet. Add the first one after the visit.'
+        : 'Loading\u2026'));
+    }
+
+    card.appendChild(renderForm(a));
+    return card;
+  }
+
+  function render() {
+    var list = $('#apptsList');
+    // Keep any open form (and what is typed in it) from being wiped by a refresh
+    var open = {};
+    $$('.appt-form', list).forEach(function (d, i) { open[i] = d.open; });
+    list.textContent = '';
+    APPOINTMENTS.forEach(function (a, i) {
+      var c = renderCard(a);
+      if (open[i]) $('.appt-form', c).open = true;
+      list.appendChild(c);
+    });
+  }
+
+  render();
+  document.addEventListener('dress:unlocked', loadNotes);
+  if (!$('#dressLayout.dress-locked')) loadNotes();
+})();
