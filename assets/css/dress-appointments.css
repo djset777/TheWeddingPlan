@@ -48,9 +48,9 @@
   font-size: 15px; font-style: italic; line-height: 1.5; color: var(--teal);
 }
 
-/* --- Picker (left) + detail (right) -------------------------------------------- */
-.appts-wrap { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: var(--a4); align-items: start; }
-.appt-list { display: flex; flex-direction: column; gap: var(--a1); }
+/* --- Boutique picker: a row of cards across the top ---------------------------- */
+.appts-wrap { display: block; }
+.appt-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--a2); margin: 0 0 var(--a4); }
 .appt-item {
   display: block; width: 100%; text-align: left; font: inherit; line-height: 1.3;
   color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 0;
@@ -70,12 +70,20 @@
   background: var(--teal); color: var(--linen); padding: 1px 10px;
 }
 
+/* --- Detail: title block with the status tag at the right ------------------------ */
 .appt-detail { background: transparent; }
+.appt__head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--a3); flex-wrap: wrap; }
+.appt__info { min-width: 0; }
 .appt__name {
   margin: 0 0 var(--a1);
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 300;
   font-size: 27px; letter-spacing: 3.4px; line-height: 1.2; color: var(--teal); border: none; padding: 0;
 }
+.appt__status {
+  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 12px; letter-spacing: 0.12em;
+  color: var(--teal); border: 1px solid var(--teal); padding: 1px 10px; white-space: nowrap;
+}
+.appt__status--confirmed { background: var(--teal); color: var(--linen); }
 .appt__when { margin: 0; font-size: 22px; line-height: 1.4; color: var(--teal); }
 .appt__where, .appt__phone { margin: 4px 0 0; font-size: 18px; line-height: 1.45; color: var(--teal); }
 .appt__event { margin: 4px 0 0; font-size: 15px; font-style: italic; color: var(--teal); }
@@ -88,8 +96,7 @@
 .appt__map:hover, .gown__ref a:hover, .gown__ref button:hover { text-decoration-color: var(--gold); text-decoration-thickness: 3px; }
 .appt__map:focus-visible, .gown__ref a:focus-visible, .gown__ref button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
-/* --- Sections inside the detail: gold rule above, teal small-caps label ------- */
-.dsec, .visit { margin-top: var(--a3); padding-top: var(--a3); border-top: 1px solid var(--gold); }
+/* --- Sections: gold rule above, teal small-caps label ------------------------------ */
 .dsec__title {
   margin: 0 0 var(--a2);
   font-family: 'Cormorant SC', Georgia, serif; font-weight: 500;
@@ -97,41 +104,69 @@
 }
 .dsec__note { margin: var(--a2) 0 0; font-size: 15px; font-style: italic; color: var(--teal); }
 
-/* Guests: one line per person, a mark and the word */
-.guests { list-style: none; margin: 0; padding: 0; }
-.guest { display: flex; justify-content: space-between; align-items: baseline; gap: var(--a2); padding: 12px 0; border-top: 1px solid var(--gold); }
-.guest:last-child { border-bottom: 1px solid var(--gold); }
-.guest__name { font-size: 18px; color: var(--teal); }
-.guest__note { display: block; font-size: 15px; font-style: italic; color: var(--teal); }
-.guest__status {
-  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.12em;
-  white-space: nowrap; color: var(--teal);
-}
-.guest__mark { display: inline-block; width: 20px; margin-right: var(--a1); text-align: center; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; }
-.guest--yes .guest__status { background: var(--teal); color: var(--linen); padding: 2px 12px; }
+/* The plan: guests on the left, styles to try on the right */
+.appt__plan, .visit { margin-top: var(--a3); padding-top: var(--a3); border-top: 1px solid var(--gold); }
+.appt__plan { display: flex; gap: var(--a4); align-items: flex-start; }
+.appt__plan .dsec { margin: 0; padding: 0; border: 0; }
+.appt__plan .dsec--guests { flex: 0 0 520px; max-width: 100%; }
+.appt__plan .dsec--styles { flex: 1; min-width: 0; }
+.appt__plan--single .dsec { flex: 1; }
 
-/* Style tiles */
-.tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--a1); }
+/* Guests: a row of circles, a name and a word under each */
+.guests { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--a2); }
+.guest { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 88px; text-align: center; padding: 0; border: 0; }
+.guest__avatar {
+  width: 56px; height: 56px; border-radius: 50%; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; line-height: 1; color: var(--teal); border: 1px dashed var(--teal);
+}
+.guest--yes .guest__avatar { background: var(--teal); color: var(--linen); border: 1px solid var(--teal); }
+.guest--maybe .guest__avatar { border: 3px solid var(--gold); }
+.guest--no .guest__avatar { border: 1px solid var(--teal); }
+.guest__name { font-size: 18px; color: var(--teal); }
+.guest__status { font-size: 15px; font-style: italic; color: var(--teal); }
+.guest__note { display: block; font-size: 15px; font-style: italic; color: var(--teal); }
+.rsvp-row { display: flex; align-items: center; gap: var(--a2); flex-wrap: wrap; margin-top: var(--a2); }
+.rsvp-row .dsec__note { margin: 0; }
+
+/* Style tiles: three across */
+.tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--a2); }
 .tile { display: block; border: 1px solid var(--gold); background: transparent; color: var(--teal); text-decoration: none; }
 a.tile { cursor: pointer; }
 a.tile:hover, a.tile:focus-visible { box-shadow: inset 0 0 0 1px var(--gold); outline: 0; }
-.tile__frame { display: flex; align-items: center; justify-content: center; aspect-ratio: 3 / 4; border-bottom: 1px solid var(--gold); overflow: hidden; }
+.tile__frame { display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 5; border-bottom: 1px solid var(--gold); overflow: hidden; }
 .tile__img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
 .tile__frame.is-missing::after { content: 'View photo'; font-size: 15px; font-style: italic; color: var(--teal); }
 .tile__num { display: block; padding: 4px var(--a1); font-size: 15px; line-height: 1.3; color: var(--teal); }
 
-/* Visit notes / tried-on log */
+/* --- Tried on: one gown per row, photos wrap, so any number of photos fits ------- */
+.visit__head { display: flex; justify-content: space-between; align-items: center; gap: var(--a2); flex-wrap: wrap; margin: 0 0 var(--a2); }
+.visit__head .dsec__title { margin: 0; }
+.visit__filters { display: flex; flex-wrap: wrap; gap: var(--a1); margin: 0 0 var(--a1); }
+.visit__filter {
+  font-family: 'Cormorant SC', Georgia, serif; font-weight: 500; font-size: 15px; letter-spacing: 0.08em; line-height: 1.2;
+  color: var(--teal); background: transparent; border: 1px solid var(--teal); border-radius: 0;
+  padding: 6px 12px; min-height: 36px; cursor: pointer;
+}
+.visit__filter:hover { border-color: var(--gold); }
+.visit__filter.is-active { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+.visit__filter:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .visit__empty { margin: 0; font-size: 18px; font-style: italic; color: var(--teal); }
-.gown { display: flex; gap: var(--a2); padding: var(--a2) 0; border-top: 1px solid var(--gold); }
-.gown:first-of-type { border-top: none; padding-top: 0; }
-.gown__photos { display: flex; flex-direction: column; gap: var(--a1); flex: none; }
-.appt__photo { display: block; padding: 0; border: 1px solid var(--gold); border-radius: 0; width: 104px; height: 138px; overflow: hidden; cursor: zoom-in; background: transparent; }
+
+.gowns { margin: 0; }
+.gown { display: flex; gap: var(--a4); padding: var(--a3) 0; border-top: 1px solid var(--gold); }
+.gown:last-child { border-bottom: 1px solid var(--gold); }
+.gown__info { flex: 0 0 200px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.gown__title { margin: 0; font-size: 22px; font-weight: 500; line-height: 1.3; color: var(--teal); }
+.gown__ref { margin: 0; font-size: 15px; color: var(--teal); }
+.gown__tally { margin: var(--a1) 0 0; font-size: 15px; font-style: italic; color: var(--teal); }
+.gown__count { margin: 0; font-size: 15px; font-style: italic; color: var(--teal); }
+.gown__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--a2); }
+.gown__photos { display: flex; flex-wrap: wrap; gap: var(--a1); }
+.appt__photo { display: block; padding: 0; border: 1px solid var(--gold); border-radius: 0; width: 112px; height: 140px; overflow: hidden; cursor: zoom-in; background: transparent; }
 .appt__photo:hover, .appt__photo:focus-visible { box-shadow: inset 0 0 0 1px var(--gold); outline: 0; }
 .appt__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.gown__body { flex: 1; min-width: 0; }
-.gown__title { margin: 0; font-size: 22px; font-weight: 500; line-height: 1.3; color: var(--teal); }
-.gown__ref { margin: 4px 0 0; font-size: 15px; color: var(--teal); }
-.gown__notes { list-style: none; margin: var(--a1) 0 0; padding: 0; }
+.gown__notes { list-style: none; margin: 0; padding: 0; }
 .gown__note { margin: 0 0 4px; font-size: 18px; line-height: 1.5; color: var(--teal); }
 .gown__who { font-weight: 500; }
 .gown__text { font-style: italic; }
@@ -156,11 +191,11 @@ a.tile:hover, a.tile:focus-visible { box-shadow: inset 0 0 0 1px var(--gold); ou
 .appt-form > summary:focus-visible, .appt-form__btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .appt-form__btn:disabled { cursor: default; }
 
-.visit .appt-form { margin-top: var(--a2); padding: 0; border: 0; }
-.appt-form--button { margin-top: var(--a2); padding: 0; border: 0; }
-.appt-form--button > summary { padding: 8px 24px; }
-.appt-form form { margin-top: var(--a2); }
-.appt-form--button form { max-width: 420px; }
+.appt-form[hidden] { display: none; }
+.appt-form { margin: 0 0 var(--a3); padding: 0; border: 0; }
+.visit .appt-form { max-width: 640px; }
+.appt-form--rsvp { margin: var(--a2) 0 0; max-width: 420px; }
+.appt-form__btn.is-open { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
 
 /* --- Form fields: gold line, linen fill, teal words ------------------------------ */
 .appt-form__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--a2); margin: 0 0 var(--a2); }
@@ -227,17 +262,21 @@ textarea.appt-form__field { display: block; margin: 0 0 var(--a2); resize: verti
 .appt-viewer__close:hover { color: var(--linen); }
 .appt-viewer__msg { color: var(--linen); font-size: 18px; }
 
+@media (max-width: 960px) {
+  .appt__plan { flex-direction: column; gap: var(--a3); }
+  .appt__plan .dsec--guests { flex: none; width: 100%; }
+}
 @media (max-width: 760px) {
-  .appts-wrap { grid-template-columns: minmax(0, 1fr); gap: var(--a3); }
-  .appt-list { flex-direction: row; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 4px; }
-  .appt-item { flex: 0 0 190px; scroll-snap-align: start; }
-  .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .guest { flex-wrap: wrap; }
+  .appt-list { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 190px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 4px; }
+  .appt-item { scroll-snap-align: start; }
+  .gown { flex-direction: column; gap: var(--a2); }
+  .gown__info { flex: none; }
 }
 @media (max-width: 560px) {
   .dress-tabs { gap: 0 1.1rem; }
   .dress-tabs .viewtab { font-size: 15px; letter-spacing: 0.1em; padding-bottom: 12px; }
   .dress-tabs .viewtab::after { right: calc(-8px + 0.1em); }
   .tab-the { display: none; }
-  .appt__photo { width: 88px; height: 117px; }
+  .appt__photo { width: 88px; height: 110px; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
