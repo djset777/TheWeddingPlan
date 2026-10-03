@@ -28,6 +28,18 @@
     '27-06': 'https://www.berta.com/wp-content/uploads/2026/04/27-06-1.jpg'
   };
 
+  // Style number -> small photo for its tile. Loaded live from the designer's or
+  // retailer's site (never copied into this repo). If one fails to load, the
+  // tile falls back to the style number.
+  var STYLE_IMAGES = {
+    '25-02': 'https://bloomfeld-cdn.b-cdn.net/wp-content/uploads/2026/02/Berta%20Eclipse%2025-02%201-683x1024.jpg',
+    '24-04': 'https://www.berta.com/wp-content/uploads/2025/01/24-04-3-683x1024.jpg',
+    '24-107': 'https://www.berta.com/wp-content/uploads/2025/01/24-107-3-683x1024.jpg',
+    '26-112': 'https://bloomfeld-cdn.b-cdn.net/wp-content/uploads/2026/02/Berta%20Amare%2026-112-1.jpg',
+    '27-04': 'https://www.berta.com/wp-content/uploads/2026/04/27-04-5.jpg',
+    '27-06': 'https://www.berta.com/wp-content/uploads/2026/04/27-06-1.jpg'
+  };
+
   // rsvp: true turns on the Guests section for that appointment.
   // guests: how many people the boutique allows. invited: who the calendar
   // invite went to (edit this list as invites change).
@@ -417,10 +429,8 @@
   function apptRsvps(apptId) { return rsvps.filter(function (r) { return r.appt === apptId; }); }
 
   function renderGuests(a) {
-    var box = el('div', 'appt__guests');
-    box.appendChild(el('p', 'appt__label', 'Guests'));
-    box.appendChild(el('p', 'appt__people',
-      'Booked for up to ' + a.guests + ' guests. Invites are out. RSVP here or in the calendar invite.'));
+    var panel = el('section', 'panel panel--guests');
+    panel.appendChild(el('h4', 'panel__title', 'Guests \u00b7 up to ' + a.guests));
 
     var known = loaded || !ENDPOINT;
     var byName = {};
@@ -429,13 +439,25 @@
     Object.keys(byName).forEach(function (n) { if (names.indexOf(n) === -1) names.push(n); });
 
     var yes = 0, maybe = 0, no = 0, wait = 0, inPerson = 0;
+    var ul = el('ul', 'guests');
     names.forEach(function (n) {
       var r = byName[n];
+      var key = !known || !r ? 'wait' : r.response === 'Yes' ? 'yes' : r.response === 'Maybe' ? 'maybe' : 'no';
       if (!r) wait++;
       else if (r.response === 'Yes') { yes++; if (r.inPerson) inPerson++; }
       else if (r.response === 'Maybe') maybe++;
       else no++;
+
+      var li = el('li', 'guest');
+      li.appendChild(el('span', 'guest__dot guest__dot--' + key, n.charAt(0)));
+      var who = el('span', 'guest__who');
+      who.appendChild(el('span', 'guest__name', n));
+      if (known && r && r.response === 'Yes' && r.inPerson) who.appendChild(el('span', 'guest__note', 'in person'));
+      li.appendChild(who);
+      li.appendChild(el('span', 'guest__status', !known ? '\u2026' : !r ? 'Waiting' : RSVP_LABEL[r.response]));
+      ul.appendChild(li);
     });
+    panel.appendChild(ul);
 
     if (known) {
       var parts = [];
@@ -443,28 +465,15 @@
       if (maybe) parts.push(maybe + ' maybe');
       if (no) parts.push(no + " can't go");
       if (wait) parts.push(wait + ' waiting');
-      if (inPerson) parts.push(inPerson + ' of ' + a.guests + ' in person');
-      if (parts.length) box.appendChild(el('p', 'appt__tally', parts.join(' \u00b7 ')));
+      if (parts.length) panel.appendChild(el('p', 'panel__tally', parts.join(' \u00b7 ')));
     }
-
-    var ul = el('ul', 'appt__rsvps');
-    names.forEach(function (n) {
-      var r = byName[n];
-      var li = el('li', 'appt__rsvp');
-      li.appendChild(el('span', 'appt__rsvp-name', n));
-      var key = !known ? 'wait' : !r ? 'wait' : r.response === 'Yes' ? 'yes' : r.response === 'Maybe' ? 'maybe' : 'no';
-      var label = !known ? '\u2026' : !r ? 'Waiting' : RSVP_LABEL[r.response];
-      li.appendChild(el('span', 'rsvp rsvp--' + key, label));
-      if (known && r && r.response === 'Yes' && r.inPerson) li.appendChild(el('span', 'appt__rsvp-note', 'in person'));
-      ul.appendChild(li);
-    });
-    box.appendChild(ul);
-    box.appendChild(renderRsvpForm(a));
-    return box;
+    panel.appendChild(renderRsvpForm(a));
+    panel.appendChild(el('p', 'panel__hint', 'You can also RSVP in the calendar invite.'));
+    return panel;
   }
 
   function renderRsvpForm(a) {
-    var d = el('details', 'appt-form appt-form--rsvp');
+    var d = el('details', 'appt-form appt-form--rsvp appt-form--button');
     d.setAttribute('data-key', 'rsvp-' + a.id);
     d.appendChild(el('summary', null, 'RSVP'));
 
@@ -538,15 +547,56 @@
     return d;
   }
 
+  function renderStyles(a) {
+    var panel = el('section', 'panel panel--styles');
+    panel.appendChild(el('h4', 'panel__title', 'Styles to try'));
+    var grid = el('ul', 'tiles');
+    a.styles.forEach(function (st) {
+      var li = el('li');
+      var link = STYLE_LINKS[st];
+      var tile = el(link ? 'a' : 'span', 'tile');
+      if (link) {
+        tile.href = link;
+        tile.target = '_blank';
+        tile.rel = 'noopener';
+        tile.setAttribute('aria-label', st + ', opens its photo in a new tab');
+      }
+      var frame = el('span', 'tile__frame');
+      var src = STYLE_IMAGES[st];
+      if (src) {
+        var img = new Image();
+        img.alt = '';
+        img.loading = 'lazy';
+        img.referrerPolicy = 'no-referrer';
+        img.className = 'tile__img';
+        img.addEventListener('error', function () { frame.classList.add('is-missing'); img.remove(); });
+        img.src = src;
+        frame.appendChild(img);
+      } else {
+        frame.classList.add('is-missing');
+      }
+      tile.appendChild(frame);
+      tile.appendChild(el('span', 'tile__num', st));
+      li.appendChild(tile);
+      grid.appendChild(li);
+    });
+    panel.appendChild(grid);
+    panel.appendChild(el('p', 'panel__hint', "Tap a tile to open the gown on the designer's page."));
+    return panel;
+  }
+
   function renderTriedOn(card, a, gowns) {
-    card.appendChild(el('p', 'appt__label', gowns.length ? 'Tried on \u00b7 ' + gowns.length + (gowns.length === 1 ? ' gown' : ' gowns') : 'Tried on'));
+    var sec = el('section', 'visit');
+    sec.appendChild(el('h4', 'panel__title', gowns.length ? 'Tried on \u00b7 ' + gowns.length + (gowns.length === 1 ? ' gown' : ' gowns') : 'Visit notes'));
     if (gowns.length) {
-      gowns.forEach(function (g) { card.appendChild(renderGown(g)); });
+      gowns.forEach(function (g) { sec.appendChild(renderGown(g)); });
     } else {
-      card.appendChild(el('p', 'appt__empty', loaded || !ENDPOINT
-        ? 'No gowns logged yet. Photos and comments from the visit will show up here.'
+      sec.appendChild(el('p', 'visit__empty', loaded || !ENDPOINT
+        ? 'Photos and comments from the visit will show up here.'
         : 'Loading\u2026'));
     }
+    sec.appendChild(renderForm(a));
+    card.appendChild(sec);
   }
 
   function renderCard(a) {
@@ -556,7 +606,7 @@
     var head = el('div', 'appt__head');
     var left = el('div');
     left.appendChild(el('h3', 'appt__name', a.name));
-    left.appendChild(el('p', 'appt__when', a.when + (a.event ? ' \u00b7 ' + a.event : '')));
+    left.appendChild(el('p', 'appt__when', a.when));
     var addr = el('p', 'appt__where', a.address);
     if (a.mapQuery) {
       addr.appendChild(document.createTextNode(' '));
@@ -567,6 +617,7 @@
       addr.appendChild(m);
     }
     left.appendChild(addr);
+    if (a.event) left.appendChild(el('p', 'appt__event', a.event));
     head.appendChild(left);
     head.appendChild(el('span', 'appt__status appt__status--' + a.statusKey, a.status));
     card.appendChild(head);
@@ -575,32 +626,16 @@
     // After the visit, photos and comments lead; before it, the plan leads.
     if (gowns.length) renderTriedOn(card, a, gowns);
 
-    if (a.rsvp) card.appendChild(renderGuests(a));
-
-    if (a.styles.length) {
-      card.appendChild(el('p', 'appt__label', 'Styles to try'));
-      card.appendChild(el('p', 'appt__hint', "Tap a style to see its photo on the designer's page."));
-      var ul = el('ul', 'appt__tags');
-      a.styles.forEach(function (s) {
-        var li = el('li');
-        if (STYLE_LINKS[s]) {
-          var l = el('a', 'appt__tag', s);
-          l.href = STYLE_LINKS[s];
-          l.target = '_blank';
-          l.rel = 'noopener';
-          l.setAttribute('aria-label', s + ', opens its photo in a new tab');
-          li.appendChild(l);
-        } else {
-          li.appendChild(el('span', 'appt__tag', s));
-        }
-        ul.appendChild(li);
-      });
-      card.appendChild(ul);
+    var panels = [];
+    if (a.rsvp) panels.push(renderGuests(a));
+    if (a.styles.length) panels.push(renderStyles(a));
+    if (panels.length) {
+      var wrap = el('div', 'panels' + (panels.length === 1 ? ' panels--one' : ''));
+      panels.forEach(function (p) { wrap.appendChild(p); });
+      card.appendChild(wrap);
     }
 
     if (!gowns.length) renderTriedOn(card, a, gowns);
-
-    card.appendChild(renderForm(a));
     return card;
   }
 
