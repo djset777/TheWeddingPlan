@@ -103,26 +103,27 @@
 }
 .dsec__note { margin: var(--a2) 0 0; font-size: 15px; font-style: italic; color: var(--teal); }
 
-/* The plan: guests on the left, styles to try on the right */
+/* The plan: guests on the left, dresses to try on the right, half and half */
 .appt__plan, .visit { margin-top: var(--a3); padding-top: var(--a3); border-top: 1px solid var(--gold); }
 .appt__plan { display: flex; gap: var(--a4); align-items: flex-start; }
 .appt__plan .dsec { margin: 0; padding: 0; border: 0; }
-.appt__plan .dsec--guests { flex: 0 0 520px; max-width: 100%; }
-.appt__plan .dsec--styles { flex: 1; min-width: 0; }
+.appt__plan .dsec--guests { flex: 1 1 0; min-width: 0; container-type: inline-size; }
+.appt__plan .dsec--styles { flex: 1 1 0; min-width: 0; }
 .appt__plan--single .dsec { flex: 1; }
 
 /* Guests: a row of circles, a name and a word under each */
-.guests { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--a2); }
-.guest { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 88px; text-align: center; padding: 0; border: 0; }
+.guests { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--a2) var(--a1); }
+.guest { display: flex; flex: 1 1 0; flex-direction: column; align-items: center; gap: 4px; min-width: 64px; max-width: 88px; text-align: center; padding: 0; border: 0; }
 .guest__avatar {
-  width: 56px; height: 56px; border-radius: 50%; box-sizing: border-box;
+  width: 100%; max-width: 56px; aspect-ratio: 1 / 1; border-radius: 50%; box-sizing: border-box;
   display: flex; align-items: center; justify-content: center;
   font-size: 22px; line-height: 1; color: var(--teal); border: 1px dashed var(--teal);
 }
 .guest--yes .guest__avatar { background: var(--teal); color: var(--linen); border: 1px solid var(--teal); }
 .guest--video .guest__avatar { border: 3px solid var(--gold); }
 .guest--no .guest__avatar { border: 1px solid var(--teal); }
-.guest__name { font-size: 18px; color: var(--teal); }
+.guest__name { font-size: 15px; color: var(--teal); }
+@container (min-width: 480px) { .guest__name { font-size: 18px; } }
 .guest__status { font-size: 15px; font-style: italic; color: var(--teal); }
 .guest__note { display: block; font-size: 15px; font-style: italic; color: var(--teal); }
 .rsvp-row { display: flex; align-items: center; gap: var(--a2); flex-wrap: wrap; margin-top: var(--a2); }
@@ -264,7 +265,7 @@ textarea.appt-form__field { display: block; margin: 0 0 var(--a2); resize: verti
 
 @media (max-width: 960px) {
   .appt__plan { flex-direction: column; gap: var(--a3); }
-  .appt__plan .dsec--guests { flex: none; width: 100%; }
+  .appt__plan .dsec--guests, .appt__plan .dsec--styles { flex: none; width: 100%; }
 }
 @media (max-width: 760px) {
   .appt-list { grid-auto-columns: 190px; scroll-snap-type: x proximity; padding-bottom: 4px; }

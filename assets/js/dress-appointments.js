@@ -674,7 +674,7 @@
 
   function renderStyles(a) {
     var panel = el('section', 'dsec dsec--styles');
-    panel.appendChild(el('h4', 'dsec__title', 'Styles to try'));
+    panel.appendChild(el('h4', 'dsec__title', 'Dresses to try'));
     var grid = el('ul', 'tiles');
     a.styles.forEach(function (st) {
       var li = el('li');
@@ -786,7 +786,7 @@
     head.appendChild(el('span', 'appt__status appt__status--' + a.statusKey, a.status));
     card.appendChild(head);
 
-    // The plan (guests beside the styles to try), then what happened at the visit.
+    // The plan (guests beside the dresses to try), then what happened at the visit.
     var hasGuests = !!a.rsvp, hasStyles = a.styles.length > 0;
     if (hasGuests || hasStyles) {
       var plan = el('div', 'appt__plan' + (hasGuests && hasStyles ? '' : ' appt__plan--single'));
