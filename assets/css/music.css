@@ -75,14 +75,14 @@
 /* --- Rows ---------------------------------------------------------------- */
 .tm-row {
   display: grid;
-  grid-template-columns: 59px minmax(0, 1fr) auto;
-  grid-template-areas: "marks body moment";
+  grid-template-columns: 120px minmax(0, 1fr) auto;
+  grid-template-areas: "moment body who";
   align-items: center;
   column-gap: 16px;
   padding: 14px 0;
   border-top: 1px solid rgba(212, 175, 55, 0.6);
 }
-.tm-marks { grid-area: marks; display: flex; align-items: center; min-height: 28px; }
+.tm-marks { grid-area: who; justify-self: end; display: flex; align-items: center; min-height: 28px; }
 .tm-mark {
   display: inline-flex;
   align-items: center;
@@ -123,8 +123,8 @@
   line-height: 1.3;
   color: #10706D;
 }
-/* Guest name under a guest-added song takes its own line. */
-.tm-body > .tm-party { flex-basis: 100%; }
+/* A guest-added song carries the party name where D and J would sit. */
+.tm-row:not(.tm-row--request) > .tm-party { grid-area: who; justify-self: end; text-align: right; max-width: 240px; }
 .tm-moment {
   grid-area: moment;
   font-family: 'Cormorant SC', Georgia, serif;
@@ -155,6 +155,7 @@
 }
 .tm-avoid .tm-row { padding: 9px 0; border-top-color: rgba(212, 175, 55, 0.3); }
 .tm-avoid .tm-list--end { border-bottom-color: rgba(212, 175, 55, 0.3); }
+.tm-avoid:not(.tm-avoid--moments) .tm-row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "body who"; }
 .tm-avoid .tm-body { flex-direction: row; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .tm-avoid .tm-mark {
   width: 22px;
@@ -296,14 +297,14 @@
   .tm-tabs { gap: 28px; }
   .tm-tab { font-size: 16px; }
   .tm-row {
-    grid-template-columns: 53px minmax(0, 1fr);
-    grid-template-areas: "marks body" ". moment";
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "moment moment" "body who";
     column-gap: 14px;
     row-gap: 3px;
-    align-items: start;
+    align-items: center;
     padding: 13px 0;
   }
-  .tm-marks { padding-top: 2px; }
+  .tm-row:not(.tm-row--request) > .tm-party { font-size: 15px; max-width: 150px; }
   .tm-title { font-size: 17px; }
   .tm-artist { font-size: 16px; }
   .tm-moment { font-size: 11px; }
@@ -319,7 +320,8 @@
   .tm-row--request .tm-party { white-space: normal; font-size: 15px; }
   .tm-status { width: 128px; font-size: 16px; padding: 0 6px; gap: 7px; white-space: nowrap; }
 
-  .tm-avoid .tm-row { grid-template-areas: "marks body"; padding: 9px 0; align-items: center; }
+  .tm-avoid .tm-row { grid-template-areas: "moment moment" "body who"; padding: 9px 0; align-items: center; }
+  .tm-avoid:not(.tm-avoid--moments) .tm-row { grid-template-areas: "body who"; }
   .tm-avoid .tm-body { flex-direction: column; gap: 0; }
   .tm-avoid .tm-title { font-size: 16px; }
   .tm-avoid .tm-artist { font-size: 15px; }

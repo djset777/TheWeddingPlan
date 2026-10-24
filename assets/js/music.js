@@ -85,9 +85,12 @@
 
   function mustRow(s) {
     const artist = s.artist ? `<div class="tm-artist">${esc(s.artist)}</div>` : '';
-    const party = (s.whose === 'guest' && s.party) ? `<div class="tm-party">${esc(s.party)}</div>` : '';
     const moment = s.moment ? `<div class="tm-moment">${esc(s.moment)}</div>` : '';
-    return `<div class="tm-row" data-song="${esc(s.id)}">${marksHtml(s.whose)}<div class="tm-body"><div class="tm-title">${esc(s.title)}</div>${artist}${party}</div>${moment}</div>`;
+    // Who: D and J marks for the couple's own songs, the party's name for a guest's.
+    const who = s.whose === 'guest'
+      ? (s.party ? `<div class="tm-party">${esc(s.party)}</div>` : '')
+      : marksHtml(s.whose);
+    return `<div class="tm-row" data-song="${esc(s.id)}">${moment}<div class="tm-body"><div class="tm-title">${esc(s.title)}</div>${artist}</div>${who}</div>`;
   }
 
   function requestRow(r) {
@@ -125,7 +128,7 @@
     let html = must.length ? `<div class="tm-list tm-list--end">${must.map(mustRow).join('')}</div>` : '';
     if (avoid.length) {
       html += `
-        <section class="tm-avoid" aria-label="Do Not Play">
+        <section class="tm-avoid${avoid.some(s => s.moment) ? ' tm-avoid--moments' : ''}" aria-label="Do Not Play">
           <div class="tm-avoid__head"><span>Do Not Play</span><span class="tm-avoid__count">${countWord(avoid.length, 'song', 'songs')}</span></div>
           <div class="tm-list tm-list--end">${avoid.map(mustRow).join('')}</div>
         </section>`;
@@ -135,13 +138,13 @@
 
   function requestsPanel() {
     const reqs = songs.filter(s => s.kind === 'request');
-    if (!reqs.length) {
-      return `<div class="tm-empty"><div class="tm-empty__head">Nothing to review</div><div class="tm-empty__line">Requests arrive with each RSVP.</div></div>`;
-    }
     const review = reqs.filter(r => r.status === 'review');
     const maybe = reqs.filter(r => r.status === 'maybe');
     const pass = reqs.filter(r => r.status === 'pass');
     let html = '';
+    if (!review.length) {
+      html += `<div class="tm-empty"><div class="tm-empty__head">Nothing to review</div><div class="tm-empty__line">Requests arrive with each RSVP.</div></div>`;
+    }
     if (review.length) html += groupHead('To review', review.length) + `<div class="tm-list">${review.map(requestRow).join('')}</div>`;
     if (maybe.length) html += groupHead('Maybe', maybe.length) + `<div class="tm-list">${maybe.map(requestRow).join('')}</div>`;
     if (pass.length) {
