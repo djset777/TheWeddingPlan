@@ -75,27 +75,28 @@
   }
 
   // ---- Pieces ------------------------------------------------------------
-  function marksHtml(whose) {
-    const letters = whose === 'both' ? ['D', 'J'] : whose === 'danisa' ? ['D'] : whose === 'julian' ? ['J'] : [];
-    const names = { danisa: 'Danisa', julian: 'Julian', both: 'Danisa & Julian' };
-    const title = names[whose] ? ` title="${esc(names[whose])}"` : '';
-    return `<div class="tm-marks"${title}>${letters.map(l => `<span class="tm-mark">${l}</span>`).join('')}</div>`;
+  const COUPLE = { danisa: 'Danisa', julian: 'Julian', both: 'Danisa & Julian' };
+  function couplePill(whose) {
+    return COUPLE[whose] ? `<div class="tm-who"><span class="tm-pill tm-pill--couple">${esc(COUPLE[whose])}</span></div>` : '';
+  }
+  function guestPill(party) {
+    return party ? `<span class="tm-pill tm-pill--guest">${esc(party)}</span>` : '';
   }
   function countWord(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
 
   function mustRow(s) {
     const artist = s.artist ? `<div class="tm-artist">${esc(s.artist)}</div>` : '';
     const moment = s.moment ? `<div class="tm-moment">${esc(s.moment)}</div>` : '';
-    // Who: D and J marks for the couple's own songs, the party's name for a guest's.
+    // Who: a teal pill for the couple's own songs, the party's name in an outlined pill for a guest's.
     const who = s.whose === 'guest'
-      ? (s.party ? `<div class="tm-party">${esc(s.party)}</div>` : '')
-      : marksHtml(s.whose);
+      ? (s.party ? `<div class="tm-who">${guestPill(s.party)}</div>` : '')
+      : couplePill(s.whose);
     return `<div class="tm-row" data-song="${esc(s.id)}">${moment}<div class="tm-body"><div class="tm-title">${esc(s.title)}</div>${artist}</div>${who}</div>`;
   }
 
   function requestRow(r) {
     const artist = r.artist ? `<div class="tm-artist">${esc(r.artist)}</div>` : '';
-    const party = r.party ? `<div class="tm-party">${esc(r.party)}</div>` : '';
+    const party = r.party ? `<div class="tm-party">${guestPill(r.party)}</div>` : '';
     const open = openMenuId === r.id;
     const id = esc(r.id);
     const menu = `
