@@ -50,6 +50,7 @@ const GUEST_SITE_URL = 'https://djset777.github.io/djset/';
         <li><a href="${prefix}brief/the-journey.html">The Journey</a></li>
         <li><a href="${prefix}brief/the-logistics.html">The Logistics</a></li>
         <li><a href="${prefix}dashboard/day-of.html">The Day</a></li>
+        <li><a href="${prefix}dashboard/the-music.html">The Music</a></li>
       </ul>
     </nav>
   `;

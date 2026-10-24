@@ -1,0 +1,326 @@
+/* ==========================================================================
+   The Wedding Plan — The Music (v1, Oct 2026)
+   Two tabs: Must-Play (with Do Not Play beneath) and Guest Requests
+   (To review · Maybe · Pass). Rows are gold-hairline lines with no fill,
+   the same register as the tracker cards. Marks are the tracker's marks.
+   ========================================================================== */
+
+.tm { max-width: 860px; }
+
+/* --- Tabs ---------------------------------------------------------------- */
+.tm-tabs {
+  display: flex;
+  gap: 36px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.6);
+  margin-bottom: 4px;
+}
+.tm-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0;
+  margin-bottom: -1px;
+  background: none;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 0.04em;
+  color: #10706D;
+  cursor: pointer;
+}
+.tm-tab[aria-selected="true"] { color: var(--anchor); border-bottom-color: var(--accent); }
+.tm-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.tm-tab__count {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #10706D;
+}
+.tm-badge {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background: var(--anchor);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* --- Section heads and groups ------------------------------------------- */
+.tm-list { display: flex; flex-direction: column; }
+.tm-list[hidden] { display: none; }
+.tm-list--end { border-bottom: 1px solid rgba(212, 175, 55, 0.6); }
+
+.tm-group__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 24px 0 10px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+.tm-group__count { font-size: 11px; }
+
+/* --- Rows ---------------------------------------------------------------- */
+.tm-row {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  grid-template-areas: "marks body moment";
+  align-items: center;
+  column-gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.6);
+}
+.tm-marks { grid-area: marks; display: flex; align-items: center; min-height: 28px; }
+.tm-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--anchor);
+  color: var(--accent);
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-size: 13px;
+}
+.tm-mark + .tm-mark { margin-left: -5px; box-shadow: 0 0 0 2px var(--bg); }
+/* The tab rule already draws the top line of the first row. */
+#tm-panel > .tm-list:first-child > .tm-row:first-child { border-top: 0; }
+
+.tm-body { grid-area: body; min-width: 0; display: flex; flex-direction: column; }
+.tm-title {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--anchor);
+  overflow-wrap: anywhere;
+}
+.tm-artist {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #10706D;
+  overflow-wrap: anywhere;
+}
+.tm-party {
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.3;
+  color: #10706D;
+}
+.tm-moment {
+  grid-area: moment;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+/* --- Do Not Play: the same rows, quieter -------------------------------- */
+.tm-avoid { padding-top: 36px; }
+.tm-avoid__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: #10706D;
+}
+.tm-avoid__count {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: rgba(212, 175, 55, 0.85);
+}
+.tm-avoid .tm-row { padding: 9px 0; border-top-color: rgba(212, 175, 55, 0.3); }
+.tm-avoid .tm-list--end { border-bottom-color: rgba(212, 175, 55, 0.3); }
+.tm-avoid .tm-body { flex-direction: row; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.tm-avoid .tm-mark {
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+  background: none;
+  color: #10706D;
+  border: 1px solid rgba(16, 112, 109, 0.55);
+}
+.tm-avoid .tm-mark + .tm-mark { margin-left: -6px; background: var(--bg); box-shadow: none; }
+.tm-avoid .tm-title { font-size: 17px; font-weight: 400; color: #10706D; }
+.tm-avoid .tm-artist { font-size: 16px; font-weight: 400; font-style: italic; color: rgba(16, 112, 109, 0.7); }
+
+/* --- Guest Requests rows ------------------------------------------------- */
+.tm-row--request {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas: "body party status";
+  column-gap: 16px;
+  padding: 12px 0;
+}
+.tm-row--request .tm-party { grid-area: party; white-space: nowrap; }
+.tm-row--pass { opacity: 0.72; }
+
+.tm-statuswrap { grid-area: status; position: relative; }
+.tm-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 132px;
+  min-height: 44px;
+  padding: 0 8px;
+  background: none;
+  border: 0;
+  border-radius: 3px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--anchor);
+  text-align: left;
+  cursor: pointer;
+}
+.tm-status:hover, .tm-status[aria-expanded="true"] { background: #E8DCC4; }
+.tm-status:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tm-status__word { flex: 1; }
+.tm-status svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+.tm-pip {
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 1.5px solid var(--anchor);
+}
+.tm-pip--review { background: transparent; }
+.tm-pip--maybe { background: linear-gradient(90deg, var(--anchor) 50%, transparent 50%); }
+.tm-pip--add { background: var(--anchor); }
+.tm-pip--pass { background: rgba(1, 96, 95, 0.28); border-color: rgba(1, 96, 95, 0.28); }
+
+.tm-menu {
+  position: absolute;
+  z-index: 5;
+  right: 0;
+  top: calc(100% - 2px);
+  width: 188px;
+  padding: 6px;
+  background: var(--bg);
+  border: 1px solid var(--anchor);
+  border-radius: 3px;
+  box-shadow: 0 6px 18px rgba(1, 96, 95, 0.18);
+  display: flex;
+  flex-direction: column;
+}
+.tm-menu[hidden] { display: none; }
+.tm-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 10px;
+  background: none;
+  border: 0;
+  border-radius: 2px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--anchor);
+  cursor: pointer;
+}
+.tm-menu__item:hover, .tm-menu__item:focus-visible { background: #E8DCC4; outline: none; }
+.tm-menu__item--pass { color: #10706D; }
+
+/* --- Collapsed Pass group ------------------------------------------------ */
+.tm-fold { margin-top: 8px; border-top: 1px solid rgba(212, 175, 55, 0.6); border-bottom: 1px solid rgba(212, 175, 55, 0.6); }
+.tm-fold__toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 0;
+  background: none;
+  border: 0;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  cursor: pointer;
+}
+.tm-fold__toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.tm-fold__chev { width: 12px; height: 12px; transition: transform 0.15s ease; }
+.tm-fold__toggle[aria-expanded="true"] .tm-fold__chev { transform: rotate(90deg); }
+.tm-fold__spacer { flex: 1; }
+.tm-fold__count { font-size: 11px; }
+.tm-fold .tm-row:first-child { border-top: 1px solid rgba(212, 175, 55, 0.35); }
+
+/* --- Empty state --------------------------------------------------------- */
+.tm-empty {
+  padding: 28px 0 32px;
+  border-top: 1px solid rgba(212, 175, 55, 0.6);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tm-empty__head {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 600;
+  font-size: 21px;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: var(--anchor);
+}
+.tm-empty__line { font-size: 18px; font-weight: 500; line-height: 1.4; color: #10706D; }
+
+/* --- Phone --------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .tm-tabs { gap: 28px; }
+  .tm-tab { font-size: 16px; }
+  .tm-row {
+    grid-template-columns: 48px minmax(0, 1fr);
+    grid-template-areas: "marks body" ". moment";
+    column-gap: 14px;
+    row-gap: 3px;
+    align-items: start;
+    padding: 13px 0;
+  }
+  .tm-marks { padding-top: 2px; }
+  .tm-title { font-size: 18px; }
+  .tm-artist { font-size: 16px; }
+  .tm-moment { font-size: 11px; }
+
+  .tm-row--request {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "body status" "party status";
+    column-gap: 8px;
+    row-gap: 0;
+    align-items: center;
+    padding: 10px 0;
+  }
+  .tm-row--request .tm-party { white-space: normal; font-size: 15px; }
+  .tm-status { width: 128px; font-size: 16px; padding: 0 6px; gap: 7px; white-space: nowrap; }
+
+  .tm-avoid .tm-row { grid-template-areas: "marks body"; padding: 9px 0; align-items: center; }
+  .tm-avoid .tm-body { flex-direction: column; gap: 0; }
+  .tm-avoid .tm-title { font-size: 16px; }
+  .tm-avoid .tm-artist { font-size: 15px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-fold__chev { transition: none; }
+}
