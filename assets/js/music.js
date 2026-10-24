@@ -122,7 +122,7 @@
   function mustPanel() {
     const must = songs.filter(s => s.kind === 'must');
     const avoid = songs.filter(s => s.kind === 'avoid');
-    let html = `<div class="tm-list tm-list--end">${must.map(mustRow).join('')}</div>`;
+    let html = must.length ? `<div class="tm-list tm-list--end">${must.map(mustRow).join('')}</div>` : '';
     if (avoid.length) {
       html += `
         <section class="tm-avoid" aria-label="Do Not Play">
