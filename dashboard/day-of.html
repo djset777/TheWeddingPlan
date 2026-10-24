@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=Cormorant+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/day.css">
   <link rel="icon" href="../assets/img/favicon-v2.ico" sizes="any">
   <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon-v2.png">
   <meta property="og:image" content="https://djset777.github.io/TheWeddingPlan/assets/img/og-preview-v3.png">
@@ -29,109 +30,110 @@
         <p class="subtitle content__subtitle">From getting ready to the last dance.</p>
       </header>
 
+      <nav class="day-glance" id="day-glance" aria-label="The Day, by moment">
+        <div class="day-glance__now" id="day-now" aria-hidden="true"></div>
+        <div class="day-glance__rail">
+          <div class="day-glance__track"></div>
+          <div class="day-glance__fill"></div>
+          <ol class="day-glance__list">
+            <li><a class="day-glance__link" href="#morning" data-name="Morning Of" data-time="7:00 AM"><span class="day-glance__dot"></span><span class="day-glance__name">Morning Of</span><span class="day-glance__time">7:00 AM</span></a></li>
+            <li><a class="day-glance__link" href="#ceremony" data-name="Ceremony" data-time="2:00 PM"><span class="day-glance__dot"></span><span class="day-glance__name">Ceremony</span><span class="day-glance__time">2:00 PM</span></a></li>
+            <li><a class="day-glance__link" href="#cocktail" data-name="Cocktail Hour" data-time="3:00 PM"><span class="day-glance__dot"></span><span class="day-glance__name">Cocktail Hour</span><span class="day-glance__time">3:00 PM</span></a></li>
+            <li><a class="day-glance__link" href="#dinner" data-name="Dinner" data-time="4:00 PM"><span class="day-glance__dot"></span><span class="day-glance__name">Dinner</span><span class="day-glance__time">4:00 PM</span></a></li>
+            <li><a class="day-glance__link" href="#reception" data-name="Reception" data-time="5:30 PM"><span class="day-glance__dot"></span><span class="day-glance__name">Reception</span><span class="day-glance__time">5:30 PM</span></a></li>
+            <li><a class="day-glance__link" href="#end" data-name="End of Night" data-time="10:00 PM"><span class="day-glance__dot"></span><span class="day-glance__name">End of Night</span><span class="day-glance__time">10:00 PM</span></a></li>
+          </ol>
+        </div>
+      </nav>
+
       <div class="wrap--narrow">
         <div class="thread">
 
-          <!-- MORNING -->
-          <section class="thread__section">
-            <h2 class="thread__title">Morning · Getting Ready</h2>
-            <p class="thread__significance">Time · with Dioris · <span class="tbc">To be confirmed</span></p>
-
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">Getting-ready begins</h3>
-              <ul class="bullets">
-                <li>Hair &amp; makeup at the lodging</li>
-                <li><strong>Logistics</strong> · with Dioris · <span class="tbc">To be confirmed</span></li>
-              </ul>
+          <!-- MORNING OF -->
+          <section class="thread__section day-section" id="morning">
+            <div class="day-head">
+              <h2 class="thread__title">Morning Of</h2>
+              <span class="day-head__range">7:00 AM – 2:00 PM</span>
             </div>
-
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">Vendor arrivals &amp; setup</h3>
-              <ul class="bullets">
-                <li>Flora installation, canoe bar, fruit station</li>
-                <li><strong>Setup window</strong> · <span class="tbc">To be confirmed</span></li>
-              </ul>
-            </div>
-
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">First shuttle run</h3>
-              <ul class="bullets">
-                <li>Guests from lodging to the venue</li>
-                <li><strong>Schedule</strong> · with Dioris · <span class="tbc">To be confirmed</span></li>
-              </ul>
-            </div>
+            <ul class="day-rows">
+              <li class="day-row"><span class="day-row__time">7:00 AM</span><span class="day-row__beat">Hair &amp; makeup begins</span></li>
+              <li class="day-row"><span class="day-row__time">7:00 AM</span><span class="day-row__beat">Vendors arrive; flora installation begins</span><span class="day-row__who">Dioris</span></li>
+              <li class="day-row"><span class="day-row__time">10:30 AM</span><span class="day-row__beat">Getting-ready photos &amp; video: the dress, the details, the final touches</span><span class="day-row__who">Photographer &amp; videographer</span></li>
+              <li class="day-row"><span class="day-row__time">12:00 PM</span><span class="day-row__beat">Sound check; catering staged</span><span class="day-row__who">Dioris</span></li>
+              <li class="day-row"><span class="day-row__time">1:30 PM</span><span class="day-row__beat">Final walkthrough; a quiet moment for the couple</span><span class="day-row__who">Dioris</span></li>
+              <li class="day-row"><span class="day-row__time">1:30 PM</span><span class="day-row__beat">Shuttle leaves the lodging for the venue</span><span class="day-row__who">Dioris</span></li>
+            </ul>
           </section>
 
           <!-- CEREMONY -->
-          <section class="thread__section">
-            <h2 class="thread__title">Ceremony · At the Venue</h2>
-            <p class="thread__significance">Held outdoors on the grounds.</p>
-
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">Guests seated</h3>
-              <ul class="bullets">
-                <li>Bamboo fans handed out as guests are seated</li>
-              </ul>
+          <section class="thread__section day-section" id="ceremony">
+            <div class="day-head">
+              <h2 class="thread__title">Ceremony</h2>
+              <span class="day-head__range">2:00 – 3:00 PM</span>
             </div>
-
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">The ceremony</h3>
-              <ul class="bullets">
-                <li>Procession, vows, el lazo, the rings, the memorial chair for Monica</li>
-                <li>Live tropical acoustic musicians throughout</li>
-              </ul>
-            </div>
-
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">Recessional</h3>
-              <ul class="bullets">
-                <li>Couple and guests move to cocktail hour</li>
-              </ul>
-            </div>
+            <ul class="day-rows">
+              <li class="day-row"><span class="day-row__time">2:00 PM</span><span class="day-row__beat">Shuttle arrives at the venue</span><span class="day-row__who">Dioris</span></li>
+              <li class="day-row"><span class="day-row__time">2:00 PM</span><span class="day-row__beat">Guests are seated and handed fans</span></li>
+              <li class="day-row"><span class="day-row__time">2:30 PM</span><span class="day-row__beat">The ceremony: procession, vows, el lazo, rings, and a chair kept in memory</span></li>
+            </ul>
           </section>
 
-          <!-- EVENING -->
-          <section class="thread__section">
-            <h2 class="thread__title">Evening · At the Venue</h2>
-            <p class="thread__significance">Drinking, dinner, dancing, dessert.</p>
-
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">Cocktail hour</h3>
-              <ul class="bullets">
-                <li>Canoe bar, fruit station, bites</li>
-                <li>Guests settle into the reception, indoors</li>
-              </ul>
+          <!-- COCKTAIL HOUR -->
+          <section class="thread__section day-section" id="cocktail">
+            <div class="day-head">
+              <h2 class="thread__title">Cocktail Hour</h2>
+              <span class="day-head__range">3:00 – 4:00 PM</span>
             </div>
+            <ul class="day-rows">
+              <li class="day-row"><span class="day-row__time">3:00 PM</span><span class="day-row__beat">The bar opens: signature cocktails, a fruit station, picadera</span></li>
+              <li class="day-row"><span class="day-row__time">3:00 PM</span><span class="day-row__beat">Family photos &amp; couple portraits</span></li>
+              <li class="day-row"><span class="day-row__time">3:30 PM</span><span class="day-row__beat">The couple joins the cocktail hour</span></li>
+            </ul>
+          </section>
 
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">Reception &amp; dinner</h3>
-              <ul class="bullets">
-                <li>Entrances, first dance, toasts, dinner service</li>
-              </ul>
+          <!-- DINNER -->
+          <section class="thread__section day-section" id="dinner">
+            <div class="day-head">
+              <h2 class="thread__title">Dinner</h2>
+              <span class="day-head__range">4:00 – 5:30 PM</span>
             </div>
+            <ul class="day-rows">
+              <li class="day-row"><span class="day-row__time">4:00 PM</span><span class="day-row__beat">Guests move indoors; entrances, welcome &amp; first dance</span></li>
+              <li class="day-row"><span class="day-row__time">4:30 PM</span><span class="day-row__beat">Buffet opens table by table, the couple first</span><span class="day-row__who">Camacho</span></li>
+              <li class="day-row"><span class="day-row__time">5:00 PM</span><span class="day-row__beat">Toasts: about four speakers, three minutes each</span></li>
+            </ul>
+          </section>
 
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">Hora Loca &amp; dancing</h3>
-              <ul class="bullets">
-                <li>Props out, energy up: the floor stays open</li>
-                <li>Sandal station for dancing</li>
-              </ul>
+          <!-- RECEPTION -->
+          <section class="thread__section day-section" id="reception">
+            <div class="day-head">
+              <h2 class="thread__title">Reception</h2>
+              <span class="day-head__range">5:30 – 10:00 PM</span>
             </div>
+            <ul class="day-rows">
+              <li class="day-row"><span class="day-row__time">5:30 PM</span><span class="day-row__beat">Family dances; the floor and sandal station open</span></li>
+              <li class="day-row"><span class="day-row__time">6:00 PM</span><span class="day-row__beat">Típico set one</span><span class="day-row__who">Típico band</span></li>
+              <li class="day-row"><span class="day-row__time">7:00 PM</span><span class="day-row__beat">Sunset portraits while the band rests and the DJ keeps the floor moving</span></li>
+              <li class="day-row"><span class="day-row__time">7:30 PM</span><span class="day-row__beat">Típico set two, the finale</span><span class="day-row__who">Típico band</span></li>
+              <li class="day-row"><span class="day-row__time">7:30 PM</span><span class="day-row__beat">The dessert table opens quietly</span></li>
+              <li class="day-row"><span class="day-row__time">8:00 PM</span><span class="day-row__beat">La Hora Loca</span><span class="day-row__who">DJ</span></li>
+              <li class="day-row"><span class="day-row__time">8:30 PM</span><span class="day-row__beat">The cake is cut</span></li>
+              <li class="day-row"><span class="day-row__time">9:00 PM</span><span class="day-row__beat">Sancocho is served</span></li>
+              <li class="day-row"><span class="day-row__time">9:30 PM</span><span class="day-row__beat">Closing set &amp; last dance</span><span class="day-row__who">DJ</span></li>
+            </ul>
+          </section>
 
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">Cake &amp; dessert table</h3>
-              <ul class="bullets">
-                <li>Low-key cutting; the dessert table takes the limelight</li>
-              </ul>
+          <!-- END OF NIGHT -->
+          <section class="thread__section day-section" id="end">
+            <div class="day-head">
+              <h2 class="thread__title">End of Night</h2>
+              <span class="day-head__range">10:00 PM onward</span>
             </div>
-
-            <div class="thread__sub">
-              <h3 class="thread__sub-title">Last dance</h3>
-              <ul class="bullets">
-                <li>Music ends at 10 PM; the night winds down after</li>
-                <li><strong>Final shuttle run</strong> · with Dioris · <span class="tbc">To be confirmed</span></li>
-              </ul>
-            </div>
+            <ul class="day-rows">
+              <li class="day-row"><span class="day-row__time">10:00 PM</span><span class="day-row__beat">Music ends; first return shuttle departs</span><span class="day-row__who">Dioris</span></li>
+              <li class="day-row"><span class="day-row__time">10:00 PM</span><span class="day-row__beat">Breakdown begins; belongings collected</span></li>
+              <li class="day-row"><span class="day-row__time">10:30 PM</span><span class="day-row__beat">Final shuttle departs</span><span class="day-row__who">Dioris</span></li>
+            </ul>
           </section>
 
         </div>
@@ -147,5 +149,44 @@
   <script src="../assets/js/sidebar.js"></script>
   <script src="../assets/js/api.js"></script>
   <script src="../assets/js/main.js"></script>
+  <script>
+    /* Day at a glance: marks past / current moments as the page scrolls. */
+    (function () {
+      var nav = document.getElementById('day-glance');
+      if (!nav) return;
+      var links = Array.prototype.slice.call(nav.querySelectorAll('.day-glance__link'));
+      var secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+      var now = document.getElementById('day-now');
+      var ticking = false;
+      function update() {
+        ticking = false;
+        var line = nav.getBoundingClientRect().bottom + 40;
+        var idx = 0;
+        secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= line) idx = i; });
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) idx = secs.length - 1;
+        links.forEach(function (a, i) {
+          a.classList.toggle('is-active', i === idx);
+          a.classList.toggle('is-past', i < idx);
+          if (i === idx) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+        });
+        nav.style.setProperty('--day-i', idx);
+        if (now) now.innerHTML = links[idx].dataset.name.toUpperCase() + ' <em>\u00b7 ' + links[idx].dataset.time + '</em>';
+      }
+      function req() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+      window.addEventListener('scroll', req, { passive: true });
+      window.addEventListener('resize', req);
+      links.forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var t = document.querySelector(a.getAttribute('href'));
+          if (!t) return;
+          e.preventDefault();
+          var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+          history.replaceState(null, '', a.getAttribute('href'));
+        });
+      });
+      update();
+    })();
+  </script>
 </body>
 </html>

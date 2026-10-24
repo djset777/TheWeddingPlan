@@ -1,0 +1,190 @@
+/* ==========================================================================
+   The Day — clock-based run of show (Oct 2026)
+   Rides on the shared thread (gold bar, gold dots, gold small-caps titles).
+   Adds: a sticky "day at a glance" bar, section heads with a time range,
+   and rows of time | beat | who, with names in gold on the right.
+   ========================================================================== */
+
+/* --- Day at a glance: the thread turned horizontal ----------------------- */
+.day-glance {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--bg);
+  padding: 10px 0 8px;
+  margin-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.6);
+  box-shadow: 0 8px 14px -10px rgba(1, 96, 95, 0.35);
+}
+.day-glance__now {
+  display: none;
+  text-align: center;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--teal);
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+.day-glance__now em {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0;
+  color: #10706D;
+}
+.day-glance__rail { position: relative; }
+.day-glance__track,
+.day-glance__fill {
+  position: absolute;
+  top: 14px;
+  left: calc(100% / 12);
+  height: 2px;
+  background: rgba(212, 175, 55, 0.35);
+  right: calc(100% / 12);
+}
+.day-glance__fill {
+  right: auto;
+  width: calc((100% - 100% / 6) * var(--day-i, 0) / 5);
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+.day-glance__list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.day-glance__list li { margin: 0; padding: 0; }
+.day-glance__list li::before { content: none; }
+.day-glance__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 44px;
+  padding: 7px 2px 2px;
+  border: none;
+  text-decoration: none;
+}
+.day-glance__dot {
+  display: block;
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--gold);
+}
+.day-glance__link.is-past .day-glance__dot { background: var(--gold); }
+.day-glance__link.is-active .day-glance__dot {
+  background: var(--teal);
+  width: 16px;
+  height: 16px;
+  margin: -1px 0;
+}
+.day-glance__name {
+  margin-top: 8px;
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-align: center;
+  color: #10706D;
+  white-space: nowrap;
+}
+.day-glance__link.is-active .day-glance__name { color: var(--teal); font-weight: 600; }
+.day-glance__time {
+  margin-top: 1px;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--teal);
+  visibility: hidden;
+}
+.day-glance__link.is-active .day-glance__time { visibility: visible; }
+.day-glance__link:hover .day-glance__name { color: var(--teal); }
+.day-glance__link:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* --- Section heads ------------------------------------------------------- */
+.day-section { scroll-margin-top: 92px; }
+.day-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: 8px;
+}
+.day-head .thread__title { margin: 0; }
+.day-head__range {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* --- Rows: time | beat | who --------------------------------------------- */
+.day-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.6);
+}
+.day-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) minmax(0, 170px);
+  column-gap: 16px;
+  align-items: baseline;
+  padding: 13px 0;
+  margin: 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.6);
+}
+.day-row__time {
+  font-family: 'Cormorant SC', Georgia, serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  white-space: nowrap;
+}
+.day-row__beat {
+  font-size: 17.7px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--teal);
+}
+.day-row__who {
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--gold);
+  text-align: right;
+}
+
+/* --- Phone ---------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .day-glance { padding-top: 8px; }
+  .day-glance__now { display: block; }
+  .day-glance__track, .day-glance__fill { top: 7px; }
+  .day-glance__link { min-height: 30px; padding-top: 0; }
+  .day-glance__name, .day-glance__time { display: none; }
+  .day-section { scroll-margin-top: 76px; }
+  .day-head__range { font-size: 11px; letter-spacing: 0.1em; }
+  .day-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "time time" "beat who";
+    column-gap: 14px;
+    row-gap: 3px;
+    align-items: baseline;
+    padding: 12px 0;
+  }
+  .day-row__time { grid-area: time; font-size: 12px; }
+  .day-row__beat { grid-area: beat; font-size: 17px; }
+  .day-row__who { grid-area: who; max-width: 130px; font-size: 15px; }
+}
