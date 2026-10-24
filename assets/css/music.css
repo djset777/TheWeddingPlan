@@ -95,9 +95,9 @@
   line-height: 1.3;
   text-align: center;
 }
-/* Danisa, Julian or both: teal fill. A guest's party: thin gold outline. */
-.tm-pill--couple { background: var(--anchor); border-color: var(--anchor); color: var(--accent); }
-.tm-pill--guest { border-color: rgba(212, 175, 55, 0.6); color: #10706D; }
+/* Danisa, Julian or both: teal letters, gold outline. A guest's party: gold letters, teal outline. */
+.tm-pill--couple { background: none; border-color: var(--accent); color: var(--anchor); }
+.tm-pill--guest { background: none; border-color: var(--anchor); color: var(--accent); }
 /* The tab rule already draws the top line of the first row. */
 #tm-panel > .tm-list:first-child > .tm-row:first-child { border-top: 0; }
 
@@ -150,7 +150,7 @@
 .tm-avoid .tm-list--end { border-bottom-color: rgba(212, 175, 55, 0.3); }
 .tm-avoid:not(.tm-avoid--moments) .tm-row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "body who"; }
 .tm-avoid .tm-body { flex-direction: row; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.tm-avoid .tm-pill--couple { background: none; color: #10706D; border-color: rgba(16, 112, 109, 0.55); font-size: 14px; }
+.tm-avoid .tm-pill--couple { color: rgba(16, 112, 109, 0.75); border-color: rgba(212, 175, 55, 0.45); font-size: 14px; }
 .tm-avoid .tm-title { font-size: 17px; font-weight: 400; color: #10706D; }
 .tm-avoid .tm-artist { font-size: 16px; font-weight: 400; font-style: italic; color: rgba(16, 112, 109, 0.7); }
 
